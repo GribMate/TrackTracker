@@ -1,0 +1,160 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Onlab"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Onlab.MainWindow"
+        mc:Ignorable="d"
+        Title="TrackTracker" Height="600" Width="1000" Foreground="White" FontSize="16" MinWidth="1000" MinHeight="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="20" Background="#FF323232" Foreground="White">
+            <MenuItem Header="Application" Foreground="White">
+                <MenuItem x:Name="menuItemApplicationExit" Header="_Exit" Foreground="Black" Click="menuItemApplicationExit_Click" />
+            </MenuItem>
+            <MenuItem Header="Edit" Foreground="White">
+                <MenuItem Header="Cut" Foreground="Black" />
+                <MenuItem Header="Copy" Foreground="Black" />
+                <MenuItem Header="Paste" Foreground="Black" />
+                <Separator Padding="0" Margin="0" />
+                <MenuItem Header="Delete" Foreground="Black" />
+            </MenuItem>
+            <MenuItem Header="About" Foreground="White" >
+                <MenuItem Header="Version" Foreground="Black" />
+            </MenuItem>
+        </Menu>
+        <TabControl DockPanel.Dock="Top" TabStripPlacement="Top" Margin="0, 0, 0, 0" Height="500" BorderThickness="0" Padding="1">
+            <TabItem x:Name="ttprofile" Header="TT Profile" Foreground="Red">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
+                        <GradientStop Color="#FF323232" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <TextBlock TextWrapping="WrapWithOverflow" Background="#FF4B4B4B" Foreground="White"><Run Text="TT Profile UI goes here"/></TextBlock>
+            </TabItem>
+            <TabItem x:Name="datasources" Header="Data sources" Foreground="Red" Initialized="datasources_Initialized">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
+                        <GradientStop Color="#FF323232" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <StackPanel Background="#FF323232">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="157" />
+                            <RowDefinition Height="157" />
+                            <RowDefinition Height="157" />
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Offline media" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="960">
+                            <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="950">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="You can add files from your local computer to the tracklist here. Metadata can be viewed or updated on Tracklist tab." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0"/>
+                                <RadioButton x:Name="data_radioButtonFolder" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Unchecked="data_radioButtonFolder_Unchecked" Checked="data_radioButtonFolder_Checked" IsChecked="True"/>
+                                <RadioButton x:Name="data_radioButtonDrive" Grid.Row="2" Content="Search drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonDrive_Checked" Unchecked="data_radioButtonDrive_Unchecked"/>
+                                <TextBox x:Name="data_textBoxOfflineFolderPath" Grid.Row="1" Text="Please select your offline music folder..." IsReadOnly="True" Margin="-300,0,0,0" Width="300" Height="25" />
+                                <ComboBox x:Name="data_comboBoxFileFormat" Grid.Row="2" Width="100" Height="25" Margin="-400,0,0,0" IsReadOnly="True" IsEnabled="False" >
+                                    <System:String>MP3</System:String>
+                                    <System:String>FLAC</System:String>
+                                </ComboBox>
+                                <ComboBox x:Name="data_comboBoxDriveLetter" Grid.Row="2" Width="50" Height="25" Margin="-160,0,0,0" IsReadOnly="True" IsEnabled="False"/>
+                                <Button x:Name="data_buttonBrowse" Grid.Row="1" Content="Browse" Width="75" Height="25" Margin="100,0,0,0" Click="data_buttonBrowse_Click" />
+                                <Button x:Name="data_buttonAddFiles" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" IsEnabled="False" Click="data_buttonAddFiles_Click" />
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="tracklist" Header="Tracklist" Foreground="Red" Initialized="tracklist_Initialized">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
+                        <GradientStop Color="#FF323232" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <StackPanel Background="#FF323232">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="381" />
+                            <RowDefinition Height="60" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="500" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Music files tracked" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                            <Label Grid.Column="1" Content="Possible matches found" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="500" />
+                            </Grid.ColumnDefinitions>
+                            <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow"
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Header="Selected" />
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding ARTIST}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding TITLE}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding ALBUM}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding ARTIST}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding TITLE}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding ALBUM}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="500" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" />
+                            <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" />
+                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" />
+                            <Button x:Name="tracklist_buttonShowDetailed" Grid.Column="1" Content="Show detailed info..." HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,10,0" />
+                            <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" />
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="statistics" Header="Statistics" Foreground="Red">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
+                        <GradientStop Color="#FF323232" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <TextBlock TextWrapping="WrapWithOverflow" Foreground="White" Background="#FF4B4B4B"><Run Text="Statistics UI goes here"/></TextBlock>
+            </TabItem>
+        </TabControl>
+        <StackPanel DockPanel.Dock="Bottom" Height="30" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="270" />
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Online status:" Foreground="White" />
+                <Label Grid.Column="1" Content="Connected" Foreground="#FF00C800" />
+                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" />
+                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" />
+                <ProgressBar Grid.Column="4" />
+            </Grid>
+        </StackPanel>
+    </DockPanel>
+</Window>
