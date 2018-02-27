@@ -55,14 +55,11 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Label Grid.Row="0" Content="You can add files from your local computer to the tracklist here. Metadata can be viewed or updated on Tracklist tab." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0"/>
-                                <RadioButton x:Name="data_radioButtonFolder" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Unchecked="data_radioButtonFolder_Unchecked" Checked="data_radioButtonFolder_Checked" IsChecked="True"/>
-                                <RadioButton x:Name="data_radioButtonDrive" Grid.Row="2" Content="Search drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonDrive_Checked" Unchecked="data_radioButtonDrive_Unchecked"/>
+                                <RadioButton x:Name="data_radioButtonFolder" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonFolder_Checked" IsChecked="True"/>
+                                <RadioButton x:Name="data_radioButtonDrive" Grid.Row="2" Content="Search drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonDrive_Checked"/>
                                 <TextBox x:Name="data_textBoxOfflineFolderPath" Grid.Row="1" Text="Please select your offline music folder..." IsReadOnly="True" Margin="-300,0,0,0" Width="300" Height="25" />
-                                <ComboBox x:Name="data_comboBoxFileFormat" Grid.Row="2" Width="100" Height="25" Margin="-400,0,0,0" IsReadOnly="True" IsEnabled="False" >
-                                    <System:String>MP3</System:String>
-                                    <System:String>FLAC</System:String>
-                                </ComboBox>
-                                <ComboBox x:Name="data_comboBoxDriveLetter" Grid.Row="2" Width="50" Height="25" Margin="-160,0,0,0" IsReadOnly="True" IsEnabled="False"/>
+                                <ComboBox x:Name="data_comboBoxFileFormat" Grid.Row="2" Width="100" Height="25" Margin="-400,0,0,0" IsReadOnly="True" IsEnabled="False" SelectionChanged="data_comboBoxFileFormat_SelectionChanged" />
+                                <ComboBox x:Name="data_comboBoxDriveLetter" Grid.Row="2" Width="50" Height="25" Margin="-160,0,0,0" IsReadOnly="True" IsEnabled="False" SelectionChanged="data_comboBoxDriveLetter_SelectionChanged"/>
                                 <Button x:Name="data_buttonBrowse" Grid.Row="1" Content="Browse" Width="75" Height="25" Margin="100,0,0,0" Click="data_buttonBrowse_Click" />
                                 <Button x:Name="data_buttonAddFiles" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" IsEnabled="False" Click="data_buttonAddFiles_Click" />
                             </Grid>

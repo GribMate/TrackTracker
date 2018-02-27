@@ -57,6 +57,8 @@ namespace Onlab
     */
     public static class GlobalVariables
     {
+        private static System.IO.StreamWriter errorLog = new System.IO.StreamWriter("D:\\errorlog.txt");
+
         public sealed class ConfigClass
         {
             public string LocalMediaPath;
@@ -91,17 +93,33 @@ namespace Onlab
             if (path == null) throw new ArgumentNullException();
             if (path.Length < 3) throw new ArgumentException();
 
-            AudioFile af = null;
-            switch (type)
+            try
             {
-                case ExtensionType.MP3:
-                    af = new MP3File(path, true); //readonly for faster parsing
-                break;
-                case ExtensionType.FLAC:
-                    af = new FLACFile(path, true); //readonly for faster parsing
-                break;
+                AudioFile af = null;
+                switch (type)
+                {
+                    case ExtensionType.MP3:
+                        af = new MP3File(path, true); //readonly for faster parsing
+                        break;
+                    case ExtensionType.FLAC:
+                        af = new FLACFile(path, true); //readonly for faster parsing
+                        break;
+                }
+                MusicFiles.Add(af);
             }
-            MusicFiles.Add(af);
+            catch (BadAudioFileException bafe)
+            {
+                errorLog.WriteLine(path);
+                errorLog.WriteLine("\t" + bafe.Message);
+                errorLog.WriteLine();
+            } //TODO: switch to TagLib#
+            catch (Exception e) //Probably "Error extracting tags from frame. Trying to set new seek position outside of file in ByteSource.MoveTo()."
+            {
+                errorLog.WriteLine(path);
+                errorLog.WriteLine("\t" + e.Message);
+                errorLog.WriteLine();
+            } //TODO: switch to TagLib#
+            finally { errorLog.Flush(); }
         }
     }
 }
