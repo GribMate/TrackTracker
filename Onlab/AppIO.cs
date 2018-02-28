@@ -56,9 +56,29 @@ namespace Onlab
 
             return true; //none of the criteria returned false
         }
-        public static void CacheOfflineFiles()
+
+        public static void CacheOfflineFilesFromDriveSearch(ExtensionType type, string driveLetter)
         {
-            RecursiveDirectorySearch(GlobalVariables.Config.LocalMediaPath);
+            DriveInfo drive = null;
+            string searchPattern = "*." + type.ToString().ToLower(); //case shouldnt matter, but its probably safer in lower case
+
+            foreach (DriveInfo driveCandidate in DriveInfo.GetDrives())
+            {
+                if (driveCandidate.Name == driveLetter)
+                {
+                    drive = driveCandidate;
+                    break;
+                }                    
+            }
+
+            foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
+            {
+                GlobalVariables.AddMusicFile(file, type);
+            }
+        }
+        public static void CacheOfflineFilesFromPath(string path)
+        {
+            RecursiveDirectorySearch(path);
             
         }
 
