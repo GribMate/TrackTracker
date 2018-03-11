@@ -1,5 +1,4 @@
 ﻿using System;
-using JAudioTags;
 
 namespace Onlab
 {
@@ -14,10 +13,10 @@ namespace Onlab
     public sealed class Track
     {
         private bool isOfflineAccessible; //true if file is downloaded on local machine or false if it's a virtual track
-        private AudioFile fileHandle; //offline stored, physically accessible file handle, or null
+        private TagLib.File fileHandle; //offline stored, physically accessible file handle, or null
         private AudioMetaData metaData; //ID3 tags of the track
 
-        public Track(AudioFile fileHandle, bool generateCustomizedTags = false)
+        public Track(TagLib.File fileHandle, bool generateCustomizedTags = false)
         {
             this.isOfflineAccessible = true; //beacuse we have a non null file handle
             this.fileHandle = fileHandle;
@@ -34,7 +33,7 @@ namespace Onlab
         {
             get { return this.isOfflineAccessible; }
         }
-        public AudioFile FileHandle //can return null
+        public TagLib.File FileHandle //can return null
         {
             get { return this.fileHandle; }
         }

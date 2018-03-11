@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using JAudioTags;
 using WinForms = System.Windows.Forms; //TODO: maybe import WPFContrib v2 for redesigned FBD
 
 namespace Onlab
@@ -35,9 +34,9 @@ namespace Onlab
             data_driveLetterSelected = false;
 
             //load up the file format selection box with the currently supported values from ExtensionType instead of burning values in
-            foreach (ExtensionType item in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
+            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
             {
-                data_comboBoxFileFormat.Items.Add(item.ToString());
+                data_comboBoxFileFormat.Items.Add(ext.ToString());
             }
 
             fbdMedia = new WinForms.FolderBrowserDialog();

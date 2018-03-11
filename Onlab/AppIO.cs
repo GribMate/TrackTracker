@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Win32;
 
 
@@ -18,7 +19,7 @@ namespace Onlab
     {
         private static string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); //local machine's %appdata% folder
         private static string configFilePath = Path.Combine(appDataPath, "Onlab\\config.data"); //the full classified path of the config file
-        
+
         public static string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
         {
             string toReturn = null;
@@ -68,50 +69,43 @@ namespace Onlab
                 {
                     drive = driveCandidate;
                     break;
-                }                    
+                }
             }
 
             foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
             {
-                GlobalVariables.AddMusicFile(file, type);
+                GlobalVariables.AddMusicFile(file);
             }
         }
         public static void CacheOfflineFilesFromPath(string path)
         {
             RecursiveDirectorySearch(path);
-            
+
         }
 
         private static void RecursiveDirectorySearch(string path)
         {
-            foreach (string file in Directory.GetFiles(path))
+            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
             {
-                ExtensionType type;
-                if (IsProperFileType(file, out type)) GlobalVariables.AddMusicFile(file, type);
+                string searchPattern = "*." + ext.ToString().ToLower();
+                foreach (string file in Directory.GetFiles(path, searchPattern))
+                {
+                    GlobalVariables.AddMusicFile(file);
+                }
             }
 
             foreach (string dir in Directory.GetDirectories(path))
             {
-                foreach (string dirFile in Directory.GetFiles(dir))
+                foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
                 {
-                    ExtensionType type;
-                    if (IsProperFileType(dirFile, out type)) GlobalVariables.AddMusicFile(dirFile, type);
+                    string searchPattern = "*." + ext.ToString().ToLower();
+                    foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
+                    {
+                        GlobalVariables.AddMusicFile(dirFile);
+                    }
                 }
                 RecursiveDirectorySearch(dir);
             }
-        }
-
-        private static bool IsProperFileType(string path, out ExtensionType type)
-        {
-            bool isProper = true;
-            type = ExtensionType.MP3; //does not matter, either gets overwritten or ignored if unsupported file
-
-            string ext = Path.GetExtension(path);
-            ext = ext.Substring(1); //getting rid of the "." before the file extension
-            try { type = (ExtensionType)Enum.Parse(typeof(ExtensionType), ext, true); }
-            catch (ArgumentException) { isProper = false; }
-
-            return isProper;
         }
 
         public static List<string> GetSystemDriveNames()
@@ -172,7 +166,7 @@ namespace Onlab
         }
         public static void SavePersistentData(string foobarPath, string mediaPath, bool copied) //saves the given persistent data | arguments ---> config file
         {
-            
+
             Directory.CreateDirectory(Path.Combine(appDataPath, "Onlab")); //creating the folder
             StreamWriter sw = new StreamWriter(configFilePath); //using pure text-based config for the sake of simplicity
 

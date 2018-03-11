@@ -98,9 +98,9 @@
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="Selected" />
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding ARTIST}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding TITLE}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding ALBUM}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Tag.FirstArtist}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Tag.Title}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding Tag.Album}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JAudioTags;
 
 namespace Onlab
 {
@@ -22,7 +21,8 @@ namespace Onlab
         Currently handled genre of tracks.
         TODO: may need to be deleted after MusicBrainz integration
     */
-    [Flags] public enum MusicGenre : ushort
+    [Flags]
+    public enum MusicGenre : ushort
     {
         Rock = 1,
         Pop = 2,
@@ -39,7 +39,8 @@ namespace Onlab
         Currently handled language of tracks.
         TODO: may need to be deleted after MusicBrainz integration
     */
-    [Flags] public enum MusicLanguage : ushort
+    [Flags]
+    public enum MusicLanguage : ushort
     {
         ENG = 1,
         HUN = 2,
@@ -57,8 +58,6 @@ namespace Onlab
     */
     public static class GlobalVariables
     {
-        private static System.IO.StreamWriter errorLog = new System.IO.StreamWriter("D:\\errorlog.txt");
-
         public sealed class ConfigClass
         {
             public string LocalMediaPath;
@@ -80,46 +79,22 @@ namespace Onlab
         }
 
         public static ConfigClass Config = new ConfigClass();
-        public static List<AudioFile> MusicFiles = new List<AudioFile>(1000); //1000 for an approximate offline music collection
+        public static List<TagLib.File> MusicFiles = new List<TagLib.File>(1000); //1000 for an approximate offline music collection
 
-        /*
-        public static List<AudioFile> MusicFiles
-        {
-            get { return MusicFiles; } //no set for we only allow changes through methods
-        } */
-
-        public static void AddMusicFile(string path, ExtensionType type)
+        public static void AddMusicFile(string path)
         {
             if (path == null) throw new ArgumentNullException();
             if (path.Length < 3) throw new ArgumentException();
 
             try
             {
-                AudioFile af = null;
-                switch (type)
-                {
-                    case ExtensionType.MP3:
-                        af = new MP3File(path, true); //readonly for faster parsing
-                        break;
-                    case ExtensionType.FLAC:
-                        af = new FLACFile(path, true); //readonly for faster parsing
-                        break;
-                }
-                MusicFiles.Add(af);
+                TagLib.File tf = TagLib.File.Create(path);
+                MusicFiles.Add(tf);
             }
-            catch (BadAudioFileException bafe)
+            catch (Exception e)
             {
-                errorLog.WriteLine(path);
-                errorLog.WriteLine("\t" + bafe.Message);
-                errorLog.WriteLine();
-            } //TODO: switch to TagLib#
-            catch (Exception e) //Probably "Error extracting tags from frame. Trying to set new seek position outside of file in ByteSource.MoveTo()."
-            {
-                errorLog.WriteLine(path);
-                errorLog.WriteLine("\t" + e.Message);
-                errorLog.WriteLine();
-            } //TODO: switch to TagLib#
-            finally { errorLog.Flush(); }
+                //TODO: exception handling in-app for files that cannot be read by TagLib#
+            }
         }
     }
 }

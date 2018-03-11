@@ -1,5 +1,4 @@
 ﻿using System;
-using JAudioTags;
 
 namespace Onlab
 {
@@ -18,11 +17,11 @@ namespace Onlab
         private string albumartist;
         private string artist;
         private string composer;
-        private string discnumber;
+        private uint discnumber;
         private string genre;
         private string title;
-        private string tracknumber;
-        private string date;
+        private uint tracknumber;
+        private uint date;
         private string comment;
 
         //These variables are more customized for TrackTracker features (do not correspond 1-1 to ID3 tags, but are derived from them)
@@ -31,8 +30,8 @@ namespace Onlab
         private MusicGenre typedGenre; //predefined genres supported, but can be mixed as flags
         private MusicLanguage language; //can be mixed as well (rare case though)
 
-        public AudioMetaData(string album, string albumartist, string artist, string composer, string discnumber, string genre, string title,
-                             string tracknumber, string date, string comment, bool generateCustomizedTags = false)
+        public AudioMetaData(string album, string albumartist, string artist, string composer, uint discnumber, string genre, string title,
+                             uint tracknumber, uint date, string comment, bool generateCustomizedTags = false)
         {
             //no argument checking, because all tags can be null or empty strings
             this.album = album;
@@ -49,25 +48,26 @@ namespace Onlab
             if (generateCustomizedTags) GenerateCustomizedTags();
         }
 
-        public AudioMetaData(AudioFile file, bool generateCustomizedTags = false)
+        public AudioMetaData(TagLib.File file, bool generateCustomizedTags = false)
         {
             if (file == null) throw new ArgumentNullException();
 
-            this.album = file.ALBUM;
-            this.albumartist = file.ALBUMARTIST;
-            this.artist = file.ARTIST;
-            this.composer = file.COMPOSER;
-            this.discnumber = file.DISCNUMBER;
-            this.genre = file.GENRE;
-            this.title = file.TITLE;
-            this.tracknumber = file.TRACKNUMBER;
-            this.date = file.DATE;
-            this.comment = file.COMMENT;
+            this.album = file.Tag.Album;
+            this.albumartist = file.Tag.FirstAlbumArtist; //HACK
+            this.artist = file.Tag.FirstArtist;
+            this.composer = file.Tag.FirstComposer; //HACK
+            this.discnumber = file.Tag.Disc;
+            this.genre = file.Tag.FirstGenre;
+            this.title = file.Tag.Title;
+            this.tracknumber = file.Tag.Track;
+            this.date = file.Tag.Year;
+            this.comment = file.Tag.Comment;
 
             if (generateCustomizedTags) GenerateCustomizedTags();
         }
         private void GenerateCustomizedTags()
         {
+            throw new NotFiniteNumberException();
             //TODO
         }
     }
