@@ -28,6 +28,9 @@ namespace Onlab
 
         public MainWindow()
         {
+            //GlobalVariables initalizer must run before GUI loads to avoid NullReferenceExceptions
+            GlobalVariables.Initialize(); //TODO: maybe reposition global initializer @ App.xaml.cs ?
+
             InitializeComponent();
 
             data_fileFormatSelected = false;
@@ -83,7 +86,7 @@ namespace Onlab
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
-                    GlobalVariables.Config.LocalMediaPath = fbdMedia.SelectedPath;
+                    GlobalVariables.Config.AddLocalMediaPath(fbdMedia.SelectedPath);
                 } //if conditions are not met, buttonOk remains disabled
             }
         }
@@ -106,7 +109,7 @@ namespace Onlab
 
         private void tracklist_Initialized(object sender, EventArgs e)
         {
-            tracklist_dataGridTrackList.ItemsSource = GlobalVariables.MusicFiles;
+            tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.MusicFiles;
         }
 
         private void datasources_Initialized(object sender, EventArgs e)
@@ -127,6 +130,11 @@ namespace Onlab
         {
             data_driveLetterSelected = true;
             if (data_fileFormatSelected && data_driveLetterSelected) data_buttonAddFiles.IsEnabled = true;
+        }
+
+        private void tracklist_buttonManageSources_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 

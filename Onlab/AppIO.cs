@@ -74,7 +74,7 @@ namespace Onlab
 
             foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
             {
-                GlobalVariables.AddMusicFile(file);
+                GlobalVariables.TracklistData.AddMusicFile(file);
             }
         }
         public static void CacheOfflineFilesFromPath(string path)
@@ -90,7 +90,7 @@ namespace Onlab
                 string searchPattern = "*." + ext.ToString().ToLower();
                 foreach (string file in Directory.GetFiles(path, searchPattern))
                 {
-                    GlobalVariables.AddMusicFile(file);
+                    GlobalVariables.TracklistData.AddMusicFile(file);
                 }
             }
 
@@ -101,7 +101,7 @@ namespace Onlab
                     string searchPattern = "*." + ext.ToString().ToLower();
                     foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
                     {
-                        GlobalVariables.AddMusicFile(dirFile);
+                        GlobalVariables.TracklistData.AddMusicFile(dirFile);
                     }
                 }
                 RecursiveDirectorySearch(dir);
@@ -158,7 +158,7 @@ namespace Onlab
             StreamReader sr = new StreamReader(configFilePath); //using pure text-based config for the sake of simplicity
 
             //GlobalVariables.Config.FoobarPath = sr.ReadLine();
-            GlobalVariables.Config.LocalMediaPath = sr.ReadLine();
+            GlobalVariables.Config.AddLocalMediaPath(sr.ReadLine());
             //GlobalVariables.Config.IsCopiedMedia = Convert.ToBoolean(sr.ReadLine());
 
             sr.Close();

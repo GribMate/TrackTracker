@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Onlab
 {
@@ -14,15 +13,27 @@ namespace Onlab
         MP3 = 0, //default
         FLAC = 1
     }
+
+    /*
+    Enum: MediaPlayerType
+    State: Under construction | DEBUG
+    Description:
+        Identifier of media players that are supported for tracklist mixing.
+    */
+    public enum MediaPlayerType : ushort
+    {
+        Foobar2000 = 0 //default
+    }
+
     /*
     Enum: MusicGenre
     State: Under construction | DEBUG
     Description:
         Currently handled genre of tracks.
-        TODO: may need to be deleted after MusicBrainz integration
     */
+
     [Flags]
-    public enum MusicGenre : ushort
+    public enum MusicGenre : ushort //TODO: may need to be deleted after MusicBrainz integration
     {
         Rock = 1,
         Pop = 2,
@@ -37,10 +48,10 @@ namespace Onlab
     State: Under construction | DEBUG
     Description:
         Currently handled language of tracks.
-        TODO: may need to be deleted after MusicBrainz integration
     */
+
     [Flags]
-    public enum MusicLanguage : ushort
+    public enum MusicLanguage : ushort //TODO: may need to be deleted after MusicBrainz integration
     {
         ENG = 1,
         HUN = 2,
@@ -58,43 +69,13 @@ namespace Onlab
     */
     public static class GlobalVariables
     {
-        public sealed class ConfigClass
+        public static AppConfig Config; //persistent settings through the whole application
+        public static TracklistData TracklistData; //dynamic wrapper of data currently represented @ Tracklist tab table
+
+        public static void Initialize()
         {
-            public string LocalMediaPath;
-            public string FoobarPath;
-
-            public ConfigClass()
-            {
-                LocalMediaPath = null;
-                FoobarPath = null;
-            }
-        }
-        public sealed class OfflineDataClass
-        {
-
-        }
-        public sealed class GUIDataClass
-        {
-
-        }
-
-        public static ConfigClass Config = new ConfigClass();
-        public static List<TagLib.File> MusicFiles = new List<TagLib.File>(1000); //1000 for an approximate offline music collection
-
-        public static void AddMusicFile(string path)
-        {
-            if (path == null) throw new ArgumentNullException();
-            if (path.Length < 3) throw new ArgumentException();
-
-            try
-            {
-                TagLib.File tf = TagLib.File.Create(path);
-                MusicFiles.Add(tf);
-            }
-            catch (Exception e)
-            {
-                //TODO: exception handling in-app for files that cannot be read by TagLib#
-            }
+            Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
+            TracklistData = new TracklistData(); //TODO: use app setting for initial capacity
         }
     }
 }

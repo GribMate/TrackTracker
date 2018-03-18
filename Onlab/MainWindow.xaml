@@ -24,15 +24,6 @@
             </MenuItem>
         </Menu>
         <TabControl DockPanel.Dock="Top" TabStripPlacement="Top" Margin="0, 0, 0, 0" Height="500" BorderThickness="0" Padding="1">
-            <TabItem x:Name="ttprofile" Header="TT Profile" Foreground="Red">
-                <TabItem.Background>
-                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
-                        <GradientStop Color="#FF323232" Offset="1"/>
-                    </LinearGradientBrush>
-                </TabItem.Background>
-                <TextBlock TextWrapping="WrapWithOverflow" Background="#FF4B4B4B" Foreground="White"><Run Text="TT Profile UI goes here"/></TextBlock>
-            </TabItem>
             <TabItem x:Name="datasources" Header="Data sources" Foreground="Red" Initialized="datasources_Initialized">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -119,7 +110,7 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" />
                             <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
-                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" />
+                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" />
                             <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" />
                             <Button x:Name="tracklist_buttonShowDetailed" Grid.Column="1" Content="Show detailed info..." HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,10,0" />
                             <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" />
