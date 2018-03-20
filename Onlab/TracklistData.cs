@@ -5,11 +5,11 @@ namespace Onlab
 {
     public class TracklistData
     {
-        public List<TagLib.File> MusicFiles; 
+        public List<Track> Tracks; 
 
         public TracklistData(int capacity = 1000) //1000 for an approximate offline music collection
         {
-            MusicFiles = new List<TagLib.File>(capacity);
+            Tracks = new List<Track>(capacity);
         }
 
         public void AddMusicFile(string path)
@@ -19,12 +19,14 @@ namespace Onlab
 
             try
             {
-                TagLib.File tf = TagLib.File.Create(path);
-                MusicFiles.Add(tf);
+                Track t = new Track(TagLib.File.Create(path));
+                Tracks.Add(t);
             }
-            catch (Exception e)
+            catch (Exception e) //TODO: more polished exception handling
             {
-                //TODO: exception handling in-app for files that cannot be read by TagLib#
+                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("File reading error",
+                    "File reading error happened while trying to parse a music file from local directory. This file will be omitted from Tracklist!",
+                    $"File location: {path}");
             }
         }
     }

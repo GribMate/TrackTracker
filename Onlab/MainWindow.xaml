@@ -88,18 +88,18 @@
                             <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn Header="Selected" />
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Tag.FirstArtist}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Tag.Title}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding Tag.Album}"/>
+                                    <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.Artist}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding ARTIST}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding TITLE}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding ALBUM}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.Artist}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -111,21 +111,21 @@
                             <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" />
                             <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
                             <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" />
-                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" />
+                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" Click="tracklist_buttonUpdateTags_Click" />
                             <Button x:Name="tracklist_buttonShowDetailed" Grid.Column="1" Content="Show detailed info..." HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,10,0" />
                             <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" />
                         </Grid>
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem x:Name="statistics" Header="Statistics" Foreground="Red">
+            <TabItem x:Name="statistics" Header="Playzone" Foreground="Red">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF4B4B4B" Offset="0"/>
                         <GradientStop Color="#FF323232" Offset="1"/>
                     </LinearGradientBrush>
                 </TabItem.Background>
-                <TextBlock TextWrapping="WrapWithOverflow" Foreground="White" Background="#FF4B4B4B"><Run Text="Statistics UI goes here"/></TextBlock>
+                <TextBlock TextWrapping="WrapWithOverflow" Foreground="White" Background="#FF4B4B4B"><Run Text="Playzone UI goes here"/></TextBlock>
             </TabItem>
         </TabControl>
         <StackPanel DockPanel.Dock="Bottom" Height="30" >

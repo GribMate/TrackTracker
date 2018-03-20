@@ -109,7 +109,7 @@ namespace Onlab
 
         private void tracklist_Initialized(object sender, EventArgs e)
         {
-            tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.MusicFiles;
+            tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.Tracks;
         }
 
         private void datasources_Initialized(object sender, EventArgs e)
@@ -135,7 +135,13 @@ namespace Onlab
         private void tracklist_buttonManageSources_Click(object sender, RoutedEventArgs e)
         {
             Dialogs.ManageTracklistSources mts = new Dialogs.ManageTracklistSources();
+            mts.Owner = this; //enables center-screen display
             mts.ShowDialog();
+        }
+
+        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
+        {
+            //MusicBrainz.Data.Recording r = MusicBrainz.Search.Recording(artist: "Cloud 9+");
         }
 
 

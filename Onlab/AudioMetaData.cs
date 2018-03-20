@@ -7,43 +7,43 @@ namespace Onlab
     State: Under construction | DEBUG
     Description:
         Represents a music track, that can be played and has various attributes.
-        Also can link to a physical file, so that file operations can be done if possible. (wraps around JAudioTags.AudioFile class).
+        Also can link to a physical file, so that file operations can be done if possible. (wraps around TagLib.AudioFile class).
         Cannot participate in inheritance.
 */
     public class AudioMetaData
     {
         //These variables correspond to JAudioTags.AudioFile properties directly (1-1 convertible to ID3 tags)
-        private string album;
-        private string albumartist;
-        private string artist;
-        private string composer;
-        private uint discnumber;
-        private string genre;
-        private string title;
-        private uint tracknumber;
-        private uint date;
-        private string comment;
+        public string Album { get; set; }
+        public string Albumartist { get; set; }
+        public string Artist { get; set; }
+        public string Composer { get; set; }
+        public uint Discnumber { get; set; }
+        public string Genre { get; set; }
+        public string Title { get; set; }
+        public uint Tracknumber { get; set; }
+        public uint Date { get; set; }
+        public string Comment { get; set; }
 
         //These variables are more customized for TrackTracker features (do not correspond 1-1 to ID3 tags, but are derived from them)
-        private string[] separatedArtists; //typically 1 element, but can be more
-        private DateTime typedDate; //typed release date
-        private MusicGenre typedGenre; //predefined genres supported, but can be mixed as flags
-        private MusicLanguage language; //can be mixed as well (rare case though)
+        public string[] SeparatedArtists { get; set; } //typically 1 element, but can be more
+        public DateTime TypedDate { get; set; } //typed release date
+        public MusicGenre TypedGenre { get; set; } //predefined genres supported, but can be mixed as flags
+        public MusicLanguage Language { get; set; } //can be mixed as well (rare case though)
 
         public AudioMetaData(string album, string albumartist, string artist, string composer, uint discnumber, string genre, string title,
                              uint tracknumber, uint date, string comment, bool generateCustomizedTags = false)
         {
             //no argument checking, because all tags can be null or empty strings
-            this.album = album;
-            this.albumartist = albumartist;
-            this.artist = artist;
-            this.composer = composer;
-            this.discnumber = discnumber;
-            this.genre = genre;
-            this.title = title;
-            this.tracknumber = tracknumber;
-            this.date = date;
-            this.comment = comment;
+            Album = album;
+            Albumartist = albumartist;
+            Artist = artist;
+            Composer = composer;
+            Discnumber = discnumber;
+            Genre = genre;
+            Title = title;
+            Tracknumber = tracknumber;
+            Date = date;
+            Comment = comment;
 
             if (generateCustomizedTags) GenerateCustomizedTags();
         }
@@ -52,22 +52,22 @@ namespace Onlab
         {
             if (file == null) throw new ArgumentNullException();
 
-            this.album = file.Tag.Album;
-            this.albumartist = file.Tag.FirstAlbumArtist; //HACK
-            this.artist = file.Tag.FirstArtist;
-            this.composer = file.Tag.FirstComposer; //HACK
-            this.discnumber = file.Tag.Disc;
-            this.genre = file.Tag.FirstGenre;
-            this.title = file.Tag.Title;
-            this.tracknumber = file.Tag.Track;
-            this.date = file.Tag.Year;
-            this.comment = file.Tag.Comment;
+            Album = file.Tag.Album;
+            Albumartist = file.Tag.FirstAlbumArtist; //HACK
+            Artist = file.Tag.FirstArtist;
+            Composer = file.Tag.FirstComposer; //HACK
+            Discnumber = file.Tag.Disc;
+            Genre = file.Tag.FirstGenre;
+            Title = file.Tag.Title;
+            Tracknumber = file.Tag.Track;
+            Date = file.Tag.Year;
+            Comment = file.Tag.Comment;
 
             if (generateCustomizedTags) GenerateCustomizedTags();
         }
         private void GenerateCustomizedTags()
         {
-            throw new NotFiniteNumberException();
+            throw new NotImplementedException();
             //TODO
         }
     }

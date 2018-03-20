@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Onlab.Dialogs"
         mc:Ignorable="d"
-        Title="TrackTracker - Manage tracklist sources" Height="500" Width="800">
+        Title="TrackTracker - Manage tracklist sources" Height="500" Width="800" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid Background="#FF323232">
         <Button x:Name="buttonClose" Content="Close" HorizontalAlignment="Left" Margin="661,391,0,0" VerticalAlignment="Top" Width="110" Height="56" FontSize="16" Click="buttonClose_Click"/>
 
