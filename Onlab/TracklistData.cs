@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Onlab
 {
     public class TracklistData
     {
-        public List<Track> Tracks; 
+        public ObservableCollection<Track> Tracks; 
 
-        public TracklistData(int capacity = 1000) //1000 for an approximate offline music collection
+        public TracklistData()
         {
-            Tracks = new List<Track>(capacity);
+            Tracks = new ObservableCollection<Track>();
         }
 
         public void AddMusicFile(string path)

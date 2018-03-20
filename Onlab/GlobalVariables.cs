@@ -75,7 +75,7 @@ namespace Onlab
         public static void Initialize()
         {
             Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
-            TracklistData = new TracklistData(); //TODO: use app setting for initial capacity
+            TracklistData = new TracklistData();
         }
     }
 }
