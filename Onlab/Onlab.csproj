@@ -124,8 +124,15 @@
     </ApplicationDefinition>
     <Compile Include="AppConfig.cs" />
     <Compile Include="AudioMetaData.cs" />
+    <Compile Include="Dialogs\ManageTracklistSources.xaml.cs">
+      <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Track.cs" />
     <Compile Include="TracklistData.cs" />
+    <Page Include="Dialogs\ManageTracklistSources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

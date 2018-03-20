@@ -134,7 +134,8 @@ namespace Onlab
 
         private void tracklist_buttonManageSources_Click(object sender, RoutedEventArgs e)
         {
-
+            Dialogs.ManageTracklistSources mts = new Dialogs.ManageTracklistSources();
+            mts.ShowDialog();
         }
 
 
