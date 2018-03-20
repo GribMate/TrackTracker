@@ -144,6 +144,23 @@ namespace Onlab
             //MusicBrainz.Data.Recording r = MusicBrainz.Search.Recording(artist: "Cloud 9+");
         }
 
+        private void tracklist_buttonSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            {
+                track.IsSelectedInGUI = true;
+            }
+        }
+
+        private void tracklist_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            {
+                if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
+                else track.IsSelectedInGUI = true;
+            }
+        }
+
 
         /*
 

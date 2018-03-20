@@ -88,18 +88,18 @@
                             <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI}"/>
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.Artist}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album}"/>
+                                    <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album, Mode=TwoWay}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.Artist}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album, Mode=TwoWay}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -108,8 +108,8 @@
                                 <ColumnDefinition Width="500" />
                                 <ColumnDefinition Width="500" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" />
-                            <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                            <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" Click="tracklist_buttonSelectAll_Click" />
+                            <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="tracklist_buttonReverseSelection_Click" />
                             <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" />
                             <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" Click="tracklist_buttonUpdateTags_Click" />
                             <Button x:Name="tracklist_buttonShowDetailed" Grid.Column="1" Content="Show detailed info..." HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,10,0" />
