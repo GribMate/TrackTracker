@@ -138,10 +138,10 @@
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Online status:" Foreground="White" />
-                <Label Grid.Column="1" Content="Connected" Foreground="#FF00C800" />
-                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" />
-                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" />
-                <ProgressBar Grid.Column="4" />
+                <Label Grid.Column="1" Content="Disconnected" Foreground="Red" />
+                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" Visibility="Hidden" />
+                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" Visibility="Hidden" />
+                <ProgressBar Grid.Column="4" Foreground="#FFC80000" Value="25" Visibility="Hidden" />
             </Grid>
         </StackPanel>
     </DockPanel>
