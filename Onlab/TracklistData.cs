@@ -13,14 +13,28 @@ namespace Onlab
             Tracks = new ObservableCollection<Track>();
         }
 
-        public void AddMusicFile(string path)
+        public void AddMusicFile(ExtensionType type, string path)
         {
             if (path == null) throw new ArgumentNullException();
             if (path.Length < 3) throw new ArgumentException();
 
             try
             {
-                Track t = new Track(TagLib.File.Create(path));
+                TagLib.File audioFile = null;
+                switch (type)
+                {
+                    case ExtensionType.MP3:
+                        audioFile = new TagLib.Mpeg.AudioFile(path);
+                        break;
+                    case ExtensionType.FLAC:
+                        audioFile = new TagLib.Flac.File(path);
+                        break;
+                    default:
+                        audioFile = TagLib.File.Create(path);
+                        break;
+                }
+
+                Track t = new Track(audioFile);
                 Tracks.Add(t);
             }
             catch (Exception e) //TODO: more polished exception handling

@@ -74,13 +74,12 @@ namespace Onlab
 
             foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
             {
-                GlobalVariables.TracklistData.AddMusicFile(file);
+                GlobalVariables.TracklistData.AddMusicFile(type, file);
             }
         }
         public static void CacheOfflineFilesFromPath(string path)
         {
             RecursiveDirectorySearch(path);
-
         }
 
         private static void RecursiveDirectorySearch(string path)
@@ -90,7 +89,7 @@ namespace Onlab
                 string searchPattern = "*." + ext.ToString().ToLower();
                 foreach (string file in Directory.GetFiles(path, searchPattern))
                 {
-                    GlobalVariables.TracklistData.AddMusicFile(file);
+                    GlobalVariables.TracklistData.AddMusicFile(ext, file);
                 }
             }
 
@@ -101,7 +100,7 @@ namespace Onlab
                     string searchPattern = "*." + ext.ToString().ToLower();
                     foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
                     {
-                        GlobalVariables.TracklistData.AddMusicFile(dirFile);
+                        GlobalVariables.TracklistData.AddMusicFile(ext, dirFile);
                     }
                 }
                 RecursiveDirectorySearch(dir);
