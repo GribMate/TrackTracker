@@ -161,6 +161,17 @@ namespace Onlab
             }
         }
 
+        private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Dialogs.ExceptionNotification mts = new Dialogs.ExceptionNotification("Asd",
+                    tracklist_dataGridTrackList.SelectedIndex.ToString());
+                mts.Owner = this; //enables center-screen display
+                mts.ShowDialog();
+            }
+        }
+
 
         /*
 
