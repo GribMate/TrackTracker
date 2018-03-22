@@ -47,15 +47,7 @@ namespace Onlab
         }
         public AudioMetaData MetaData //ID3 tags of the track
         {
-            get => metaData;
-            set
-            {
-                if (metaData != value)
-                {
-                    metaData = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MetaData)));
-                }
-            }
+            get => metaData; //don't support on-the-fly changes
         }
 
         public event PropertyChangedEventHandler PropertyChanged; //Tracks are 1-1 represented in GUI
@@ -65,14 +57,14 @@ namespace Onlab
             IsSelectedInGUI = false;
             IsOfflineAccessible = true; //beacuse we have a non null file handle
             this.fileHandle = fileHandle;
-            MetaData = new AudioMetaData(fileHandle);
+            this.metaData = new AudioMetaData(fileHandle);
         }
         public Track(AudioMetaData metaData)
         {
             IsSelectedInGUI = false;
             IsOfflineAccessible = false; //beacuse we do not have a file handle
             this.fileHandle = null;
-            MetaData = metaData;
+            this.metaData = metaData;
         }
     }
 }

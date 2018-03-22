@@ -20,6 +20,50 @@ namespace Onlab
         private static string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); //local machine's %appdata% folder
         private static string configFilePath = Path.Combine(appDataPath, "Onlab\\config.data"); //the full classified path of the config file
 
+        public static bool MediaPathIsValid(string path) //determines whether the given media folder is valid
+        {
+            DirectoryInfo media = new DirectoryInfo(path);
+
+            if (!media.Exists) return false;
+            if (media.Attributes != FileAttributes.Directory) return false; //just in case
+
+            return true; //none of the criteria returned false
+        }
+        public static void CacheOfflineFilesFromDriveSearch(LocalMediaPack lmp, ExtensionType type, string driveLetter)
+        {
+            DriveInfo drive = null;
+            string searchPattern = "*." + type.ToString().ToLower(); //case shouldnt matter, but its probably safer in lower case
+
+            foreach (DriveInfo driveCandidate in DriveInfo.GetDrives())
+            {
+                if (driveCandidate.Name == driveLetter)
+                {
+                    drive = driveCandidate;
+                    break;
+                }
+            }
+
+            foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
+            {
+                lmp.AddFilePath(file, type);
+            }
+        }
+        public static void CacheOfflineFilesFromPath(LocalMediaPack lmp, string path)
+        {
+            RecursiveDirectorySearch(lmp, path);
+        }
+        public static List<string> GetSystemDriveNames()
+        {
+            List<string> driveNames = new List<string>();
+
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                driveNames.Add(drive.Name);
+            }
+
+            return driveNames;
+        }
+
         public static string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
         {
             string toReturn = null;
@@ -48,82 +92,6 @@ namespace Onlab
             }
             return toReturn; //null, if nothing found inside if() blocks
         }
-        public static bool MediaPathIsValid(string path) //determines whether the given media folder is valid
-        {
-            DirectoryInfo media = new DirectoryInfo(path);
-
-            if (!media.Exists) return false;
-            if (media.Attributes != FileAttributes.Directory) return false; //just in case
-
-            return true; //none of the criteria returned false
-        }
-
-        public static void CacheOfflineFilesFromDriveSearch(ExtensionType type, string driveLetter)
-        {
-            DriveInfo drive = null;
-            string searchPattern = "*." + type.ToString().ToLower(); //case shouldnt matter, but its probably safer in lower case
-
-            foreach (DriveInfo driveCandidate in DriveInfo.GetDrives())
-            {
-                if (driveCandidate.Name == driveLetter)
-                {
-                    drive = driveCandidate;
-                    break;
-                }
-            }
-
-            foreach (string file in Directory.GetFiles(drive.RootDirectory.FullName, searchPattern, SearchOption.AllDirectories))
-            {
-                GlobalVariables.TracklistData.AddMusicFile(type, file);
-            }
-        }
-        public static void CacheOfflineFilesFromPath(string path)
-        {
-            RecursiveDirectorySearch(path);
-        }
-
-        private static void RecursiveDirectorySearch(string path)
-        {
-            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
-            {
-                string searchPattern = "*." + ext.ToString().ToLower();
-                foreach (string file in Directory.GetFiles(path, searchPattern))
-                {
-                    GlobalVariables.TracklistData.AddMusicFile(ext, file);
-                }
-            }
-
-            foreach (string dir in Directory.GetDirectories(path))
-            {
-                foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
-                {
-                    string searchPattern = "*." + ext.ToString().ToLower();
-                    foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
-                    {
-                        GlobalVariables.TracklistData.AddMusicFile(ext, dirFile);
-                    }
-                }
-                RecursiveDirectorySearch(dir);
-            }
-        }
-
-        public static List<string> GetSystemDriveNames()
-        {
-            List<string> driveNames = new List<string>();
-
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
-            {
-                driveNames.Add(drive.Name);
-            }
-
-            return driveNames;
-        }
-
-
-
-
-
-
         public static bool IsFirstRun() //determines whether it is the first run of the program by trying to locate the config file
         {
             return !File.Exists(configFilePath); //if the file does not exist, it is the first run, and vice versa
@@ -157,7 +125,7 @@ namespace Onlab
             StreamReader sr = new StreamReader(configFilePath); //using pure text-based config for the sake of simplicity
 
             //GlobalVariables.Config.FoobarPath = sr.ReadLine();
-            GlobalVariables.Config.AddLocalMediaPath(sr.ReadLine());
+            //GlobalVariables.Config.AddLocalMediaPath(sr.ReadLine());
             //GlobalVariables.Config.IsCopiedMedia = Convert.ToBoolean(sr.ReadLine());
 
             sr.Close();
@@ -176,6 +144,31 @@ namespace Onlab
             sw.Flush();
             sw.Close();
             sw.Dispose();
+        }
+
+        private static void RecursiveDirectorySearch(LocalMediaPack lmp, string path) //TODO: avoid LMP param to avoid stack overflow
+        {
+            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
+            {
+                string searchPattern = "*." + ext.ToString().ToLower();
+                foreach (string file in Directory.GetFiles(path, searchPattern))
+                {
+                    lmp.AddFilePath(file, ext);
+                }
+            }
+
+            foreach (string dir in Directory.GetDirectories(path))
+            {
+                foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
+                {
+                    string searchPattern = "*." + ext.ToString().ToLower();
+                    foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
+                    {
+                        lmp.AddFilePath(dirFile, ext);
+                    }
+                }
+                RecursiveDirectorySearch(lmp, dir);
+            }
         }
     }
 }

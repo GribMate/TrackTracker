@@ -86,25 +86,29 @@ namespace Onlab
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
-                    GlobalVariables.Config.AddLocalMediaPath(fbdMedia.SelectedPath);
                 } //if conditions are not met, buttonOk remains disabled
             }
         }
         private void data_buttonAddFiles_Click(object sender, RoutedEventArgs e)
         {
+            LocalMediaPack lmp = null;
+
             if (data_radioButtonDrive.IsChecked == true)
             {
                 ExtensionType type = (ExtensionType)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
-
-                AppIO.CacheOfflineFilesFromDriveSearch(type, drive);
+                lmp = new LocalMediaPack(drive, true, true, type); //TODO: detect if removable media
+                AppIO.CacheOfflineFilesFromDriveSearch(lmp, type, drive); //loading up LMP object with file paths
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
-                AppIO.CacheOfflineFilesFromPath(data_textBoxOfflineFolderPath.Text);
+                lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false, false);
+                AppIO.CacheOfflineFilesFromPath(lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }
+
+            GlobalVariables.Config.AddLocalMediaPack(lmp);
         }
 
         private void tracklist_Initialized(object sender, EventArgs e)

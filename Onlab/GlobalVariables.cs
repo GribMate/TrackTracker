@@ -31,7 +31,6 @@ namespace Onlab
     Description:
         Currently handled genre of tracks.
     */
-
     [Flags]
     public enum MusicGenre : ushort //TODO: may need to be deleted after MusicBrainz integration
     {
@@ -43,13 +42,13 @@ namespace Onlab
         Classical = 32,
         Xtreme = 64
     }
+
     /*
     Enum: MusicLanguage
     State: Under construction | DEBUG
     Description:
         Currently handled language of tracks.
     */
-
     [Flags]
     public enum MusicLanguage : ushort //TODO: may need to be deleted after MusicBrainz integration
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Onlab
 {
@@ -37,12 +38,17 @@ namespace Onlab
                 Track t = new Track(audioFile);
                 Tracks.Add(t);
             }
-            catch (Exception e) //TODO: more polished exception handling
+            catch (Exception) //TODO: more polished exception handling
             {
                 Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("File reading error",
                     "File reading error happened while trying to parse a music file from local directory. This file will be omitted from Tracklist!",
                     $"File location: {path}");
             }
+        }
+        public void RemoveMusicFile(string path)
+        {
+            Track itemToRemove = Tracks.SingleOrDefault(t => t.FileHandle.Name == path);
+            if (itemToRemove != null) Tracks.Remove(itemToRemove);
         }
     }
 }

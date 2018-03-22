@@ -80,6 +80,7 @@
     <Compile Include="Dialogs\ManageTracklistSources.xaml.cs">
       <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LocalMediaPack.cs" />
     <Compile Include="PlayTrack.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="TracklistData.cs" />

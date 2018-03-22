@@ -5,13 +5,17 @@ namespace Onlab
 {
     public class AppConfig
     {
+        //TODO: error handling and extended interface
+
         private Dictionary<MediaPlayerType, string> mediaPlayerPaths;
-        private List<string> localMediaPaths;
+        private Dictionary<string, LocalMediaPack> addedLocalMediaPacks;
+        private Dictionary<string, LocalMediaPack> activeLocalMediaPacks;
 
         public AppConfig()
         {
             mediaPlayerPaths = new Dictionary<MediaPlayerType, string>();
-            localMediaPaths = new List<string>();
+            addedLocalMediaPacks = new Dictionary<string, LocalMediaPack>();
+            activeLocalMediaPacks = new Dictionary<string, LocalMediaPack>();
         }
         
         public bool AddMediaPlayerPath(MediaPlayerType type, string path) //adds a new media player location
@@ -48,25 +52,74 @@ namespace Onlab
             throw new NotImplementedException();
         }
 
-        public bool AddLocalMediaPath(string path)
+        public bool AddLocalMediaPack(LocalMediaPack pack)
         {
-            if (path is null) throw new ArgumentNullException();
-            if (path.Length < 4) throw new ArgumentException(); //"C:\x" is 4 chars
+            if (pack is null) throw new ArgumentNullException();
 
-            if (localMediaPaths.Contains(path)) return false; //cannot add again, already added
+            if (addedLocalMediaPacks.ContainsKey(pack.RootPath)) return false; //cannot add again, already added
             else
             {
-                localMediaPaths.Add(path);
+                addedLocalMediaPacks.Add(pack.RootPath, pack);
                 return true; //added successfully
+            }
+        }
+        public void ActivateLocalMediaPack(string rootPath)
+        {
+            if (addedLocalMediaPacks.ContainsKey(rootPath) && !activeLocalMediaPacks.ContainsKey(rootPath))
+            {
+                LocalMediaPack toChange;
+                addedLocalMediaPacks.TryGetValue(rootPath, out toChange);
+                addedLocalMediaPacks.Remove(rootPath);
+                activeLocalMediaPacks.Add(rootPath, toChange);
+
+                foreach (var path in toChange.GetFilePaths)
+                {
+                    GlobalVariables.TracklistData.AddMusicFile(path.Value, path.Key);
+                }
+            }
+        }
+        public void DeactivateLocalMediaPack(string rootPath)
+        {
+            if (activeLocalMediaPacks.ContainsKey(rootPath) && !addedLocalMediaPacks.ContainsKey(rootPath))
+            {
+                LocalMediaPack toChange;
+                activeLocalMediaPacks.TryGetValue(rootPath, out toChange);
+                activeLocalMediaPacks.Remove(rootPath);
+                addedLocalMediaPacks.Add(rootPath, toChange);
+
+                foreach (var path in toChange.GetFilePaths)
+                {
+                    GlobalVariables.TracklistData.RemoveMusicFile(path.Key);
+                }
             }
         }
         public bool TryDeleteLocalMediaPath(string path)
         {
             throw new NotImplementedException();
         }
-        public List<string> GetLocalMediaPaths()
+        public List<LocalMediaPack> AddedLocalMediaPacks
         {
-            throw new NotImplementedException();
+            get
+            {
+                List<LocalMediaPack> added = new List<LocalMediaPack>();
+                foreach (var item in addedLocalMediaPacks)
+                {
+                    added.Add(item.Value);
+                }
+                return added;
+            }
+        }
+        public List<LocalMediaPack> ActiveLocalMediaPacks
+        {
+            get
+            {
+                List<LocalMediaPack> active = new List<LocalMediaPack>();
+                foreach (var item in activeLocalMediaPacks)
+                {
+                    active.Add(item.Value);
+                }
+                return active;
+            }
         }
     }
 }

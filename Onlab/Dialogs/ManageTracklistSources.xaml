@@ -5,9 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Onlab.Dialogs"
         mc:Ignorable="d"
-        Title="TrackTracker - Manage tracklist sources" Height="500" Width="800" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="TrackTracker - Manage tracklist sources" Height="450" Width="800" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="None" Initialized="Window_Initialized">
     <Grid Background="#FF323232">
-        <Button x:Name="buttonClose" Content="Close" HorizontalAlignment="Left" Margin="661,391,0,0" VerticalAlignment="Top" Width="110" Height="56" FontSize="16" Click="buttonClose_Click"/>
+        <Button x:Name="sources_buttonClose" Content="Close" HorizontalAlignment="Left" Margin="670,375,0,0" VerticalAlignment="Top" Width="110" Height="56" FontSize="16" Click="sources_buttonClose_Click"/>
+        <ListBox x:Name="sources_library_listBoxItems" HorizontalAlignment="Left" Height="234" Margin="17,59,0,0" VerticalAlignment="Top" Width="322" SelectionMode="Multiple"/>
+        <Button x:Name="sources_library_buttonSelectAll" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="105,306,0,0" FontSize="14" Click="sources_library_buttonSelectAll_Click" />
+        <ListBox x:Name="sources_added_listBoxItems" HorizontalAlignment="Left" Height="229" Margin="457,63,0,0" VerticalAlignment="Top" Width="322" SelectionMode="Multiple"/>
+        <Button x:Name="sources_added_buttonSelectAll" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="549,306,0,0" FontSize="14" Click="sources_added_buttonSelectAll_Click" />
+        <Button x:Name="sources_buttonMoveToAdded" Content="&gt;&gt;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50" Margin="373,111,0,0" FontSize="14" Click="sources_buttonMoveToAdded_Click" />
+        <Button x:Name="sources_buttonRemoveFromAdded" Content="&lt;&lt;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="50" Margin="373,157,0,0" FontSize="14" Click="sources_buttonRemoveFromAdded_Click" />
+        <Label Grid.Column="0" Content="Locations added to library" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="80,14,521,396" FontSize="16" Width="199" Height="40" />
+        <Label Content="Files in Tracklist" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="558,14,118,392" FontSize="16" Height="44" Width="124" />
 
     </Grid>
 </Window>
