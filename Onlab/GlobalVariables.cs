@@ -70,11 +70,14 @@ namespace Onlab
     {
         public static AppConfig Config; //persistent settings through the whole application
         public static TracklistData TracklistData; //dynamic wrapper of data currently represented @ Tracklist tab table
+        public static PlayzoneData PlayzoneData; //dynamic wrapper of data currently represented @ Playzone tab table
+        //TODO: generalize data classes via base class or interface
 
         public static void Initialize()
         {
             Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
             TracklistData = new TracklistData();
+            PlayzoneData = new PlayzoneData();
         }
     }
 }

@@ -143,11 +143,6 @@ namespace Onlab
             mts.ShowDialog();
         }
 
-        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
-        {
-            //MusicBrainz.Data.Recording r = MusicBrainz.Search.Recording(artist: "Cloud 9+");
-        }
-
         private void tracklist_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
             foreach (Track track in GlobalVariables.TracklistData.Tracks)
@@ -177,7 +172,7 @@ namespace Onlab
                     
                     try
                     {
-                        var releases = q.FindReleases(selectedTrack.MetaData.Title, 3);
+                        var releases = q.FindReleases(selectedTrack.MetaData.Title, 2);
                         List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
                         foreach (var item in releases.Results)
                         {
@@ -201,19 +196,84 @@ namespace Onlab
                 }
             }
         }
+        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
+        {
+            if (tracklist_dataGridTrackList.SelectedIndex != -1 && tracklist_dataGridMatchList.SelectedIndex != -1)
+            {
+                Track toUpdate = tracklist_dataGridTrackList.SelectedItem as Track;
+                test_MatchTableRow newMetaData = tracklist_dataGridMatchList.SelectedItem as test_MatchTableRow;
+                toUpdate.MetaData.Title = newMetaData.Title;
+                toUpdate.MetaData.JoinedAlbumArtists = newMetaData.Artist;
+                toUpdate.MetaData.MusicBrainzReleaseId = newMetaData.MBID;
+            }
+        }
 
+        private void playzone_buttonSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            {
+                track.IsSelectedInGUI = true;
+            }
+        }
 
-        /*
+        private void playzone_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            {
+                if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
+                else track.IsSelectedInGUI = true;
+            }
+        }
 
-private void buttonDetect_Click(object sender, RoutedEventArgs e)
-{
-    string path = AppIO.TryFindFoobar();
-    if (path.Length > 2)
-    {
-        //textBoxFoobarPath.Text = path + " | LINKED!";
-        foobarPath = path;
-        GlobalVariables.Config.FoobarPath = path;
-    }
-} */ //TODO: Foobar2000 detect button code
+        private void playzone_buttonAddToMix_Click(object sender, RoutedEventArgs e)
+        {
+            System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\testplaylist.m3u");
+            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            {
+                if (track.IsSelectedInGUI) sw.WriteLine(track.FileHandle.Name);
+            }
+            sw.Flush();
+            sw.Close();
+            sw.Dispose();
+            System.Diagnostics.Process.Start("D:\\testplaylist.m3u");
+        }
+
+        private void playzone_Initialized(object sender, EventArgs e)
+        {
+            //load up the player type selection box with the currently supported values from MediaPlayerType instead of burning values in
+            foreach (MediaPlayerType ext in Enum.GetValues(typeof(MediaPlayerType)).Cast<MediaPlayerType>()) //casting to get typed iteration, just in case
+            {
+                playzone_comboBoxPlayerType.Items.Add(ext.ToString());
+            }
+
+            playzone_dataGridPlayList.ItemsSource = GlobalVariables.PlayzoneData.Tracks;
+        }
+
+        private void playzone_GotFocus(object sender, RoutedEventArgs e)
+        {
+            foreach (LocalMediaPack lmp in GlobalVariables.Config.ActiveLocalMediaPacks)
+            {
+                foreach (var path in lmp.GetFilePaths)
+                {
+                    GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                }
+            }
+        }
+
+        private void playzone_comboBoxPlayerType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MediaPlayerType type = (MediaPlayerType)playzone_comboBoxPlayerType.SelectedIndex; //will always correspond to the proper value (see constructor)
+            switch (type)
+            {
+                case MediaPlayerType.Foobar2000:
+                    string path = AppIO.TryFindFoobar();
+                    if (path.Length > 2)
+                    {
+                        GlobalVariables.Config.AddMediaPlayerPath(type, path);
+                        playzone_textBlockPlayerLocation.Text = path + " | PLAYER LINKED!";
+                    }
+                    break;
+            }
+        }
     }
 }
