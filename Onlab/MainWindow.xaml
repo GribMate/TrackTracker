@@ -85,7 +85,7 @@
                                 <ColumnDefinition Width="500" />
                                 <ColumnDefinition Width="500" />
                             </Grid.ColumnDefinitions>
-                            <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow"
+                            <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.ItemContainerStyle>
                                     <Style TargetType="DataGridRow">
@@ -102,9 +102,9 @@
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
-                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title, Mode=TwoWay}"/>
-                                    <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Artist}" />
+                                    <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Title}"/>
+                                    <DataGridTextColumn Header="MBID" Width="*" Binding="{Binding MBID}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

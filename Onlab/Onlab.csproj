@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="LocalMediaPack.cs" />
     <Compile Include="PlayTrack.cs" />
+    <Compile Include="test_MatchTableRow.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="TracklistData.cs" />
     <Page Include="Dialogs\ExceptionNotification.xaml">

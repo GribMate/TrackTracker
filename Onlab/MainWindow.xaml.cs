@@ -169,10 +169,36 @@ namespace Onlab
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                Dialogs.ExceptionNotification mts = new Dialogs.ExceptionNotification("Asd",
-                    tracklist_dataGridTrackList.SelectedIndex.ToString());
-                mts.Owner = this; //enables center-screen display
-                mts.ShowDialog();
+                Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
+                MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
+
+                if (selectedTrack.MetaData.Title != null)
+                {
+                    
+                    try
+                    {
+                        var releases = q.FindReleases(selectedTrack.MetaData.Title, 3);
+                        List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
+                        foreach (var item in releases.Results)
+                        {
+                            string title = item.Title;
+                            string artist = null;
+                            if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
+                            else artist = "Unknown";
+                            string mbid = item.MbId.ToString();
+                            test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
+                            rows.Add(row);
+                        }
+                        tracklist_dataGridMatchList.ItemsSource = rows;
+                    }
+                    catch (Exception exc)
+                    {
+                        Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
+                            exc.Message, "File: " + selectedTrack.MetaData.Title);
+                        en.Owner = this;
+                        en.ShowDialog();
+                    }
+                }
             }
         }
 
