@@ -159,14 +159,6 @@ namespace Onlab
 
             foreach (string dir in Directory.GetDirectories(path))
             {
-                foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
-                {
-                    string searchPattern = "*." + ext.ToString().ToLower();
-                    foreach (string dirFile in Directory.GetFiles(dir, searchPattern))
-                    {
-                        lmp.AddFilePath(dirFile, ext);
-                    }
-                }
                 RecursiveDirectorySearch(lmp, dir);
             }
         }

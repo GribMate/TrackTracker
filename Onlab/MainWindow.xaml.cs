@@ -33,6 +33,8 @@ namespace Onlab
 
             InitializeComponent();
 
+            hasRun = false;
+
             data_fileFormatSelected = false;
             data_driveLetterSelected = false;
 
@@ -118,6 +120,8 @@ namespace Onlab
 
         private void datasources_Initialized(object sender, EventArgs e)
         {
+            //TODO: need to call only once, probably should be placed in constructor
+
             foreach (string driveName in AppIO.GetSystemDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
@@ -249,13 +253,19 @@ namespace Onlab
             playzone_dataGridPlayList.ItemsSource = GlobalVariables.PlayzoneData.Tracks;
         }
 
+        private bool hasRun = false;
+
         private void playzone_GotFocus(object sender, RoutedEventArgs e)
         {
-            foreach (LocalMediaPack lmp in GlobalVariables.Config.ActiveLocalMediaPacks)
+            if (!hasRun)
             {
-                foreach (var path in lmp.GetFilePaths)
+                hasRun = true;
+                foreach (LocalMediaPack lmp in GlobalVariables.Config.ActiveLocalMediaPacks)
                 {
-                    GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                    foreach (var path in lmp.GetFilePaths)
+                    {
+                        GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                    }
                 }
             }
         }
