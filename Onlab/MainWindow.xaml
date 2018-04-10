@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Onlab"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Onlab.MainWindow"
         mc:Ignorable="d"
-        Title="TrackTracker" Height="600" Width="1000" Foreground="White" FontSize="16" MinWidth="1000" MinHeight="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">
+        Title="TrackTracker" Height="800" Width="1200" Foreground="White" FontSize="16" MinWidth="1200" MinHeight="797" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20" Background="#FF323232" Foreground="White">
             <MenuItem Header="Application" Foreground="White">
@@ -23,7 +23,7 @@
                 <MenuItem Header="Version" Foreground="Black" />
             </MenuItem>
         </Menu>
-        <TabControl DockPanel.Dock="Top" TabStripPlacement="Top" Margin="0, 0, 0, 0" Height="500" BorderThickness="0" Padding="1">
+        <TabControl DockPanel.Dock="Top" TabStripPlacement="Top" Margin="0, 0, 0, 0" Height="710" BorderThickness="0" Padding="1">
             <TabItem x:Name="datasources" Header="Data sources" Foreground="Red" Initialized="datasources_Initialized">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -38,14 +38,14 @@
                             <RowDefinition Height="157" />
                             <RowDefinition Height="157" />
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Offline media" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="960">
-                            <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="950">
+                        <GroupBox Grid.Row="0" Header="Offline media" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14">
+                            <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="1150">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Content="You can add files from your local computer to the tracklist here. Metadata can be viewed or updated on Tracklist tab." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0"/>
+                                <Label Grid.Row="0" Content="You can add files from your local computer to the tracklist here. Metadata can be viewed or updated on Tracklist tab." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
                                 <RadioButton x:Name="data_radioButtonFolder" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonFolder_Checked" IsChecked="True"/>
                                 <RadioButton x:Name="data_radioButtonDrive" Grid.Row="2" Content="Search drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonDrive_Checked"/>
                                 <TextBox x:Name="data_textBoxOfflineFolderPath" Grid.Row="1" Text="Please select your offline music folder..." IsReadOnly="True" Margin="-300,0,0,0" Width="300" Height="25" />
@@ -71,22 +71,23 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="381" />
                             <RowDefinition Height="60" />
+                            <RowDefinition Height="210" />
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="500" />
-                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="600" />
+                                <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="Music files tracked" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                            <Label Grid.Column="1" Content="Possible matches found" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                            <Label Grid.Column="0" Content="Music files tracked" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
+                            <Label Grid.Column="1" Content="Possible matches found" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
                         </Grid>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="500" />
-                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="600" />
+                                <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14">
                                 <DataGrid.ItemContainerStyle>
                                     <Style TargetType="DataGridRow">
                                         <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
@@ -100,7 +101,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Artist}" />
                                     <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Title}"/>
@@ -110,15 +111,29 @@
                         </Grid>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="500" />
-                                <ColumnDefinition Width="500" />
+                                <ColumnDefinition Width="600" />
+                                <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" Click="tracklist_buttonSelectAll_Click" />
-                            <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="tracklist_buttonReverseSelection_Click" />
-                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" />
-                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" Click="tracklist_buttonUpdateTags_Click" />
-                            <Button x:Name="tracklist_buttonShowDetailed" Grid.Column="1" Content="Show detailed info..." HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,10,0" IsEnabled="False" />
-                            <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" IsEnabled="False" />
+                            <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" Click="tracklist_buttonSelectAll_Click" FontSize="14" />
+                            <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="tracklist_buttonReverseSelection_Click" FontSize="14" />
+                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" FontSize="14" />
+                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" Click="tracklist_buttonUpdateTags_Click" FontSize="14" />
+                            <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" IsEnabled="False" FontSize="14" />
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <DataGrid x:Name="tracklist_dataGridTagList" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" HorizontalAlignment="Left">
+                                <DataGrid.ItemContainerStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                                    </Style>
+                                </DataGrid.ItemContainerStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Tag" Width="300" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
+                                    <DataGridTextColumn Header="Old value" Width="*" Binding="{Binding MetaData.Title, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="New value" Width="*" Binding="{Binding MetaData.Album, Mode=TwoWay}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -133,16 +148,16 @@
                 <StackPanel Background="#FF323232">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="411" />
+                            <RowDefinition Height="620" />
                             <RowDefinition Height="60" />
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="750" />
+                                <ColumnDefinition Width="950" />
                                 <ColumnDefinition Width="250" />
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="playzone_dataGridPlayList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
                                     <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.JoinedAlbumArtists}" />
@@ -158,20 +173,20 @@
                                     <RowDefinition Height="100" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Content="Select music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" />
-                                <ComboBox x:Name="playzone_comboBoxPlayerType" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" SelectionChanged="playzone_comboBoxPlayerType_SelectionChanged" Margin="0,0,10,0" />
-                                <Label Grid.Row="2" Content="Player detected @" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                                <Label Grid.Row="0" Content="Select music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" />
+                                <ComboBox x:Name="playzone_comboBoxPlayerType" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" SelectionChanged="playzone_comboBoxPlayerType_SelectionChanged" Margin="0,0,10,0" FontSize="14" />
+                                <Label Grid.Row="2" Content="Player detected @" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" />
                                 <TextBlock Grid.Row="3" x:Name="playzone_textBlockPlayerLocation" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="14" Height="70" Width="215" Foreground="#FF00C800"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="750" />
+                                <ColumnDefinition Width="950" />
                                 <ColumnDefinition Width="250" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="playzone_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="150" Margin="3,0,0,0" Click="playzone_buttonSelectAll_Click" />
-                            <Button x:Name="playzone_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="150" Margin="3,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="playzone_buttonReverseSelection_Click" />
-                            <Button x:Name="playzone_buttonAddToMix" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" Click="playzone_buttonAddToMix_Click" />
+                            <Button x:Name="playzone_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" Click="playzone_buttonSelectAll_Click" FontSize="14" />
+                            <Button x:Name="playzone_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="playzone_buttonReverseSelection_Click" FontSize="14" />
+                            <Button x:Name="playzone_buttonAddToMix" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" Click="playzone_buttonAddToMix_Click" FontSize="14" />
                         </Grid>
                     </Grid>
                 </StackPanel>
@@ -186,11 +201,11 @@
                     <ColumnDefinition Width="180" />
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Online status:" Foreground="White" />
-                <Label Grid.Column="1" Content="Disconnected" Foreground="Red" />
-                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" Visibility="Hidden" />
-                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" Visibility="Hidden" />
-                <ProgressBar Grid.Column="4" Foreground="#FFC80000" Value="25" Visibility="Hidden" />
+                <Label Grid.Column="0" Content="Online status:" Foreground="White" FontSize="14" />
+                <Label Grid.Column="1" Content="Disconnected" Foreground="Red" FontSize="14" />
+                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" FontSize="14" />
+                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" FontSize="14" />
+                <ProgressBar Grid.Column="4" Foreground="#FFC80000" Value="25" FontSize="14" Height="20" Width="250" />
             </Grid>
         </StackPanel>
     </DockPanel>
