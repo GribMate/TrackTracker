@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace Onlab
         private bool data_fileFormatSelected;
         private bool data_driveLetterSelected;
         private WinForms.FolderBrowserDialog fbdMedia; //the FBD for the music folder path
+        private ObservableCollection<MetaTag> tags;
 
         public MainWindow()
         {
@@ -47,6 +49,8 @@ namespace Onlab
             fbdMedia = new WinForms.FolderBrowserDialog();
             fbdMedia.ShowNewFolderButton = false; //folder is supposed to exist already
             fbdMedia.Description = "Select local music library folder:";
+
+            tags = new ObservableCollection<MetaTag>();
         }
 
         private void menuItemApplicationExit_Click(object sender, RoutedEventArgs e)
@@ -116,6 +120,7 @@ namespace Onlab
         private void tracklist_Initialized(object sender, EventArgs e)
         {
             tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.Tracks;
+            tracklist_dataGridTagList.ItemsSource = tags;
         }
 
         private void datasources_Initialized(object sender, EventArgs e)
@@ -173,7 +178,7 @@ namespace Onlab
 
                 if (selectedTrack.MetaData.Title != null)
                 {
-                    
+
                     try
                     {
                         var releases = q.FindReleases(selectedTrack.MetaData.Title, 2);
@@ -284,6 +289,15 @@ namespace Onlab
                     }
                     break;
             }
+        }
+
+        private void tracklist_dataGridTrackList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
+
+            tags = new ObservableCollection<MetaTag>(selectedTrack.GetTags());
+
+            tracklist_dataGridTagList.ItemsSource = tags;
         }
     }
 }

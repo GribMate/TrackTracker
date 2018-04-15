@@ -81,6 +81,7 @@
       <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
     </Compile>
     <Compile Include="LocalMediaPack.cs" />
+    <Compile Include="MetaTag.cs" />
     <Compile Include="PlayTrack.cs" />
     <Compile Include="PlayzoneData.cs" />
     <Compile Include="test_MatchTableRow.cs" />
