@@ -121,7 +121,7 @@ namespace Onlab
         {
             //TODO: need to call only once, probably should be placed in constructor
 
-            foreach (string driveName in EnvironmentProvider.GetSystemDriveNames())
+            foreach (string driveName in GlobalVariables.EnvironmentProvider.GetSystemDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -275,7 +275,7 @@ namespace Onlab
             switch (type)
             {
                 case MediaPlayerType.Foobar2000:
-                    string path = EnvironmentProvider.TryFindFoobar();
+                    string path = GlobalVariables.EnvironmentProvider.TryFindFoobar();
                     if (path.Length > 2)
                     {
                         GlobalVariables.Config.AddMediaPlayerPath(type, path);

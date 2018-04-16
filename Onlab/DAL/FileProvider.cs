@@ -9,13 +9,11 @@ using Onlab.BLL; //TODO: remove
 namespace Onlab.DAL
 {
     /*
-    Class: AppIO
-    State: Under construction | DEBUG
+    Class: FileProvider
     Description:
-        Handles input and output operations of the application.
-        Static class because it provides global functions.
+        Implements IFileProvider on Windows file systems.
     */
-    public static class FileProvider
+    public class FileProvider : IFileProvider
     {
         public static bool MediaPathIsValid(string path) //determines whether the given media folder is valid
         {

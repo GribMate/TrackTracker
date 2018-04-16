@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -46,9 +46,21 @@
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="SQLite.Designer">
+      <HintPath>..\packages\SQLite\SQLite.Designer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\SQLite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6">
+      <HintPath>..\packages\SQLite\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\packages\SQLite\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Windows.Forms" />
@@ -76,6 +88,9 @@
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
+    <Compile Include="DAL\IDatabaseProvider.cs" />
+    <Compile Include="DAL\IEnvironmentProvider.cs" />
+    <Compile Include="DAL\IFileProvider.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>
     </Compile>

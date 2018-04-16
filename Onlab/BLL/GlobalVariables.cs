@@ -1,4 +1,5 @@
 ﻿using System;
+using Onlab.DAL;
 
 namespace Onlab.BLL
 {
@@ -68,6 +69,12 @@ namespace Onlab.BLL
     */
     public static class GlobalVariables
     {
+        public static IDatabaseProvider DatabaseProvider;
+        public static IFileProvider FileProvider;
+        public static IEnvironmentProvider EnvironmentProvider;
+
+
+
         public static AppConfig Config; //persistent settings through the whole application
         public static TracklistData TracklistData; //dynamic wrapper of data currently represented @ Tracklist tab table
         public static PlayzoneData PlayzoneData; //dynamic wrapper of data currently represented @ Playzone tab table
@@ -75,6 +82,10 @@ namespace Onlab.BLL
 
         public static void Initialize()
         {
+            DatabaseProvider = new DatabaseProvider();
+            FileProvider = new FileProvider();
+            EnvironmentProvider = new EnvironmentProvider();
+
             Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
             TracklistData = new TracklistData();
             PlayzoneData = new PlayzoneData();

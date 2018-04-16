@@ -3,11 +3,18 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.Win32;
 
+
+
 namespace Onlab.DAL
 {
-    public static class EnvironmentProvider
+    /*
+    Class: EnvironmentProvider
+    Description:
+        Implements IEnvironmentProvider, currently on Windows platform via Win32 API and .NET Framework 4.6.1 calls.
+    */
+    public class EnvironmentProvider : IEnvironmentProvider
     {
-        public static string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
+        public string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
         {
             string toReturn = null;
 
@@ -35,7 +42,7 @@ namespace Onlab.DAL
             }
             return toReturn; //null, if nothing found inside if() blocks
         }
-        public static List<string> GetSystemDriveNames()
+        public List<string> GetSystemDriveNames() //returns all attached system drive names
         {
             List<string> driveNames = new List<string>();
 
