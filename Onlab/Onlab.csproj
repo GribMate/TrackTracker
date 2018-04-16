@@ -72,30 +72,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AppConfig.cs" />
-    <Compile Include="AudioMetaData.cs" />
-    <Compile Include="Dialogs\ExceptionNotification.xaml.cs">
+    <Compile Include="BLL\AppConfig.cs" />
+    <Compile Include="BLL\AudioMetaData.cs" />
+    <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ManageTracklistSources.xaml.cs">
+    <Compile Include="UI\Dialogs\ManageTracklistSources.xaml.cs">
       <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LocalMediaPack.cs" />
-    <Compile Include="MetaTag.cs" />
-    <Compile Include="PlayTrack.cs" />
-    <Compile Include="PlayzoneData.cs" />
-    <Compile Include="test_MatchTableRow.cs" />
-    <Compile Include="Track.cs" />
-    <Compile Include="TracklistData.cs" />
-    <Page Include="Dialogs\ExceptionNotification.xaml">
+    <Compile Include="BLL\LocalMediaPack.cs" />
+    <Compile Include="BLL\MetaTag.cs" />
+    <Compile Include="BLL\PlayTrack.cs" />
+    <Compile Include="BLL\PlayzoneData.cs" />
+    <Compile Include="BLL\test_MatchTableRow.cs" />
+    <Compile Include="BLL\Track.cs" />
+    <Compile Include="BLL\TracklistData.cs" />
+    <Page Include="UI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\ManageTracklistSources.xaml">
+    <Page Include="UI\Dialogs\ManageTracklistSources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -103,9 +103,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppIO.cs" />
-    <Compile Include="GlobalVariables.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="DAL\AppIO.cs" />
+    <Compile Include="BLL\GlobalVariables.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
