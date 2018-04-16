@@ -43,6 +43,7 @@ namespace Onlab.DAL
             {
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = @"CREATE TABLE LocalMediaPacks
                                 (RootPath NVARCHAR2 PRIMARY KEY NOT NULL UNIQUE,
                                 BaseExtension NVARCHAR2,
@@ -64,6 +65,7 @@ namespace Onlab.DAL
             {
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "SELECT * FROM TABLE " + table + " WHERE " + IDColumnName + " = " + ID;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     using (SQLiteDataReader reader = command.ExecuteReader())
@@ -90,7 +92,8 @@ namespace Onlab.DAL
             {
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
-                    string SQL = "SELECT * FROM TABLE " + table + " WHERE " + whereExpression;
+                    connection.Open();
+                    string SQL = "SELECT * FROM " + table + " WHERE " + whereExpression;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
@@ -126,6 +129,7 @@ namespace Onlab.DAL
                 valuesString.Append(")");
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "INSERT INTO " + table + " VALUES " + valuesString.ToString();
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     affected = command.ExecuteNonQuery();
@@ -151,6 +155,7 @@ namespace Onlab.DAL
                 }
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "UPDATE " + table + " SET " + valuesString.ToString() + " WHERE " + IDColumnName + " = " + ID;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     affected = command.ExecuteNonQuery();
@@ -175,6 +180,7 @@ namespace Onlab.DAL
                 }
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "UPDATE " + table + " SET " + valuesString.ToString() + " WHERE " + whereExpression;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     affected = command.ExecuteNonQuery();
@@ -192,6 +198,7 @@ namespace Onlab.DAL
             {
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "DELETE FROM " + table + " WHERE " + IDColumnName + " = " + ID;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     affected = command.ExecuteNonQuery();
@@ -208,6 +215,7 @@ namespace Onlab.DAL
             {
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
                 {
+                    connection.Open();
                     string SQL = "DELETE FROM " + table + " WHERE " + whereExpression;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     affected = command.ExecuteNonQuery();
@@ -225,6 +233,7 @@ namespace Onlab.DAL
                 {
                     using (SQLiteConnection connection = new SQLiteConnection(connString))
                     {
+                        connection.Open();
                         SQLiteCommand command = new SQLiteCommand(SQL, connection);
                         command.ExecuteNonQuery();
                     }

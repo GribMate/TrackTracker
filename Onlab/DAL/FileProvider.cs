@@ -43,6 +43,12 @@ namespace Onlab.DAL
 
             return true; //none of the criteria returned false
         }
+        public string GetExtensionFromFilePath(string path) //returns only the extension part of a file path
+        {
+            return Path.GetExtension(path);
+        }
+
+
         public List<string> GetAllFilesFromDrive(string driveLetter, string extension) //returns all file paths from a given drive with a given extension
         {
             paths.Clear(); //clearing helper variable from previous function data

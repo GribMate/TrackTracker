@@ -5,7 +5,6 @@ namespace Onlab.BLL
 {
     /*
     Enum: ExtensionType
-    State: Under construction | DEBUG
     Description:
         Extension of music files for which proper tagging and meta-data is supported.
     */
@@ -17,7 +16,6 @@ namespace Onlab.BLL
 
     /*
     Enum: MediaPlayerType
-    State: Under construction | DEBUG
     Description:
         Identifier of media players that are supported for tracklist mixing.
     */
@@ -28,7 +26,6 @@ namespace Onlab.BLL
 
     /*
     Enum: MusicGenre
-    State: Under construction | DEBUG
     Description:
         Currently handled genre of tracks.
     */
@@ -46,7 +43,6 @@ namespace Onlab.BLL
 
     /*
     Enum: MusicLanguage
-    State: Under construction | DEBUG
     Description:
         Currently handled language of tracks.
     */
@@ -62,10 +58,10 @@ namespace Onlab.BLL
 
     /*
     Class: GlobalVariables
-    State: Under construction | DEBUG
     Description:
-        Provides static and global properties and functions for the application.
+        Provides static and global properties and variables for the application.
         Used mainly for utility data during running.
+        Provides data for GlobalAlgorithms class.
     */
     public static class GlobalVariables
     {
@@ -74,9 +70,9 @@ namespace Onlab.BLL
         public static IEnvironmentProvider EnvironmentProvider;
         public static IMusicBrainzProvider MusicBrainzProvider;
 
-
-
-        public static AppConfig Config; //persistent settings through the whole application
+        public static AppConfig AppConfig;
+        public static LocalMediaPackContainer LocalMediaPackContainer; //persistent settings through the whole application
+        //TODO: make persisent loading from config file stored locally on file system
         public static TracklistData TracklistData; //dynamic wrapper of data currently represented @ Tracklist tab table
         public static PlayzoneData PlayzoneData; //dynamic wrapper of data currently represented @ Playzone tab table
         //TODO: generalize data classes via base class or interface
@@ -88,7 +84,8 @@ namespace Onlab.BLL
             EnvironmentProvider = new EnvironmentProvider();
             MusicBrainzProvider = new MusicBrainzProvider();
 
-            Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
+            AppConfig = new AppConfig();
+            LocalMediaPackContainer = new LocalMediaPackContainer();
             TracklistData = new TracklistData();
             PlayzoneData = new PlayzoneData();
         }

@@ -85,6 +85,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BLL\AppConfig.cs" />
+    <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
@@ -107,6 +108,9 @@
     <Compile Include="BLL\test_MatchTableRow.cs" />
     <Compile Include="BLL\Track.cs" />
     <Compile Include="BLL\TracklistData.cs" />
+    <Compile Include="UI\MainWindow_Data.cs" />
+    <Compile Include="UI\MainWindow_Playzone.cs" />
+    <Compile Include="UI\MainWindow_Tracklist.cs" />
     <Page Include="UI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
