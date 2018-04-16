@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-using WinForms = System.Windows.Forms; //TODO: maybe import WPFContrib v2 for redesigned FBD
+using WinForms = System.Windows.Forms;
+using Onlab.BLL;
+using Onlab.DAL; //TODO: remove
 
 namespace Onlab
 {
@@ -88,7 +82,7 @@ namespace Onlab
         {
             if (fbdMedia.ShowDialog() == WinForms.DialogResult.OK)
             {
-                if (AppIO.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
+                if (FileProvider.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
@@ -104,12 +98,12 @@ namespace Onlab
                 ExtensionType type = (ExtensionType)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
                 lmp = new LocalMediaPack(drive, true, true, type); //TODO: detect if removable media
-                AppIO.CacheOfflineFilesFromDriveSearch(lmp, type, drive); //loading up LMP object with file paths
+                FileProvider.CacheOfflineFilesFromDriveSearch(lmp, type, drive); //loading up LMP object with file paths
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
                 lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false, false);
-                AppIO.CacheOfflineFilesFromPath(lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
+                FileProvider.CacheOfflineFilesFromPath(lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }
@@ -127,7 +121,7 @@ namespace Onlab
         {
             //TODO: need to call only once, probably should be placed in constructor
 
-            foreach (string driveName in AppIO.GetSystemDriveNames())
+            foreach (string driveName in EnvironmentProvider.GetSystemDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -281,7 +275,7 @@ namespace Onlab
             switch (type)
             {
                 case MediaPlayerType.Foobar2000:
-                    string path = AppIO.TryFindFoobar();
+                    string path = EnvironmentProvider.TryFindFoobar();
                     if (path.Length > 2)
                     {
                         GlobalVariables.Config.AddMediaPlayerPath(type, path);

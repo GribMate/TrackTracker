@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Onlab
+namespace Onlab.BLL
 {
     public class TracklistData
     {

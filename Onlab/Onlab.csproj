@@ -74,6 +74,8 @@
     </ApplicationDefinition>
     <Compile Include="BLL\AppConfig.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
+    <Compile Include="DAL\DatabaseProvider.cs" />
+    <Compile Include="DAL\EnvironmentProvider.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>
     </Compile>
@@ -103,7 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DAL\AppIO.cs" />
+    <Compile Include="DAL\FileProvider.cs" />
     <Compile Include="BLL\GlobalVariables.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

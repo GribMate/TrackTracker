@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Onlab
+namespace Onlab.BLL
 {
     public class MetaTag : INotifyPropertyChanged
     {

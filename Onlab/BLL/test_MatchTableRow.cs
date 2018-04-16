@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Onlab
+namespace Onlab.BLL
 {
     public class test_MatchTableRow
     {
