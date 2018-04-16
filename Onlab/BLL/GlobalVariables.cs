@@ -72,6 +72,7 @@ namespace Onlab.BLL
         public static IDatabaseProvider DatabaseProvider;
         public static IFileProvider FileProvider;
         public static IEnvironmentProvider EnvironmentProvider;
+        public static IMusicBrainzProvider MusicBrainzProvider;
 
 
 
@@ -85,6 +86,7 @@ namespace Onlab.BLL
             DatabaseProvider = new DatabaseProvider();
             FileProvider = new FileProvider();
             EnvironmentProvider = new EnvironmentProvider();
+            MusicBrainzProvider = new MusicBrainzProvider();
 
             Config = new AppConfig(); //TODO: make persisent loading from config file stored locally on file system
             TracklistData = new TracklistData();

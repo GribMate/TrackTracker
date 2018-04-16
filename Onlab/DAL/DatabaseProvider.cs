@@ -10,7 +10,7 @@ namespace Onlab.DAL
     Class: DatabaseProvider
     Description:
         Implements database persistence.
-        Currently uses SQLite provider and locally stored DB file.
+        Uses SQLite provider and locally stored DB file.
     */
     public class DatabaseProvider : IDatabaseProvider
     {
