@@ -74,5 +74,9 @@ namespace Onlab.BLL
                 }
             }
         }
+        public static bool GetInternetState()
+        {
+            return GlobalVariables.EnvironmentProvider.InternetConnectionIsAlive();
+        }
     }
 }

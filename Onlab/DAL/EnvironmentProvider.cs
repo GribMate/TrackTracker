@@ -2,8 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Win32;
-
-
+using System.Net;
 
 namespace Onlab.DAL
 {
@@ -14,6 +13,23 @@ namespace Onlab.DAL
     */
     public class EnvironmentProvider : IEnvironmentProvider
     {
+        public bool InternetConnectionIsAlive() //returns true if the application can connect to the internet
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://clients3.google.com/generate_204")) //"204 - No content" generator page from Google
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception) //catching anything, since we assume that only an exception-free opening means there is a stable connection
+            {
+                return false;
+            }
+        }
         public string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
         {
             string toReturn = null;

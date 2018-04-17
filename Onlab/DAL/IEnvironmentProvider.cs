@@ -11,6 +11,7 @@ namespace Onlab.DAL
     */
     public interface IEnvironmentProvider
     {
+        bool InternetConnectionIsAlive(); //returns true if the application can connect to the internet
         string TryFindFoobar(); //tries to locate foobar2000 installation through various methods, returns null for no success
         List<string> GetSystemDriveNames(); //returns all attached system drive names
     }

@@ -21,7 +21,6 @@ namespace Onlab
         private bool data_fileFormatSelected;
         private bool data_driveLetterSelected;
         private WinForms.FolderBrowserDialog fbdMedia; //the FBD for the music folder path
-        private ObservableCollection<MetaTag> tags;
 
         public MainWindow()
         {
@@ -43,6 +42,22 @@ namespace Onlab
             fbdMedia.Description = "Select local music library folder:";
 
             tags = new ObservableCollection<MetaTag>();
+
+            SetOnlinestatusUIElement();
+        }
+
+        private void SetOnlinestatusUIElement()
+        {
+            if (GlobalAlgorithms.GetInternetState()) //we have connection
+            {
+                labelOnlineStatus.Content = "Connected";
+                labelOnlineStatus.Foreground = System.Windows.Media.Brushes.LawnGreen;
+            }
+            else //no or failed internet connection
+            {
+                labelOnlineStatus.Content = "Disconnected";
+                labelOnlineStatus.Foreground = System.Windows.Media.Brushes.Red;
+            }
         }
 
         private void menuItemApplicationExit_Click(object sender, RoutedEventArgs e)

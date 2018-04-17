@@ -15,6 +15,9 @@ namespace Onlab
 {
     public partial class MainWindow : Window
     {
+        private ObservableCollection<MetaTag> tags;
+
+
         private void tracklist_Initialized(object sender, EventArgs e)
         {
             tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.Tracks;
@@ -41,6 +44,7 @@ namespace Onlab
                 else track.IsSelectedInGUI = true;
             }
         }
+
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -50,10 +54,9 @@ namespace Onlab
 
                 if (selectedTrack.MetaData.Title != null)
                 {
-
                     try
                     {
-                        var releases = q.FindReleases(selectedTrack.MetaData.Title, 2);
+                        var releases = GetReleases(selectedTrack.MetaData.Title, null);
                         List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
                         foreach (var item in releases.Results)
                         {
@@ -77,6 +80,43 @@ namespace Onlab
                 }
             }
         }
+
+        private MetaBrainz.MusicBrainz.Interfaces.Searches.ISearchResults<MetaBrainz.MusicBrainz.Interfaces.Searches.IFoundRelease> GetReleases(string title, int? tries)
+        {
+            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
+
+            try
+            {
+                return q.FindReleases(title, tries);
+            }
+            catch (Exception)
+            {
+                if (tries == null) tries = 10;
+                else if (tries > 1) tries--;
+                else return null;
+
+                return GetReleases(title, tries);
+            }
+        }
+
+        /*
+else
+{
+    var recordings = q.FindRecordings(selectedTrack.MetaData.Title);
+    List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
+    foreach (var item in recordings.Results)
+    {
+        string title = item.Title;
+        string artist = null;
+        if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
+        else artist = "Unknown";
+        string mbid = item.MbId.ToString();
+        test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
+        rows.Add(row);
+    }
+    tracklist_dataGridMatchList.ItemsSource = rows;
+}
+*/
         private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
         {
             if (tracklist_dataGridTrackList.SelectedIndex != -1 && tracklist_dataGridMatchList.SelectedIndex != -1)
@@ -90,11 +130,14 @@ namespace Onlab
         }
         private void tracklist_dataGridTrackList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
+            if (tracklist_dataGridTrackList.SelectedItem != null)
+            {
+                Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
 
-            tags = new ObservableCollection<MetaTag>(selectedTrack.GetTags());
+                tags = new ObservableCollection<MetaTag>(selectedTrack.GetTags());
 
-            tracklist_dataGridTagList.ItemsSource = tags;
+                tracklist_dataGridTagList.ItemsSource = tags;
+            }
         }
     }
 }
