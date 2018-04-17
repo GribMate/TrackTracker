@@ -44,88 +44,29 @@ namespace Onlab
                 else track.IsSelectedInGUI = true;
             }
         }
-
-        private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
-        {
+        private async void Row_DoubleClick(object sender, MouseButtonEventArgs e)
+        {     
             if (e.ChangedButton == MouseButton.Left)
             {
+                SetProgressBarValue(1, "Querying MusicBrainz API...");
                 Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
-                MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
-
-                if (selectedTrack.MetaData.Title != null)
-                {
-                    try
-                    {
-                        var releases = GetReleases(selectedTrack.MetaData.Title, null);
-                        List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
-                        foreach (var item in releases.Results)
-                        {
-                            string title = item.Title;
-                            string artist = null;
-                            if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
-                            else artist = "Unknown";
-                            string mbid = item.MbId.ToString();
-                            test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
-                            rows.Add(row);
-                        }
-                        tracklist_dataGridMatchList.ItemsSource = rows;
-                    }
-                    catch (Exception exc)
-                    {
-                        Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
-                            exc.Message, "File: " + selectedTrack.MetaData.Title);
-                        en.Owner = this;
-                        en.ShowDialog();
-                    }
-                }
+                SetProgressBarValue(25, "Querying MusicBrainz API...");
+                tracklist_dataGridMatchList.ItemsSource = await GlobalAlgorithms.MBTEST(selectedTrack);
+                SetProgressBarValue(75, "Querying MusicBrainz API...");
+                System.Threading.Thread.Sleep(250);
+                SetProgressBarValue(100, "Querying MusicBrainz API...");
+                System.Threading.Thread.Sleep(250);
+                SetProgressBarValue(0, "Querying MusicBrainz API...");
             }
         }
-
-        private MetaBrainz.MusicBrainz.Interfaces.Searches.ISearchResults<MetaBrainz.MusicBrainz.Interfaces.Searches.IFoundRelease> GetReleases(string title, int? tries)
-        {
-            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
-
-            try
-            {
-                return q.FindReleases(title, tries);
-            }
-            catch (Exception)
-            {
-                if (tries == null) tries = 10;
-                else if (tries > 1) tries--;
-                else return null;
-
-                return GetReleases(title, tries);
-            }
-        }
-
-        /*
-else
-{
-    var recordings = q.FindRecordings(selectedTrack.MetaData.Title);
-    List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
-    foreach (var item in recordings.Results)
-    {
-        string title = item.Title;
-        string artist = null;
-        if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
-        else artist = "Unknown";
-        string mbid = item.MbId.ToString();
-        test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
-        rows.Add(row);
-    }
-    tracklist_dataGridMatchList.ItemsSource = rows;
-}
-*/
         private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
         {
-            if (tracklist_dataGridTrackList.SelectedIndex != -1 && tracklist_dataGridMatchList.SelectedIndex != -1)
+            foreach (Track track in GlobalVariables.TracklistData.Tracks)
             {
-                Track toUpdate = tracklist_dataGridTrackList.SelectedItem as Track;
-                test_MatchTableRow newMetaData = tracklist_dataGridMatchList.SelectedItem as test_MatchTableRow;
-                toUpdate.MetaData.Title = newMetaData.Title;
-                toUpdate.MetaData.JoinedAlbumArtists = newMetaData.Artist;
-                toUpdate.MetaData.MusicBrainzReleaseId = newMetaData.MBID;
+                if (track.IsSelectedInGUI)
+                {
+                    track.SetMetaDataFromActiveCandidate();
+                }
             }
         }
         private void tracklist_dataGridTrackList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -137,6 +78,20 @@ else
                 tags = new ObservableCollection<MetaTag>(selectedTrack.GetTags());
 
                 tracklist_dataGridTagList.ItemsSource = tags;
+            }
+        }
+        private void tracklist_dataGridMatchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tracklist_dataGridTrackList.SelectedItem != null && tracklist_dataGridMatchList.SelectedItem != null)
+            {
+                Track selectedTrackOld = tracklist_dataGridTrackList.SelectedItem as Track;
+                test_MatchTableRow selectedTrackCandidate = tracklist_dataGridMatchList.SelectedItem as test_MatchTableRow;
+
+                AudioMetaData data = new AudioMetaData(selectedTrackCandidate.Title, "", new string[] { selectedTrackCandidate.Artist },
+                    null, 0, 0, 0, 0, 0, 0, "", selectedTrackCandidate.MBID, "", "", "", "", "", "", "");
+                Track t = new Track(data);
+                selectedTrackOld.AddCandidateTrack(t);
+                selectedTrackOld.SelectActiveCandidate(selectedTrackCandidate.MBID);
             }
         }
     }

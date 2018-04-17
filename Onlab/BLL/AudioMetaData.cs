@@ -74,36 +74,43 @@ namespace Onlab.BLL
         {
             get
             {
-                StringBuilder toReturn = new StringBuilder();
-                for (int i = 0; i < albumArtists.Length; i++)
+                if (genres != null)
                 {
-                    toReturn.Append(albumArtists[i]);
-                    if (i < albumArtists.Length - 1) toReturn.Append(";");
+                    StringBuilder toReturn = new StringBuilder();
+                    for (int i = 0; i < albumArtists.Length; i++)
+                    {
+                        toReturn.Append(albumArtists[i]);
+                        if (i < albumArtists.Length - 1) toReturn.Append(";");
+                    }
+                    return toReturn.ToString();
                 }
-                return toReturn.ToString();
+                else return null;
             }
             set //checking if value is different might cost more resources then just raising an event
             {
-                if (value.Contains(";"))
+                if (value != null)
                 {
-                    albumArtists = value.Split(';');
-                    if (fileHandle != null)
+                    if (value.Contains(";"))
                     {
-                        fileHandle.Tag.AlbumArtists = value.Split(';');
-                        fileHandle.Save();
+                        albumArtists = value.Split(';');
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.AlbumArtists = value.Split(';');
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtists)));
                     }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtists)));
-                }
-                else if (value.Length > 1) //still contains data - only 1 artist
-                {
-                    albumArtists = new string[1];
-                    albumArtists[0] = value;
-                    if (fileHandle != null)
+                    else if (value.Length > 1) //still contains data - only 1 artist
                     {
-                        fileHandle.Tag.AlbumArtists = new string[1] { value };
-                        fileHandle.Save();
+                        albumArtists = new string[1];
+                        albumArtists[0] = value;
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.AlbumArtists = new string[1] { value };
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtists)));
                     }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtists)));
                 }
             }
         } 
@@ -111,36 +118,43 @@ namespace Onlab.BLL
         {
             get
             {
-                StringBuilder toReturn = new StringBuilder();
-                for (int i = 0; i < genres.Length; i++)
+                if (genres != null)
                 {
-                    toReturn.Append(genres[i]);
-                    if (i < genres.Length - 1) toReturn.Append(";");
+                    StringBuilder toReturn = new StringBuilder();
+                    for (int i = 0; i < genres.Length; i++)
+                    {
+                        toReturn.Append(genres[i]);
+                        if (i < genres.Length - 1) toReturn.Append(";");
+                    }
+                    return toReturn.ToString();
                 }
-                return toReturn.ToString();
+                else return null;
             }
             set //checking if value is different might cost more resources then just raising an event
             {
-                if (value.Contains(";"))
+                if (value != null)
                 {
-                    genres = value.Split(';');
-                    if (fileHandle != null)
+                    if (value.Contains(";"))
                     {
-                        fileHandle.Tag.Genres = value.Split(';');
-                        fileHandle.Save();
+                        genres = value.Split(';');
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.Genres = value.Split(';');
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedGenres)));
                     }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedGenres)));
-                }
-                else if (value.Length > 1) //still contains data - only 1 artist
-                {
-                    genres = new string[1];
-                    genres[0] = value;
-                    if (fileHandle != null)
+                    else if (value.Length > 1) //still contains data - only 1 artist
                     {
-                        fileHandle.Tag.Genres = new string[1] { value };
-                        fileHandle.Save();
+                        genres = new string[1];
+                        genres[0] = value;
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.Genres = new string[1] { value };
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedGenres)));
                     }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedGenres)));
                 }
             }
         }

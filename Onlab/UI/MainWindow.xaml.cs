@@ -64,5 +64,23 @@ namespace Onlab
         {
             Close();
         }
+
+        public void SetProgressBarValue(int value, string description)
+        {
+            if (value > 0)
+            {
+                labelProcessingName.Visibility = Visibility.Visible;
+                labelProcessingValue.Visibility = Visibility.Visible;
+                progressBar.Visibility = Visibility.Visible;
+            }
+            else if (value == 0)
+            {
+                labelProcessingName.Visibility = Visibility.Hidden;
+                labelProcessingValue.Visibility = Visibility.Hidden;
+                progressBar.Visibility = Visibility.Hidden;
+            }
+            progressBar.Dispatcher.Invoke(() => progressBar.Value = value, System.Windows.Threading.DispatcherPriority.Background);
+            labelProcessingValue.Content = description;
+        }
     }
 }

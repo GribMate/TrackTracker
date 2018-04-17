@@ -101,7 +101,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14" SelectionChanged="tracklist_dataGridMatchList_SelectionChanged">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Artist}" />
                                     <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Title}"/>
@@ -198,9 +198,9 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Online status:" Foreground="White" FontSize="14" />
                 <Label x:Name="labelOnlineStatus" Grid.Column="1" Content="Disconnected" Foreground="Red" FontSize="14" />
-                <Label Grid.Column="2" Content="Currently processing:" Foreground="White" FontSize="14" />
-                <Label Grid.Column="3" Content="Parsing offline files..." Foreground="White" FontSize="14" />
-                <ProgressBar Grid.Column="4" Foreground="#FFC80000" Value="25" FontSize="14" Height="20" Width="250" />
+                <Label x:Name="labelProcessingName" Grid.Column="2" Content="Currently processing:" Foreground="White" FontSize="14" Visibility="Hidden" />
+                <Label x:Name="labelProcessingValue" Grid.Column="3" Content="Parsing offline files..." Foreground="White" FontSize="14" Visibility="Hidden" />
+                <ProgressBar x:Name="progressBar" Grid.Column="4" Foreground="#FFC80000" Value="25" FontSize="14" Height="20" Width="250" Visibility="Hidden" />
             </Grid>
         </StackPanel>
     </DockPanel>

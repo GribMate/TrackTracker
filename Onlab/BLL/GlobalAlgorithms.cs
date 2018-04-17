@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Onlab.DAL;
 
@@ -78,5 +79,79 @@ namespace Onlab.BLL
         {
             return GlobalVariables.EnvironmentProvider.InternetConnectionIsAlive();
         }
+
+
+
+        public async static Task<List<test_MatchTableRow>> MBTEST(Track track)
+        {
+            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
+
+            if (track.MetaData.Title != null)
+            {
+                try
+                {
+                    //var releases = GetReleases(track.MetaData.Title, null);
+                    var recordings = await q.FindRecordingsAsync(track.MetaData.Title);
+                    List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
+                    foreach (var item in recordings.Results)
+                    {
+                        string title = item.Title;
+                        string artist = null;
+                        if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
+                        else artist = "Unknown";
+                        string mbid = item.MbId.ToString();
+                        test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
+                        rows.Add(row);
+                    }
+                    return rows;
+                }
+                catch (Exception exc)
+                {
+                    Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
+                        exc.Message, "File: " + track.MetaData.Title);
+                    en.ShowDialog();
+                    //TODO: not here
+                }
+            }
+            return new List<test_MatchTableRow>();
+        }
+        /*
+        private static MetaBrainz.MusicBrainz.Interfaces.Searches.ISearchResults<MetaBrainz.MusicBrainz.Interfaces.Searches.IFoundRelease> GetReleases(string title, int? tries)
+        {
+            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
+
+            try
+            {
+                return q.FindRecordingsAsync(title, tries);
+            }
+            catch (Exception)
+            {
+                if (tries == null) tries = 10;
+                else if (tries > 1) tries--;
+                else return null;
+
+                return GetReleases(title, tries);
+            }
+        }
+        */
+
+        /*
+        else
+        {
+        var recordings = q.FindRecordings(selectedTrack.MetaData.Title);
+        List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
+        foreach (var item in recordings.Results)
+        {
+        string title = item.Title;
+        string artist = null;
+        if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
+        else artist = "Unknown";
+        string mbid = item.MbId.ToString();
+        test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
+        rows.Add(row);
+        }
+        tracklist_dataGridMatchList.ItemsSource = rows;
+        }
+        */
     }
 }

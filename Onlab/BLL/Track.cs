@@ -101,8 +101,9 @@ namespace Onlab.BLL
                 fileHandle == null) throw new InvalidOperationException();
             if (activeCandidate < 0 || activeCandidate >= metaDataCandidates.Count) throw new ArgumentOutOfRangeException();
 
-            metaData = metaDataCandidates[activeCandidate].MetaData; //TODO: check from GUI
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MetaData)));
+            metaData.Title = metaDataCandidates[activeCandidate].MetaData.Title;
+            metaData.JoinedAlbumArtists = metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists;
+            metaData.MusicBrainzTrackId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId;
         }
         public List<MetaTag> GetTags()
         {
