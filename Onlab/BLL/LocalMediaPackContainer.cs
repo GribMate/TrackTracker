@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Onlab.BLL
 {
@@ -16,7 +17,7 @@ namespace Onlab.BLL
             activeLocalMediaPacks = new Dictionary<string, LocalMediaPack>();
         }
 
-        public bool AddLocalMediaPack(LocalMediaPack pack)
+        public bool AddLocalMediaPack(LocalMediaPack pack, bool writeToDB)
         {
             if (pack is null) throw new ArgumentNullException();
 
@@ -24,6 +25,25 @@ namespace Onlab.BLL
             else
             {
                 addedLocalMediaPacks.Add(pack.RootPath, pack);
+
+                if (writeToDB)
+                {
+                    string[] values = new string[5];
+                    values[0] = pack.RootPath;
+                    values[1] = pack.BaseExtension.ToString();
+                    values[2] = Convert.ToInt32(pack.IsOnRemovableDrive).ToString(); //0 or 1
+                    values[3] = Convert.ToInt32(pack.IsResultOfDriveSearch).ToString(); //0 or 1
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string path in pack.GetFilePaths.Keys)
+                    {
+                        sb.Append(path);
+                        sb.Append("|");
+                    }
+                    sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
+                    values[4] = sb.ToString();
+                    GlobalVariables.DatabaseProvider.InsertInto("LocalMediaPacks", values);
+                }
+
                 return true; //added successfully
             }
         }

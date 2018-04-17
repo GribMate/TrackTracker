@@ -42,15 +42,15 @@ namespace Onlab.BLL
                     ExtensionType baseExtension = (row[1].Length > 0) ? (ExtensionType)Enum.Parse(typeof(ExtensionType), row[1]) : ExtensionType.MP3;
                     bool isOnRemovableDrive = Int32.Parse(row[2]) == 1;
                     bool isResultOfDriveSearch = Int32.Parse(row[3]) == 1;
-                    string filePaths = row[4]; //BLOB, divided by "|"
+                    string filePaths = row[4]; //array of strings, divided by "|"
 
                     LocalMediaPack lmp = new LocalMediaPack(rootPath, isOnRemovableDrive, isResultOfDriveSearch, baseExtension);
                     foreach (string path in filePaths.Split('|'))
                     {
-                        ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileProvider.GetExtensionFromFilePath(path));
+                        ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileProvider.GetExtensionFromFilePath(path).ToUpper());
                         lmp.AddFilePath(path, type);
                     }
-                    GlobalVariables.LocalMediaPackContainer.AddLocalMediaPack(lmp);
+                    GlobalVariables.LocalMediaPackContainer.AddLocalMediaPack(lmp, false);
                 }
             }
         }

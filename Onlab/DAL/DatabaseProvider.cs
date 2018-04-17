@@ -49,7 +49,7 @@ namespace Onlab.DAL
                                 BaseExtension NVARCHAR2,
                                 IsOnRemovableDrive INT,
                                 IsResultOfDriveSearch INT,
-                                FilePaths BLOB NOT NULL)";
+                                FilePaths NVARCHAR2 NOT NULL)";
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     command.ExecuteNonQuery();
                 }
@@ -123,7 +123,9 @@ namespace Onlab.DAL
                 valuesString.Append("(");
                 for (int i = 0; i < values.Length; i++)
                 {
+                    valuesString.Append("\"");
                     valuesString.Append(values[i]);
+                    valuesString.Append("\"");
                     if((i + 1) < values.Length) valuesString.Append(", ");
                 }
                 valuesString.Append(")");
@@ -150,7 +152,9 @@ namespace Onlab.DAL
                 {
                     valuesString.Append(columnNames[i]);
                     valuesString.Append(" = ");
+                    valuesString.Append("\"");
                     valuesString.Append(values[i]);
+                    valuesString.Append("\"");
                     if ((i + 1) < values.Length) valuesString.Append(", ");
                 }
                 using (SQLiteConnection connection = new SQLiteConnection(connString))
@@ -175,7 +179,9 @@ namespace Onlab.DAL
                 {
                     valuesString.Append(columnNames[i]);
                     valuesString.Append(" = ");
+                    valuesString.Append("\"");
                     valuesString.Append(values[i]);
+                    valuesString.Append("\"");
                     if ((i + 1) < values.Length) valuesString.Append(", ");
                 }
                 using (SQLiteConnection connection = new SQLiteConnection(connString))

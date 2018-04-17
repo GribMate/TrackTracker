@@ -43,9 +43,9 @@ namespace Onlab.DAL
 
             return true; //none of the criteria returned false
         }
-        public string GetExtensionFromFilePath(string path) //returns only the extension part of a file path
+        public string GetExtensionFromFilePath(string path) //returns only the extension part of a file path, without leading "."
         {
-            return Path.GetExtension(path);
+            return Path.GetExtension(path).Substring(1); //omitting first char, which is a leading dot
         }
 
 

@@ -12,11 +12,6 @@ namespace Onlab.BLL
         private bool isOnRemovableDrive;
         private bool isResultOfDriveSearch;
 
-        public string RootPath
-        {
-            get => rootPath;
-        }
-
         public LocalMediaPack(string rootPath, bool isOnRemovableDrive, bool isResultOfDriveSearch, ExtensionType baseExtension = ExtensionType.MP3)
         {
             this.rootPath = rootPath;
@@ -26,9 +21,25 @@ namespace Onlab.BLL
             this.isResultOfDriveSearch = isResultOfDriveSearch;
         }
 
+        public string RootPath
+        {
+            get => rootPath;
+        }
+        public ExtensionType BaseExtension
+        {
+            get => baseExtension;
+        }
         public Dictionary<string, ExtensionType> GetFilePaths
         {
             get => filePaths;
+        }
+        public bool IsOnRemovableDrive
+        {
+            get => isOnRemovableDrive;
+        }
+        public bool IsResultOfDriveSearch
+        {
+            get => isResultOfDriveSearch;
         }
 
         public static string GetRootPathFromFormattedName(string formattedName)

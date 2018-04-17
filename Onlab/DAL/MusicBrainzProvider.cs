@@ -1,4 +1,10 @@
-﻿namespace Onlab.DAL
+﻿using MetaBrainz.MusicBrainz.Interfaces.Browses;
+using MetaBrainz.MusicBrainz.Interfaces.Entities;
+using MetaBrainz.MusicBrainz.Interfaces.Searches;
+using MetaBrainz.MusicBrainz.Objects.Submissions;
+
+
+namespace Onlab.DAL
 {
     /*
     Class: IMusicBrainzProvider
