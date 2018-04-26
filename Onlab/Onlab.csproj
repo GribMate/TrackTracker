@@ -90,10 +90,10 @@
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
-    <Compile Include="DAL\IDatabaseProvider.cs" />
-    <Compile Include="DAL\IEnvironmentProvider.cs" />
-    <Compile Include="DAL\IFileProvider.cs" />
-    <Compile Include="DAL\IMusicBrainzProvider.cs" />
+    <Compile Include="DAL\Interfaces\IDatabaseProvider.cs" />
+    <Compile Include="DAL\Interfaces\IEnvironmentProvider.cs" />
+    <Compile Include="DAL\Interfaces\IFileProvider.cs" />
+    <Compile Include="DAL\Interfaces\IMusicBrainzProvider.cs" />
     <Compile Include="DAL\MusicBrainzProvider.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>

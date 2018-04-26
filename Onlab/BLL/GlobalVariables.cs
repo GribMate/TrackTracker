@@ -1,5 +1,9 @@
 ﻿using System;
+
 using Onlab.DAL;
+using Onlab.DAL.Interfaces;
+
+
 
 namespace Onlab.BLL
 {
@@ -72,12 +76,11 @@ namespace Onlab.BLL
 
         public static AppConfig AppConfig;
         public static LocalMediaPackContainer LocalMediaPackContainer; //persistent settings through the whole application
-        //TODO: make persisent loading from config file stored locally on file system
         public static TracklistData TracklistData; //dynamic wrapper of data currently represented @ Tracklist tab table
         public static PlayzoneData PlayzoneData; //dynamic wrapper of data currently represented @ Playzone tab table
         //TODO: generalize data classes via base class or interface
 
-        public static void Initialize()
+        public static void Initialize() //gets called by GlobalAlgorithms.Initalize() - first actual method to run when application starts
         {
             DatabaseProvider = new DatabaseProvider();
             FileProvider = new FileProvider();

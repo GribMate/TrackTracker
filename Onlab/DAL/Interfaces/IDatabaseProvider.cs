@@ -2,7 +2,7 @@
 
 
 
-namespace Onlab.DAL
+namespace Onlab.DAL.Interfaces
 {
     /*
     Interface: IDatabaseProvider
@@ -18,6 +18,7 @@ namespace Onlab.DAL
 
         string[] GetRowByID(string table, string IDColumnName, string ID); //selects exactly 1 row by ID
         List<string[]> GetRowsByWhere(string table, string whereExpression); //selects multiple rows where an expression is true
+        List<string[]> GetAllRows(string table); //selects all rows in a given table
 
         int InsertInto(string table, string[] values); //inserts a new row into a given table
 

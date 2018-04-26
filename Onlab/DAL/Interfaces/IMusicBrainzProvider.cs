@@ -1,4 +1,4 @@
-﻿namespace Onlab.DAL
+﻿namespace Onlab.DAL.Interfaces
 {
     /*
     Interface: IMusicBrainzProvider

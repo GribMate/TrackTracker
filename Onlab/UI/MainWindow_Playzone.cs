@@ -61,7 +61,7 @@ namespace Onlab
                 hasRun = true;
                 foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.ActiveLocalMediaPacks)
                 {
-                    foreach (var path in lmp.GetFilePaths)
+                    foreach (var path in lmp.GetAllFilePaths())
                     {
                         GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
                     }

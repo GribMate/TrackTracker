@@ -19,7 +19,7 @@ namespace Onlab
         {
             //TODO: need to call only once, probably should be placed in constructor
 
-            foreach (string driveName in GlobalVariables.EnvironmentProvider.GetSystemDriveNames())
+            foreach (string driveName in GlobalVariables.EnvironmentProvider.GetExternalDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -69,13 +69,13 @@ namespace Onlab
             {
                 ExtensionType type = (ExtensionType)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
-                lmp = new LocalMediaPack(drive, true, true, type); //TODO: detect if removable media
-                GlobalAlgorithms.LoadOfflineFilesFromDrive(GlobalVariables.FileProvider, lmp, drive, type);
+                lmp = new LocalMediaPack(drive, true, type);
+                GlobalAlgorithms.LoadFilesFromDrive(GlobalVariables.FileProvider, lmp, drive, type);
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
-                lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false, false);
-                GlobalAlgorithms.LoadOfflineFilesFromDirectory(GlobalVariables.FileProvider, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
+                lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false);
+                GlobalAlgorithms.LoadFilesFromDirectory(GlobalVariables.FileProvider, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }

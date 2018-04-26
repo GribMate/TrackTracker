@@ -1,8 +1,11 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.IO;
 using System.Data.SQLite;
 using System.Collections.Generic;
+
+using Onlab.DAL.Interfaces;
+
+
 
 namespace Onlab.DAL
 {
@@ -47,14 +50,13 @@ namespace Onlab.DAL
                     string SQL = @"CREATE TABLE LocalMediaPacks
                                 (RootPath NVARCHAR2 PRIMARY KEY NOT NULL UNIQUE,
                                 BaseExtension NVARCHAR2,
-                                IsOnRemovableDrive INT,
                                 IsResultOfDriveSearch INT,
                                 FilePaths NVARCHAR2 NOT NULL)";
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     command.ExecuteNonQuery();
                 }
             }
-            //TODO: store Tracks and MetaData as well
+            //TODO: store Tracks, MetaData and AppConfig as well
         }
 
         public string[] GetRowByID(string table, string IDColumnName, string ID) //selects exactly 1 row by ID
@@ -94,6 +96,34 @@ namespace Onlab.DAL
                 {
                     connection.Open();
                     string SQL = "SELECT * FROM " + table + " WHERE " + whereExpression;
+                    SQLiteCommand command = new SQLiteCommand(SQL, connection);
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string[] columns = new string[reader.FieldCount];
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                columns[i] = reader[i].ToString();
+                            }
+                            rows.Add(columns);
+                        }
+                    }
+                }
+            }
+
+            return rows;
+        }
+        public List<string[]> GetAllRows(string table) //selects all rows in a given table
+        {
+            List<string[]> rows = new List<string[]>();
+
+            if (DatabaseExists) //to avoid exceptions
+            {
+                using (SQLiteConnection connection = new SQLiteConnection(connString))
+                {
+                    connection.Open();
+                    string SQL = "SELECT * FROM " + table;
                     SQLiteCommand command = new SQLiteCommand(SQL, connection);
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {

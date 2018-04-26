@@ -8,8 +8,8 @@ namespace Onlab.BLL
     {
         //TODO: error handling and extended interface
 
-        private Dictionary<string, LocalMediaPack> addedLocalMediaPacks;
-        private Dictionary<string, LocalMediaPack> activeLocalMediaPacks;
+        private Dictionary<string, LocalMediaPack> addedLocalMediaPacks; //LMPs that are added by the user, but not actively displayed in Tracklist
+        private Dictionary<string, LocalMediaPack> activeLocalMediaPacks; //LMPs that are currently displayed in Tracklist
 
         public LocalMediaPackContainer()
         {
@@ -31,16 +31,15 @@ namespace Onlab.BLL
                     string[] values = new string[5];
                     values[0] = pack.RootPath;
                     values[1] = pack.BaseExtension.ToString();
-                    values[2] = Convert.ToInt32(pack.IsOnRemovableDrive).ToString(); //0 or 1
-                    values[3] = Convert.ToInt32(pack.IsResultOfDriveSearch).ToString(); //0 or 1
+                    values[2] = Convert.ToInt32(pack.IsResultOfDriveSearch).ToString(); //0 or 1
                     StringBuilder sb = new StringBuilder();
-                    foreach (string path in pack.GetFilePaths.Keys)
+                    foreach (string path in pack.GetAllFilePaths().Keys)
                     {
                         sb.Append(path);
                         sb.Append("|");
                     }
                     sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
-                    values[4] = sb.ToString();
+                    values[3] = sb.ToString();
                     GlobalVariables.DatabaseProvider.InsertInto("LocalMediaPacks", values);
                 }
 
@@ -56,7 +55,7 @@ namespace Onlab.BLL
                 addedLocalMediaPacks.Remove(rootPath);
                 activeLocalMediaPacks.Add(rootPath, toChange);
 
-                foreach (var path in toChange.GetFilePaths)
+                foreach (var path in toChange.GetAllFilePaths())
                 {
                     GlobalVariables.TracklistData.AddMusicFile(path.Value, path.Key);
                 }
@@ -71,7 +70,7 @@ namespace Onlab.BLL
                 activeLocalMediaPacks.Remove(rootPath);
                 addedLocalMediaPacks.Add(rootPath, toChange);
 
-                foreach (var path in toChange.GetFilePaths)
+                foreach (var path in toChange.GetAllFilePaths())
                 {
                     GlobalVariables.TracklistData.RemoveMusicFile(path.Key);
                 }

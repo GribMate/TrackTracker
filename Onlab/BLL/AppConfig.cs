@@ -5,9 +5,14 @@ using System.Collections.Generic;
 
 namespace Onlab.BLL
 {
+    /*
+    Class: AppConfig
+    Description:
+        Holds the configuration of the application (every setting that can be altered by the user).
+*/
     public class AppConfig
     {
-        private Dictionary<MediaPlayerType, string> mediaPlayerPaths;
+        private Dictionary<MediaPlayerType, string> mediaPlayerPaths; //holds exactly one path per MediaPlayerType (or nothing)
 
         public AppConfig()
         {
@@ -39,13 +44,25 @@ namespace Onlab.BLL
                 return true; //added successfully
             }
         }
-        public bool TryDeleteMediaPlayerPath(MediaPlayerType type)
+        public bool DeleteMediaPlayerPath(MediaPlayerType type) //deletes an already existing media player location
         {
-            throw new NotImplementedException();
+            //we don't have to check arguments for exceptions, since "type" is always a valid value of MediaPlayerType
+            if (!mediaPlayerPaths.ContainsKey(type)) return false; //cannot delete non existent entry
+            else
+            {
+                mediaPlayerPaths.Remove(type);
+                return true; //deleted successfully
+            }
         }
-        public bool TryGetMediaPlayerPath(MediaPlayerType type, out string path)
+        public bool GetMediaPlayerPath(MediaPlayerType type, out string path) //returns an already existing media player location or null
         {
-            throw new NotImplementedException();
+            //we don't have to re-write "get value" logic, since Dictionary already provides it
+            //however, we still want to hide the internal data structure
+            return mediaPlayerPaths.TryGetValue(type, out path);
+        }
+        public Dictionary<MediaPlayerType, string> GetAllMediaPlayerPaths() //returns all of the paths if any
+        {
+            return new Dictionary<MediaPlayerType, string>(mediaPlayerPaths); //copying a new Dictionary, since we don't want the original to be modified by reference
         }
     }
 }

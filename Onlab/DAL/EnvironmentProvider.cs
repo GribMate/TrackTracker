@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using System.Net;
 
+using Onlab.DAL.Interfaces;
+
+
+
 namespace Onlab.DAL
 {
     /*
@@ -58,13 +62,13 @@ namespace Onlab.DAL
             }
             return toReturn; //null, if nothing found inside if() blocks
         }
-        public List<string> GetSystemDriveNames() //returns all attached system drive names
+        public List<string> GetExternalDriveNames() //returns all attached external drive names
         {
             List<string> driveNames = new List<string>();
 
             foreach (DriveInfo drive in DriveInfo.GetDrives())
             {
-                driveNames.Add(drive.Name);
+                if (drive.DriveType == DriveType.Removable && drive.IsReady) driveNames.Add(drive.Name); //only adding ready, external drives
             }
 
             return driveNames;

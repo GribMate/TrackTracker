@@ -3,6 +3,9 @@ using MetaBrainz.MusicBrainz.Interfaces.Entities;
 using MetaBrainz.MusicBrainz.Interfaces.Searches;
 using MetaBrainz.MusicBrainz.Objects.Submissions;
 
+using Onlab.DAL.Interfaces;
+
+
 
 namespace Onlab.DAL
 {

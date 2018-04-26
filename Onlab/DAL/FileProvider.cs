@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+
+using Onlab.DAL.Interfaces;
 
 
 
@@ -59,6 +59,7 @@ namespace Onlab.DAL
             {
                 if (driveCandidate.Name == driveLetter)
                 {
+                    if (!driveCandidate.IsReady || driveCandidate.DriveType != DriveType.Removable) throw new DriveNotFoundException(); //we only want ready, external drives
                     drive = driveCandidate;
                     break; //every drive letter must be distinct; first hit = last hit
                 }

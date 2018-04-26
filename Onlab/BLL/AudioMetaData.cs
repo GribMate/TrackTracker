@@ -2,11 +2,12 @@
 using System.Text;
 using System.ComponentModel;
 
+
+
 namespace Onlab.BLL
 {
     /*
     Class: AudioMetaData
-    State: Under construction | DEBUG
     Description:
         Represents all of the currently supported ID3 tags of a music file or virtual track.
         Wraps TagLib.File.Tag properties 1-1 for GUI and comfort purposes.
