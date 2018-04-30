@@ -80,7 +80,7 @@ namespace Onlab
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }
 
-            GlobalVariables.LocalMediaPackContainer.AddLocalMediaPack(lmp, true);
+            GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, true);
         }
         private void data_comboBoxFileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

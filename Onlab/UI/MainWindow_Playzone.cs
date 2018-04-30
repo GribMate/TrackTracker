@@ -59,7 +59,7 @@ namespace Onlab
             if (!hasRun)
             {
                 hasRun = true;
-                foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.ActiveLocalMediaPacks)
+                foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllActiveLMPs())
                 {
                     foreach (var path in lmp.GetAllFilePaths())
                     {

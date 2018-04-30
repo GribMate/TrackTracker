@@ -34,7 +34,7 @@ namespace Onlab.Dialogs
                 for (int i = 0; i < selected.Count; i++)
                 {
                     string rootPath = LocalMediaPack.GetRootPathFromFormattedName(selected[i] as string);
-                    GlobalVariables.LocalMediaPackContainer.ActivateLocalMediaPack(rootPath);
+                    GlobalVariables.LocalMediaPackContainer.ActivateLMP(rootPath);
                     sources_added_listBoxItems.Items.Add(selected[i]);
                 }
                 for (int i = selected.Count - 1; i >= 0; i--) //reversed for loop so we can delete and not skip anything
@@ -51,7 +51,7 @@ namespace Onlab.Dialogs
                 for (int i = 0; i < selected.Count; i++)
                 {
                     string rootPath = LocalMediaPack.GetRootPathFromFormattedName(selected[i] as string);
-                    GlobalVariables.LocalMediaPackContainer.DeactivateLocalMediaPack(rootPath);
+                    GlobalVariables.LocalMediaPackContainer.DeactivateLMP(rootPath);
                     sources_library_listBoxItems.Items.Add(selected[i]);
                 }
                 for (int i = selected.Count - 1; i >= 0; i--) //reversed for loop so we can delete and not skip anything
@@ -62,11 +62,11 @@ namespace Onlab.Dialogs
         }
         private void Window_Initialized(object sender, EventArgs e)
         {
-            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.ActiveLocalMediaPacks)
+            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllActiveLMPs())
             {
                 sources_added_listBoxItems.Items.Add(lmp.GetFormattedName());
             }
-            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.AddedLocalMediaPacks)
+            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllAddedLMPs())
             {
                 sources_library_listBoxItems.Items.Add(lmp.GetFormattedName());
             }

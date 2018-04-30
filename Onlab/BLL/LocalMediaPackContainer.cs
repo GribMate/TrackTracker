@@ -6,6 +6,10 @@ namespace Onlab.BLL
 {
     public class LocalMediaPackContainer
     {
+        //the API of this class intentionally does not support modifying an existing LMP in any collection
+        //since every LMP should be different and exactly one should exist per rootPath
+        //note that this doesn't exclude the possibility of an LMP containing a subset or a superset of another LMP's paths
+
         //TODO: error handling and extended interface
 
         private Dictionary<string, LocalMediaPack> addedLocalMediaPacks; //LMPs that are added by the user, but not actively displayed in Tracklist
@@ -17,7 +21,7 @@ namespace Onlab.BLL
             activeLocalMediaPacks = new Dictionary<string, LocalMediaPack>();
         }
 
-        public bool AddLocalMediaPack(LocalMediaPack pack, bool writeToDB)
+        public bool AddLMP(LocalMediaPack pack, bool writeToDB)
         {
             if (pack is null) throw new ArgumentNullException();
 
@@ -28,7 +32,7 @@ namespace Onlab.BLL
 
                 if (writeToDB)
                 {
-                    string[] values = new string[5];
+                    string[] values = new string[4];
                     values[0] = pack.RootPath;
                     values[1] = pack.BaseExtension.ToString();
                     values[2] = Convert.ToInt32(pack.IsResultOfDriveSearch).ToString(); //0 or 1
@@ -46,7 +50,7 @@ namespace Onlab.BLL
                 return true; //added successfully
             }
         }
-        public void ActivateLocalMediaPack(string rootPath)
+        public void ActivateLMP(string rootPath)
         {
             if (addedLocalMediaPacks.ContainsKey(rootPath) && !activeLocalMediaPacks.ContainsKey(rootPath))
             {
@@ -61,7 +65,7 @@ namespace Onlab.BLL
                 }
             }
         }
-        public void DeactivateLocalMediaPack(string rootPath)
+        public void DeactivateLMP(string rootPath)
         {
             if (activeLocalMediaPacks.ContainsKey(rootPath) && !addedLocalMediaPacks.ContainsKey(rootPath))
             {
@@ -76,33 +80,55 @@ namespace Onlab.BLL
                 }
             }
         }
-        public bool TryDeleteLocalMediaPath(string path)
+        public bool DeleteLMPFromAdded(string path) //removes an LMP from the list of added LMPs, indentified by its rootPath
         {
-            throw new NotImplementedException();
-        }
-        public List<LocalMediaPack> AddedLocalMediaPacks
-        {
-            get
+            if (path is null) throw new ArgumentNullException();
+            if (path.Length < 3) throw new ArgumentException(); //"C:\" is 3 chars long
+
+            if (!addedLocalMediaPacks.ContainsKey(path)) return false; //cannot delete if LMP doesn't already exist
+            else
             {
-                List<LocalMediaPack> added = new List<LocalMediaPack>();
-                foreach (var item in addedLocalMediaPacks)
-                {
-                    added.Add(item.Value);
-                }
-                return added;
+                addedLocalMediaPacks.Remove(path);
+                return true; //deleted successfully
             }
         }
-        public List<LocalMediaPack> ActiveLocalMediaPacks
+        public bool DeleteLMPFromActive(string path) //removes and LMP from the list of active LMPs, identified by its rootPath
         {
-            get
+            if (path is null) throw new ArgumentNullException();
+            if (path.Length < 3) throw new ArgumentException(); //"C:\" is 3 chars long
+
+            if (!activeLocalMediaPacks.ContainsKey(path)) return false; //cannot delete if LMP doesn't already exist
+            else
             {
-                List<LocalMediaPack> active = new List<LocalMediaPack>();
-                foreach (var item in activeLocalMediaPacks)
-                {
-                    active.Add(item.Value);
-                }
-                return active;
+                activeLocalMediaPacks.Remove(path);
+                return true; //deleted successfully
             }
+        }
+        public List<LocalMediaPack> GetAllAddedLMPs() //returns a copy of the list of added LMPs
+        {
+            return new List<LocalMediaPack>(addedLocalMediaPacks.Values); //copying to avoid modification by reference
+        }
+        public List<LocalMediaPack> GetAllActiveLMPs() //returns a copy of the list of active LMPs
+        {
+            return new List<LocalMediaPack>(activeLocalMediaPacks.Values); //copying to avoid modification by reference
+        }
+        public bool GetLMPFromAdded(string path, out LocalMediaPack lmp) //returns an LMP from the added list by it's rootPath
+        {
+            if (path == null) throw new ArgumentNullException();
+            if (path.Length < 3) throw new ArgumentException(); //"C:\" is 3 characters
+
+            //we don't have to re-write "get value" logic, since Dictionary already provides it
+            //however, we still want to hide the internal data structure
+            return addedLocalMediaPacks.TryGetValue(path, out lmp);
+        }
+        public bool GetLMPFromActive(string path, out LocalMediaPack lmp) //returns an LMP from the active list by it's rootPath
+        {
+            if (path == null) throw new ArgumentNullException();
+            if (path.Length < 3) throw new ArgumentException(); //"C:\" is 3 characters
+
+            //we don't have to re-write "get value" logic, since Dictionary already provides it
+            //however, we still want to hide the internal data structure
+            return activeLocalMediaPacks.TryGetValue(path, out lmp);
         }
     }
 }

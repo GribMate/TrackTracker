@@ -25,7 +25,6 @@ namespace Onlab.BLL
             if (!GlobalVariables.DatabaseProvider.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
             else LoadPersistence(); //app has run before, we need to load persistence from DB
         }
-
         private static void FirstRunSetup() //creates a new empty database and forms it's data structure
         {
             GlobalVariables.DatabaseProvider.CreateDatabase(); //creating empty
@@ -52,7 +51,7 @@ namespace Onlab.BLL
                         ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileProvider.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
                         lmp.AddFilePath(path, type);
                     }
-                    GlobalVariables.LocalMediaPackContainer.AddLocalMediaPack(lmp, false); //adding to current container
+                    GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, false); //adding to current container
                 }
             }
         }
