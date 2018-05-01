@@ -37,11 +37,17 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AcoustID, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AcoustID.NET.1.3.2.1\lib\net45\AcoustID.dll</HintPath>
+    </Reference>
     <Reference Include="MetaBrainz.MusicBrainz, Version=1.0.0.0, Culture=neutral, PublicKeyToken=be12cbb629c03021, processorArchitecture=MSIL">
       <HintPath>..\packages\MetaBrainz.MusicBrainz.1.0.0\lib\net45\MetaBrainz.MusicBrainz.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
@@ -90,6 +96,11 @@
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
+    <Compile Include="DAL\AcoustIDProvider.cs" />
+    <Compile Include="DAL\FingerprinterUtility\AudioDecoder.cs" />
+    <Compile Include="DAL\FingerprinterUtility\AudioProperties.cs" />
+    <Compile Include="DAL\FingerprinterUtility\IAudioDecoder.cs" />
+    <Compile Include="DAL\FingerprinterUtility\NAudioDecoder.cs" />
     <Compile Include="DAL\Interfaces\IDatabaseProvider.cs" />
     <Compile Include="DAL\Interfaces\IEnvironmentProvider.cs" />
     <Compile Include="DAL\Interfaces\IFileProvider.cs" />

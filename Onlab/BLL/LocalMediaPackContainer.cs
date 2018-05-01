@@ -52,6 +52,9 @@ namespace Onlab.BLL
         }
         public void ActivateLMP(string rootPath)
         {
+            if (rootPath == null) throw new ArgumentNullException();
+            if (rootPath.Length < 3) throw new ArgumentException(); //"C:\" is 3 chars long
+
             if (addedLocalMediaPacks.ContainsKey(rootPath) && !activeLocalMediaPacks.ContainsKey(rootPath))
             {
                 LocalMediaPack toChange;
@@ -67,6 +70,9 @@ namespace Onlab.BLL
         }
         public void DeactivateLMP(string rootPath)
         {
+            if (rootPath == null) throw new ArgumentNullException();
+            if (rootPath.Length < 3) throw new ArgumentException(); //"C:\" is 3 chars long
+
             if (activeLocalMediaPacks.ContainsKey(rootPath) && !addedLocalMediaPacks.ContainsKey(rootPath))
             {
                 LocalMediaPack toChange;

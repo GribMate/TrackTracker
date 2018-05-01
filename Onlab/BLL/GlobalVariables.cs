@@ -73,6 +73,7 @@ namespace Onlab.BLL
         public static IFileProvider FileProvider;
         public static IEnvironmentProvider EnvironmentProvider;
         public static IMusicBrainzProvider MusicBrainzProvider;
+        public static AcoustIDProvider AcoustIDProvider;
 
         public static AppConfig AppConfig;
         public static LocalMediaPackContainer LocalMediaPackContainer; //persistent settings through the whole application
@@ -86,6 +87,7 @@ namespace Onlab.BLL
             FileProvider = new FileProvider();
             EnvironmentProvider = new EnvironmentProvider();
             MusicBrainzProvider = new MusicBrainzProvider();
+            AcoustIDProvider = new AcoustIDProvider();
 
             AppConfig = new AppConfig();
             LocalMediaPackContainer = new LocalMediaPackContainer();
