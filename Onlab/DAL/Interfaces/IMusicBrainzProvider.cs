@@ -1,4 +1,9 @@
-﻿namespace Onlab.DAL.Interfaces
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+
+
+
+namespace Onlab.DAL.Interfaces
 {
     /*
     Interface: IMusicBrainzProvider
@@ -7,8 +12,7 @@
     */
     public interface IMusicBrainzProvider
     {
-        void GetResultsByMBID(string MBID);
-        void GetResultsByAcoustID(string acoustID);
-        void GetResultsByMetaData(string title, string artist = null, string album = null);
+        Task<Dictionary<string, string>> GetRecordingByMBID(string MBID); //returns exactly one recording by it's GUID MBID
+        Task<List<Dictionary<string, string>>> GetRecordingsByMetaData(string title, int limit, string artist = null, string album = null); //returns all the recordings which correspond to the parameters
     }
 }
