@@ -81,8 +81,6 @@ namespace Onlab.BLL
             return GlobalVariables.EnvironmentProvider.InternetConnectionIsAlive();
         }
 
-
-
         public async static Task<List<test_MatchTableRow>> MBTEST(Track track)
         {
             MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
