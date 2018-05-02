@@ -56,9 +56,6 @@ namespace Onlab.DAL
             Configuration.ClientKey = "CImoilnU"; //TODO: get own client key
 
             LookupService service = new LookupService();
-
-            var context = TaskScheduler.FromCurrentSynchronizationContext();
-
             LookupResponse response = await service.GetAsync(fingerprint, duration, new string[] { "recordings", "compress" });
 
             if (!string.IsNullOrEmpty(response.ErrorMessage))

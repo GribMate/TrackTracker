@@ -51,7 +51,7 @@ namespace Onlab
                 SetProgressBarValue(1, "Querying MusicBrainz API...");
                 Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
                 SetProgressBarValue(25, "Querying MusicBrainz API...");
-                tracklist_dataGridMatchList.ItemsSource = await GlobalAlgorithms.MBTEST(selectedTrack);
+                tracklist_dataGridMatchList.ItemsSource = await GlobalAlgorithms.GetMatchesForTrack(selectedTrack);
                 SetProgressBarValue(75, "Querying MusicBrainz API...");
                 System.Threading.Thread.Sleep(250);
                 SetProgressBarValue(100, "Querying MusicBrainz API...");
@@ -85,13 +85,10 @@ namespace Onlab
             if (tracklist_dataGridTrackList.SelectedItem != null && tracklist_dataGridMatchList.SelectedItem != null)
             {
                 Track selectedTrackOld = tracklist_dataGridTrackList.SelectedItem as Track;
-                test_MatchTableRow selectedTrackCandidate = tracklist_dataGridMatchList.SelectedItem as test_MatchTableRow;
+                Track selectedTrackCandidate = tracklist_dataGridMatchList.SelectedItem as Track;
 
-                AudioMetaData data = new AudioMetaData(selectedTrackCandidate.Title, "", new string[] { selectedTrackCandidate.Artist },
-                    null, 0, 0, 0, 0, 0, 0, "", selectedTrackCandidate.MBID, "", "", "", "", "", "", "");
-                Track t = new Track(data);
-                selectedTrackOld.AddCandidateTrack(t);
-                selectedTrackOld.SelectActiveCandidate(selectedTrackCandidate.MBID);
+                selectedTrackOld.AddCandidateTrack(selectedTrackCandidate);
+                selectedTrackOld.SelectActiveCandidate(selectedTrackCandidate.MetaData.MusicBrainzTrackId);
             }
         }
     }

@@ -24,6 +24,7 @@ namespace Onlab.BLL
             _path = path;
             _fingerprint = fingerprint;
             _duration = duration;
+            _id = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
         }
 
         public void AddMusicFile(ExtensionType type, string path)
@@ -32,8 +33,6 @@ namespace Onlab.BLL
             if (path.Length < 3) throw new ArgumentException();
 
             GlobalVariables.AcoustIDProvider.GetFingerprint(path, callback);
-
-            //_id = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
 
             try
             {

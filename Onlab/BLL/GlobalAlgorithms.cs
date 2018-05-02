@@ -83,39 +83,81 @@ namespace Onlab.BLL
 
 
 
-        public async static Task<List<test_MatchTableRow>> MBTEST(Track track)
+        public async static Task<List<Track>> GetMatchesForTrack(Track track)
         {
-            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
+            List<Track> matches = new List<Track>();
 
-            if (track.MetaData.Title != null)
+            if (!String.IsNullOrEmpty(track.MetaData.MusicBrainzTrackId)) //track has an MBID, we need a lookup
             {
-                try
+                Track result = await GetMatchByMBID(track.MetaData.MusicBrainzTrackId);
+                matches.Add(result);
+            }
+            else if (!String.IsNullOrEmpty(track.MetaData.Title)) //we don't have MBID, we need a search by some metadata
+            {
+                matches = await GetMatchesByMetaData(track.MetaData.Title,
+                    track.MetaData.JoinedAlbumArtists.Split(';').First(), //can be null
+                    track.MetaData.Album); //can be null
+            }
+            else if (!String.IsNullOrEmpty(track.FileHandle.Name)) //we don't have MBID, nor a title, but we can try some magic from the file name
+            {
+                string trackName = GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name);
+                if (trackName.Contains("-"))
                 {
-                    //var releases = GetReleases(track.MetaData.Title, null);
-                    var recordings = await q.FindRecordingsAsync(track.MetaData.Title);
-                    List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
-                    foreach (var item in recordings.Results)
+                    string[] splitted = trackName.Split('-');
+                    if (splitted.Length == 2)
                     {
-                        string title = item.Title;
-                        string artist = null;
-                        if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
-                        else artist = "Unknown";
-                        string mbid = item.MbId.ToString();
-                        test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
-                        rows.Add(row);
+                        if (splitted[0].Length > 0 && splitted[1].Length > 0)
+                        {
+                            string supposedArtist = splitted[0].Trim();
+                            string supposedTitle = splitted[1].Trim();
+                            matches = await GetMatchesByMetaData(supposedTitle, supposedArtist);
+                        }
                     }
-                    return rows;
-                }
-                catch (Exception exc)
-                {
-                    Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
-                        exc.Message, "File: " + track.MetaData.Title);
-                    en.ShowDialog();
-                    //TODO: not here
                 }
             }
-            return new List<test_MatchTableRow>();
+            else
+            {
+                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification(
+                    "Track matching error",
+                    "Cannot query this track against MusicBrainz, since it has no relevant metadata.",
+                    "Try to use fingerprinting!");
+                en.ShowDialog();
+            }
+
+            return matches;
         }
+        private async static Task<Track> GetMatchByMBID(string MBID)
+        {
+            throw new NotImplementedException();
+        }
+        private async static Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
+        {
+            throw new NotImplementedException();
+            /*
+            try
+            {
+                foreach (var item in recordings.Results)
+                {
+                    string title = item.Title;
+                    string artist = null;
+                    if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
+                    else artist = "Unknown";
+                    string mbid = item.MbId.ToString();
+                    test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
+                    rows.Add(row);
+                }
+                return rows;
+            }
+            catch (Exception exc)
+            {
+                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
+                    exc.Message, "File: " + track.MetaData.Title);
+                en.ShowDialog();
+                //TODO: not here
+            }
+            */
+        }
+
         /*
         private static MetaBrainz.MusicBrainz.Interfaces.Searches.ISearchResults<MetaBrainz.MusicBrainz.Interfaces.Searches.IFoundRelease> GetReleases(string title, int? tries)
         {

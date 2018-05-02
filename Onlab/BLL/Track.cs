@@ -117,6 +117,7 @@ namespace Onlab.BLL
                 tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists ?? ""));
                 tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  metaDataCandidates[activeCandidate].MetaData.JoinedGenres ?? ""));
                 tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     metaDataCandidates[activeCandidate].MetaData.BeatsPerMinute.ToString() ?? ""));
+                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     metaDataCandidates[activeCandidate].MetaData.Copyright ?? ""));
                 tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               metaDataCandidates[activeCandidate].MetaData.Year.ToString() ?? ""));
                 tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              metaDataCandidates[activeCandidate].MetaData.Track.ToString() ?? ""));
                 tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         metaDataCandidates[activeCandidate].MetaData.TrackCount.ToString() ?? ""));
@@ -125,7 +126,6 @@ namespace Onlab.BLL
                 tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseArtistId ?? ""));
                 tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId ?? ""));
                 tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             metaDataCandidates[activeCandidate].MetaData.MusicBrainzDiscId ?? ""));
-                tags.Add(new MetaTag("MusicBrainz IP ID",               metaData.MusicIpId ?? "",                     metaDataCandidates[activeCandidate].MetaData.MusicIpId ?? ""));
                 tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseStatus ?? ""));
                 tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseType ?? ""));
                 tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseCountry ?? ""));
@@ -139,6 +139,7 @@ namespace Onlab.BLL
                 tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            ""));
                 tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  ""));
                 tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     ""));
+                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     ""));
                 tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               ""));
                 tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              ""));
                 tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         ""));
@@ -147,7 +148,6 @@ namespace Onlab.BLL
                 tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    ""));
                 tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            ""));
                 tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             ""));
-                tags.Add(new MetaTag("MusicBrainz IP ID",               metaData.MusicIpId ?? "",                     ""));
                 tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      ""));
                 tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        ""));
                 tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     ""));

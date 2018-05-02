@@ -116,7 +116,6 @@
     <Compile Include="BLL\MetaTag.cs" />
     <Compile Include="BLL\PlayTrack.cs" />
     <Compile Include="BLL\PlayzoneData.cs" />
-    <Compile Include="BLL\test_MatchTableRow.cs" />
     <Compile Include="BLL\Track.cs" />
     <Compile Include="BLL\TracklistData.cs" />
     <Compile Include="UI\MainWindow_Data.cs" />

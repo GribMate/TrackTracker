@@ -23,7 +23,7 @@ namespace Onlab.BLL
                 }
             }
         }
-        public string NewValue { get => this.newValue; } //it is generated from MusicBrainz API call, should not be changed
+        public string NewValue { get => newValue; } //it is generated from MusicBrainz API call, should not be changed
 
         public MetaTag(string name, string oldValue, string newValue)
         {

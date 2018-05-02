@@ -47,6 +47,10 @@ namespace Onlab.DAL
         {
             return Path.GetExtension(path).Substring(1); //omitting first char, which is a leading dot
         }
+        public string GetFileNameFromFilePath(string path) //returns only the file name of a fully specified path, without the extension
+        {
+            return Path.GetFileNameWithoutExtension(path);
+        }
 
 
         public List<string> GetAllFilesFromDrive(string driveLetter, string extension) //returns all file paths from a given drive with a given extension

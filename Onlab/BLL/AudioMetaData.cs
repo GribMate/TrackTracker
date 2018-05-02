@@ -19,7 +19,9 @@ namespace Onlab.BLL
         //========== CURRENTLY SUPPORTED ID3 TAGS ==========
         private string title;
         private string album;
+        private string copyright;
         private string[] albumArtists; //used through JoinedAlbumArtists
+        private string[] albumArtistsSort; //used through JoinedAlbumArtistsSort
         private string[] genres; //used through JoinedGenres
         private uint beatsPerMinute;
         private uint year;
@@ -30,7 +32,6 @@ namespace Onlab.BLL
         private string musicBrainzReleaseArtistId;
         private string musicBrainzTrackId;
         private string musicBrainzDiscId;
-        private string musicIpId;
         private string musicBrainzReleaseStatus;
         private string musicBrainzReleaseType;
         private string musicBrainzReleaseCountry;
@@ -71,11 +72,28 @@ namespace Onlab.BLL
                 }
             }
         }
+        public string Copyright
+        {
+            get => copyright;
+            set
+            {
+                if (copyright != value)
+                {
+                    copyright = value;
+                    if (fileHandle != null)
+                    {
+                        fileHandle.Tag.Copyright = value;
+                        fileHandle.Save();
+                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Copyright)));
+                }
+            }
+        }
         public string JoinedAlbumArtists
         {
             get
             {
-                if (genres != null)
+                if (albumArtists != null)
                 {
                     StringBuilder toReturn = new StringBuilder();
                     for (int i = 0; i < albumArtists.Length; i++)
@@ -114,7 +132,51 @@ namespace Onlab.BLL
                     }
                 }
             }
-        } 
+        }
+        public string JoinedAlbumArtistsSort
+        {
+            get
+            {
+                if (albumArtistsSort != null)
+                {
+                    StringBuilder toReturn = new StringBuilder();
+                    for (int i = 0; i < albumArtistsSort.Length; i++)
+                    {
+                        toReturn.Append(albumArtistsSort[i]);
+                        if (i < albumArtistsSort.Length - 1) toReturn.Append(";");
+                    }
+                    return toReturn.ToString();
+                }
+                else return null;
+            }
+            set //checking if value is different might cost more resources then just raising an event
+            {
+                if (value != null)
+                {
+                    if (value.Contains(";"))
+                    {
+                        albumArtistsSort = value.Split(';');
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.AlbumArtistsSort = value.Split(';');
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtistsSort)));
+                    }
+                    else if (value.Length > 1) //still contains data - only 1 artist
+                    {
+                        albumArtistsSort = new string[1];
+                        albumArtistsSort[0] = value;
+                        if (fileHandle != null)
+                        {
+                            fileHandle.Tag.AlbumArtistsSort = new string[1] { value };
+                            fileHandle.Save();
+                        }
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JoinedAlbumArtistsSort)));
+                    }
+                }
+            }
+        }
         public string JoinedGenres
         {
             get
@@ -312,23 +374,6 @@ namespace Onlab.BLL
                 }
             }
         }
-        public string MusicIpId
-        {
-            get => musicIpId;
-            set
-            {
-                if (musicIpId != value)
-                {
-                    musicIpId = value;
-                    if (fileHandle != null)
-                    {
-                        fileHandle.Tag.MusicIpId = value;
-                        fileHandle.Save();
-                    }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MusicIpId)));
-                }
-            }
-        }
         public string MusicBrainzReleaseStatus
         {
             get => musicBrainzReleaseStatus;
@@ -425,7 +470,9 @@ namespace Onlab.BLL
 
             title = file.Tag.Title;
             album = file.Tag.Album;
+            copyright = file.Tag.Copyright;
             albumArtists = file.Tag.AlbumArtists;
+            albumArtistsSort = file.Tag.AlbumArtistsSort;
             genres = file.Tag.Genres;
             beatsPerMinute = file.Tag.BeatsPerMinute;
             year = file.Tag.Year;
@@ -436,18 +483,19 @@ namespace Onlab.BLL
             musicBrainzReleaseArtistId = file.Tag.MusicBrainzReleaseArtistId;
             musicBrainzTrackId = file.Tag.MusicBrainzTrackId;
             musicBrainzDiscId = file.Tag.MusicBrainzDiscId;
-            musicIpId = file.Tag.MusicIpId;
             musicBrainzReleaseStatus = file.Tag.MusicBrainzReleaseStatus;
             musicBrainzReleaseType = file.Tag.MusicBrainzReleaseType;
             musicBrainzReleaseCountry = file.Tag.MusicBrainzReleaseCountry;
             musicBrainzReleaseId = file.Tag.MusicBrainzReleaseId;
             musicBrainzArtistId = file.Tag.MusicBrainzArtistId;
-    }
+        }
         public AudioMetaData
         (
             string title = "",
             string album = "",
+            string copyright = "",
             string[] albumArtists = null,
+            string[] albumArtistsSort = null,
             string[] genres = null,
             uint beatsPerMinute = 0,
             uint year = 0,
@@ -458,7 +506,6 @@ namespace Onlab.BLL
             string musicBrainzReleaseArtistId = "",
             string musicBrainzTrackId = "",
             string musicBrainzDiscId = "",
-            string musicIpId = "",
             string musicBrainzReleaseStatus = "",
             string musicBrainzReleaseType = "",
             string musicBrainzReleaseCountry = "",
@@ -471,7 +518,9 @@ namespace Onlab.BLL
             //no argument checking, because all tags can be null or empty strings
             this.title = title;
             this.album = album;
+            this.copyright = copyright;
             this.albumArtists = albumArtists;
+            this.albumArtistsSort = albumArtistsSort;
             this.genres = genres;
             this.beatsPerMinute = beatsPerMinute;
             this.year = year;
@@ -482,7 +531,6 @@ namespace Onlab.BLL
             this.musicBrainzReleaseArtistId = musicBrainzReleaseArtistId;
             this.musicBrainzTrackId = musicBrainzTrackId;
             this.musicBrainzDiscId = musicBrainzDiscId;
-            this.musicIpId = musicIpId;
             this.musicBrainzReleaseStatus = musicBrainzReleaseStatus;
             this.musicBrainzReleaseType = musicBrainzReleaseType;
             this.musicBrainzReleaseCountry = musicBrainzReleaseCountry;
