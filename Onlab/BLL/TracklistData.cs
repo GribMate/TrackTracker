@@ -13,26 +13,10 @@ namespace Onlab.BLL
             Tracks = new ObservableCollection<Track>();
         }
 
-        private DAL.AcoustIDProvider.FingerPrintCallback callback = callback_fv;
-        private static string _path = "";
-        private static string _fingerprint = "";
-        private static int _duration = 0;
-        private static string _id = "";
-
-        private static void callback_fv(string path, string fingerprint, int duration)
-        {
-            _path = path;
-            _fingerprint = fingerprint;
-            _duration = duration;
-            _id = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
-        }
-
         public void AddMusicFile(ExtensionType type, string path)
         {
             if (path == null) throw new ArgumentNullException();
             if (path.Length < 3) throw new ArgumentException();
-
-            GlobalVariables.AcoustIDProvider.GetFingerprint(path, callback);
 
             try
             {

@@ -128,11 +128,25 @@ namespace Onlab.BLL
         }
         private async static Task<Track> GetMatchByMBID(string MBID)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> result = await GlobalVariables.MusicBrainzProvider.GetRecordingByMBID(MBID);
+
+            ;
+
+            throw new Exception();
+            //TODO breakpoint debug
         }
         private async static Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
-            throw new NotImplementedException();
+            List<Dictionary<string, string>> results = await GlobalVariables.MusicBrainzProvider.GetRecordingsByMetaData(title, 10, artist, album);
+            //TODO: do not hardcode limit here
+
+            foreach (Dictionary<string, string> result in results)
+            {
+
+            }
+
+            throw new Exception();
+            //TODO: breakpoint debug
             /*
             try
             {

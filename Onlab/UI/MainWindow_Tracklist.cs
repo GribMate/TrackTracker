@@ -44,22 +44,33 @@ namespace Onlab
                 else track.IsSelectedInGUI = true;
             }
         }
-        private async void Row_DoubleClick(object sender, MouseButtonEventArgs e)
-        {     
-            if (e.ChangedButton == MouseButton.Left)
+
+        private async void tracklist_buttonSearch_Click(object sender, RoutedEventArgs e) //querying MBAPI
+        {
+            foreach (Track track in GlobalVariables.TracklistData.Tracks)
             {
-                SetProgressBarValue(1, "Querying MusicBrainz API...");
-                Track selectedTrack = tracklist_dataGridTrackList.SelectedItem as Track;
-                SetProgressBarValue(25, "Querying MusicBrainz API...");
-                tracklist_dataGridMatchList.ItemsSource = await GlobalAlgorithms.GetMatchesForTrack(selectedTrack);
-                SetProgressBarValue(75, "Querying MusicBrainz API...");
-                System.Threading.Thread.Sleep(250);
-                SetProgressBarValue(100, "Querying MusicBrainz API...");
-                System.Threading.Thread.Sleep(250);
-                SetProgressBarValue(0, "Querying MusicBrainz API...");
+                if (track.IsSelectedInGUI)
+                {
+                    List<Track> results = new List<Track>();
+                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name));
+                    results = await GlobalAlgorithms.GetMatchesForTrack(track);
+                    tracklist_dataGridMatchList.ItemsSource = results;
+                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name));
+                    System.Threading.Thread.Sleep(100);
+                    SetProgressBarValue(0, " ");
+
+                    if (tracklist_checkBoxAutoSelect.IsChecked.Value && results.Count > 0)
+                    {
+                        //TODO: implement magic
+                        //_id = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
+                        track.AddCandidateTrack(results[0]);
+                        track.SelectActiveCandidate(results[0].MetaData.MusicBrainzTrackId);
+                    }
+                }
             }
         }
-        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e)
+
+        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e) //updating selected tracks
         {
             foreach (Track track in GlobalVariables.TracklistData.Tracks)
             {
@@ -69,7 +80,7 @@ namespace Onlab
                 }
             }
         }
-        private void tracklist_dataGridTrackList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void tracklist_dataGridTrackList_SelectionChanged(object sender, SelectionChangedEventArgs e) //getting details from offline track
         {
             if (tracklist_dataGridTrackList.SelectedItem != null)
             {
@@ -80,7 +91,7 @@ namespace Onlab
                 tracklist_dataGridTagList.ItemsSource = tags;
             }
         }
-        private void tracklist_dataGridMatchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void tracklist_dataGridMatchList_SelectionChanged(object sender, SelectionChangedEventArgs e) //selecting active match
         {
             if (tracklist_dataGridTrackList.SelectedItem != null && tracklist_dataGridMatchList.SelectedItem != null)
             {
@@ -89,7 +100,40 @@ namespace Onlab
 
                 selectedTrackOld.AddCandidateTrack(selectedTrackCandidate);
                 selectedTrackOld.SelectActiveCandidate(selectedTrackCandidate.MetaData.MusicBrainzTrackId);
+
+                //FOR DEBUG ONLY
+                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("For debug", "Active candidate selected!");
+                en.Owner = this;
+                en.ShowDialog();
             }
+        }
+        private void tracklist_buttonGetFingerprint_Click(object sender, RoutedEventArgs e) //getting fingerprint for selected tracks
+        {
+            SetProgressBarValue(25, "Generating fingerprints...");
+            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            {
+                if (track.IsSelectedInGUI)
+                {
+                    GlobalVariables.AcoustIDProvider.GetFingerprint(track.FileHandle.Name, new DAL.AcoustIDProvider.FingerPrintCallback(callback_fv));
+                }
+            }
+        }
+        private void callback_fv(string path, string fingerprint, int duration)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                SetProgressBarValue(75, "Generating fingerprints for" + path);
+                foreach (Track track in GlobalVariables.TracklistData.Tracks)
+                {
+                    if (track.FileHandle.Name == path)
+                    {
+                        track.AcoustID = fingerprint;
+                        //TODO: duration and other non-editable metadata
+                        break; //1 match
+                    }
+                }
+                SetProgressBarValue(0, " ");
+            });
         }
     }
 }

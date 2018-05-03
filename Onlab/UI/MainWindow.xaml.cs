@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -18,6 +19,7 @@ namespace Onlab
         private bool data_fileFormatSelected;
         private bool data_driveLetterSelected;
         private WinForms.FolderBrowserDialog fbdMedia; //the FBD for the music folder path
+        private Timer onlineStatusTimer;
 
         public MainWindow()
         {
@@ -40,21 +42,26 @@ namespace Onlab
 
             tags = new ObservableCollection<MetaTag>();
 
-            SetOnlinestatusUIElement();
+            onlineStatusTimer = new Timer(SetOnlinestatusUIElement, null, 3000, 5000);
+            //checking in every 5 sec, waiting 3 sec before first check to ensure that GUI is loaded
         }
 
-        private void SetOnlinestatusUIElement()
+        private void SetOnlinestatusUIElement(object state)
         {
-            if (GlobalAlgorithms.GetInternetState()) //we have connection
+            labelOnlineStatus.Dispatcher.Invoke( () =>
             {
-                labelOnlineStatus.Content = "Connected";
-                labelOnlineStatus.Foreground = System.Windows.Media.Brushes.LawnGreen;
+                if (GlobalAlgorithms.GetInternetState()) //we have connection
+                {
+                    labelOnlineStatus.Content = "Connected";
+                    labelOnlineStatus.Foreground = System.Windows.Media.Brushes.LawnGreen;
+                }
+                else //no or failed internet connection
+                {
+                    labelOnlineStatus.Content = "Disconnected";
+                    labelOnlineStatus.Foreground = System.Windows.Media.Brushes.Red;
+                }
             }
-            else //no or failed internet connection
-            {
-                labelOnlineStatus.Content = "Disconnected";
-                labelOnlineStatus.Foreground = System.Windows.Media.Brushes.Red;
-            }
+            );
         }
 
         private void menuItemApplicationExit_Click(object sender, RoutedEventArgs e)

@@ -88,11 +88,6 @@
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" SelectionChanged="tracklist_dataGridTrackList_SelectionChanged">
-                                <DataGrid.ItemContainerStyle>
-                                    <Style TargetType="DataGridRow">
-                                        <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
-                                    </Style>
-                                </DataGrid.ItemContainerStyle>
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
                                     <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
@@ -116,9 +111,11 @@
                             </Grid.ColumnDefinitions>
                             <Button x:Name="tracklist_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" Click="tracklist_buttonSelectAll_Click" FontSize="14" />
                             <Button x:Name="tracklist_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="tracklist_buttonReverseSelection_Click" FontSize="14" />
-                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="200,0,0,0" Click="tracklist_buttonManageSources_Click" FontSize="14" />
-                            <Button x:Name="tracklist_buttonUpdateTags" Grid.Column="1" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="10,0,0,0" Click="tracklist_buttonUpdateTags_Click" FontSize="14" />
-                            <Button x:Name="tracklist_buttonSearchSettings" Grid.Column="1" Content="Search settings..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" IsEnabled="False" FontSize="14" />
+                            <Button x:Name="tracklist_buttonManageSources" Grid.Column="0" Content="Manage tracklist sources..." Width="200" Height="50" Margin="140,5,260,5" Click="tracklist_buttonManageSources_Click" FontSize="14" RenderTransformOrigin="0.39,0.54" />
+                            <CheckBox x:Name="tracklist_checkBoxAutoSelect" Content="AutoSelect best match" Margin="265,22,175,13" Foreground="White" FontSize="14" Width="160" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" />
+                            <Button x:Name="tracklist_buttonUpdateTags" Content="Update ID3 tags" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="150" Margin="426,5,0,5" Click="tracklist_buttonUpdateTags_Click" FontSize="14" RenderTransformOrigin="-0.433,0.52" />
+                            <Button x:Name="tracklist_buttonSearch" Grid.Column="1" Content="Search..." HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="150" Margin="0,0,20,0" FontSize="14" Click="tracklist_buttonSearch_Click" />
+                            <Button x:Name="tracklist_buttonGetFingerprint" Content="Get fingerprint for selected tracks" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="220" Margin="10,5,0,5" FontSize="14" Click="tracklist_buttonGetFingerprint_Click" Grid.Column="1" />
                         </Grid>
                         <Grid Grid.Row="3">
                             <DataGrid x:Name="tracklist_dataGridTagList" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
@@ -197,7 +194,7 @@
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Online status:" Foreground="White" FontSize="14" />
-                <Label x:Name="labelOnlineStatus" Grid.Column="1" Content="Disconnected" Foreground="Red" FontSize="14" />
+                <Label x:Name="labelOnlineStatus" Grid.Column="1" Content="Checking..." Foreground="Yellow" FontSize="14" />
                 <Label x:Name="labelProcessingName" Grid.Column="2" Content="Currently processing:" Foreground="White" FontSize="14" Visibility="Hidden" />
                 <Label x:Name="labelProcessingValue" Grid.Column="3" Content="Parsing offline files..." Foreground="White" FontSize="14" Visibility="Hidden" />
                 <ProgressBar x:Name="progressBar" Grid.Column="4" Foreground="#FFC80000" Value="25" FontSize="14" Height="20" Width="250" Visibility="Hidden" />

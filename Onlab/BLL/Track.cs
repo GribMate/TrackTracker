@@ -21,6 +21,8 @@ namespace Onlab.BLL
         private List<Track> metaDataCandidates;
         private int activeCandidate;
 
+        private string acoustID; //TODO: rework storing
+
         public bool IsSelectedInGUI //true if the file is selected via Tracklist GUI
         {
             get => isSelectedInGUI;
@@ -52,6 +54,14 @@ namespace Onlab.BLL
         public AudioMetaData MetaData //ID3 tags of the track
         {
             get => metaData; //don't support on-the-fly changes
+        }
+        public string AcoustID
+        {
+            get => acoustID;
+            set
+            {
+                if (acoustID != value) acoustID = value;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged; //Tracks are 1-1 represented in GUI
@@ -95,64 +105,91 @@ namespace Onlab.BLL
                 return true;
             }
         }
-        public void SetMetaDataFromActiveCandidate()
+        public bool SetMetaDataFromActiveCandidate()
         {
             if (!IsOfflineAccessible || metaDataCandidates.Count < 1 || activeCandidate == -1 ||
                 fileHandle == null) throw new InvalidOperationException();
-            if (activeCandidate < 0 || activeCandidate >= metaDataCandidates.Count) throw new ArgumentOutOfRangeException();
 
-            metaData.Title = metaDataCandidates[activeCandidate].MetaData.Title;
-            metaData.JoinedAlbumArtists = metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists;
-            metaData.MusicBrainzTrackId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId;
+            if (activeCandidate < 0 || activeCandidate >= metaDataCandidates.Count) return false;
+            else
+            {
+                metaData.Title = metaDataCandidates[activeCandidate].MetaData.Title;
+                metaData.Album = metaDataCandidates[activeCandidate].MetaData.Album;
+                metaData.JoinedAlbumArtists = metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists;
+                metaData.JoinedAlbumArtistsSort = metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtistsSort;
+                metaData.JoinedGenres = metaDataCandidates[activeCandidate].MetaData.JoinedGenres;
+                metaData.BeatsPerMinute = metaDataCandidates[activeCandidate].MetaData.BeatsPerMinute;
+                metaData.Copyright = metaDataCandidates[activeCandidate].MetaData.Copyright;
+                metaData.Year = metaDataCandidates[activeCandidate].MetaData.Year;
+                metaData.Track = metaDataCandidates[activeCandidate].MetaData.Track;
+                metaData.TrackCount = metaDataCandidates[activeCandidate].MetaData.TrackCount;
+                metaData.Disc = metaDataCandidates[activeCandidate].MetaData.Disc;
+                metaData.DiscCount = metaDataCandidates[activeCandidate].MetaData.DiscCount;
+                metaData.MusicBrainzReleaseArtistId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseArtistId;
+                metaData.MusicBrainzTrackId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId;
+                metaData.MusicBrainzDiscId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzDiscId;
+                metaData.MusicBrainzReleaseStatus = metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseStatus;
+                metaData.MusicBrainzReleaseType = metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseType;
+                metaData.MusicBrainzReleaseCountry = metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseCountry;
+                metaData.MusicBrainzReleaseId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseId;
+                metaData.MusicBrainzArtistId = metaDataCandidates[activeCandidate].MetaData.MusicBrainzArtistId;
+
+                return true;
+            }
         }
         public List<MetaTag> GetTags()
         {
             if (!IsOfflineAccessible) throw new InvalidOperationException();
 
             List<MetaTag> tags = new List<MetaTag>();
+
+            tags.Add(new MetaTag("AcoustID", acoustID ?? "", acoustID ?? "", this)); //TODO: rework storing
+
             if (activeCandidate != -1 && metaDataCandidates.Count > 0)
             {
-                tags.Add(new MetaTag("Title",                           metaData.Title ?? "",                         metaDataCandidates[activeCandidate].MetaData.Title ?? ""));
-                tags.Add(new MetaTag("Album",                           metaData.Album ?? "",                         metaDataCandidates[activeCandidate].MetaData.Album ?? ""));
-                tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists ?? ""));
-                tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  metaDataCandidates[activeCandidate].MetaData.JoinedGenres ?? ""));
-                tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     metaDataCandidates[activeCandidate].MetaData.BeatsPerMinute.ToString() ?? ""));
-                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     metaDataCandidates[activeCandidate].MetaData.Copyright ?? ""));
-                tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               metaDataCandidates[activeCandidate].MetaData.Year.ToString() ?? ""));
-                tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              metaDataCandidates[activeCandidate].MetaData.Track.ToString() ?? ""));
-                tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         metaDataCandidates[activeCandidate].MetaData.TrackCount.ToString() ?? ""));
-                tags.Add(new MetaTag("Disc",                            metaData.Disc.ToString() ?? "",               metaDataCandidates[activeCandidate].MetaData.Disc.ToString() ?? ""));
-                tags.Add(new MetaTag("Album disc count",                metaData.DiscCount.ToString() ?? "",          metaDataCandidates[activeCandidate].MetaData.DiscCount.ToString() ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseArtistId ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             metaDataCandidates[activeCandidate].MetaData.MusicBrainzDiscId ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseStatus ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseType ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseCountry ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Release ID",          metaData.MusicBrainzReleaseId ?? "",          metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseId ?? ""));
-                tags.Add(new MetaTag("MusicBrainz Artist ID",           metaData.MusicBrainzArtistId ?? "",           metaDataCandidates[activeCandidate].MetaData.MusicBrainzArtistId ?? ""));
+                tags.Add(new MetaTag("Title",                           metaData.Title ?? "",                         metaDataCandidates[activeCandidate].MetaData.Title ?? "", this));
+                tags.Add(new MetaTag("Album",                           metaData.Album ?? "",                         metaDataCandidates[activeCandidate].MetaData.Album ?? "", this));
+                tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtists ?? "", this));
+                tags.Add(new MetaTag("Album artists sort order",        metaData.JoinedAlbumArtistsSort ?? "",        metaDataCandidates[activeCandidate].MetaData.JoinedAlbumArtistsSort ?? "", this));
+                tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  metaDataCandidates[activeCandidate].MetaData.JoinedGenres ?? "", this));
+                tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     metaDataCandidates[activeCandidate].MetaData.BeatsPerMinute.ToString() ?? "", this));
+                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     metaDataCandidates[activeCandidate].MetaData.Copyright ?? "", this));
+                tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               metaDataCandidates[activeCandidate].MetaData.Year.ToString() ?? "", this));
+                tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              metaDataCandidates[activeCandidate].MetaData.Track.ToString() ?? "", this));
+                tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         metaDataCandidates[activeCandidate].MetaData.TrackCount.ToString() ?? "", this));
+                tags.Add(new MetaTag("Disc",                            metaData.Disc.ToString() ?? "",               metaDataCandidates[activeCandidate].MetaData.Disc.ToString() ?? "", this));
+                tags.Add(new MetaTag("Album disc count",                metaData.DiscCount.ToString() ?? "",          metaDataCandidates[activeCandidate].MetaData.DiscCount.ToString() ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseArtistId ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            metaDataCandidates[activeCandidate].MetaData.MusicBrainzTrackId ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             metaDataCandidates[activeCandidate].MetaData.MusicBrainzDiscId ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseStatus ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseType ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseCountry ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Release ID",          metaData.MusicBrainzReleaseId ?? "",          metaDataCandidates[activeCandidate].MetaData.MusicBrainzReleaseId ?? "", this));
+                tags.Add(new MetaTag("MusicBrainz Artist ID",           metaData.MusicBrainzArtistId ?? "",           metaDataCandidates[activeCandidate].MetaData.MusicBrainzArtistId ?? "", this));
             }
             else
             {
-                tags.Add(new MetaTag("Title",                           metaData.Title ?? "",                         ""));
-                tags.Add(new MetaTag("Album",                           metaData.Album ?? "",                         ""));
-                tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            ""));
-                tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  ""));
-                tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     ""));
-                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     ""));
-                tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               ""));
-                tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              ""));
-                tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         ""));
-                tags.Add(new MetaTag("Disc",                            metaData.Disc.ToString() ?? "",               ""));
-                tags.Add(new MetaTag("Album disc count",                metaData.DiscCount.ToString() ?? "",          ""));
-                tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    ""));
-                tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            ""));
-                tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             ""));
-                tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      ""));
-                tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        ""));
-                tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     ""));
-                tags.Add(new MetaTag("MusicBrainz Release ID",          metaData.MusicBrainzReleaseId ?? "",          ""));
-                tags.Add(new MetaTag("MusicBrainz Artist ID",           metaData.MusicBrainzArtistId ?? "",           ""));
+                tags.Add(new MetaTag("Title",                           metaData.Title ?? "",                         "", this));
+                tags.Add(new MetaTag("Album",                           metaData.Album ?? "",                         "", this));
+                tags.Add(new MetaTag("Album artists",                   metaData.JoinedAlbumArtists ?? "",            "", this));
+                tags.Add(new MetaTag("Album artists sort order",        metaData.JoinedAlbumArtistsSort ?? "",        "", this));
+                tags.Add(new MetaTag("Genres",                          metaData.JoinedGenres ?? "",                  "", this));
+                tags.Add(new MetaTag("Beats per Minute",                metaData.BeatsPerMinute.ToString() ?? "",     "", this));
+                tags.Add(new MetaTag("Copyright",                       metaData.Copyright ?? "",                     "", this));
+                tags.Add(new MetaTag("Year",                            metaData.Year.ToString() ?? "",               "", this));
+                tags.Add(new MetaTag("Track",                           metaData.Track.ToString() ?? "",              "", this));
+                tags.Add(new MetaTag("Album track count",               metaData.TrackCount.ToString() ?? "",         "", this));
+                tags.Add(new MetaTag("Disc",                            metaData.Disc.ToString() ?? "",               "", this));
+                tags.Add(new MetaTag("Album disc count",                metaData.DiscCount.ToString() ?? "",          "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Artist ID",   metaData.MusicBrainzReleaseArtistId ?? "",    "", this));
+                tags.Add(new MetaTag("MusicBrainz Track ID",            metaData.MusicBrainzTrackId ?? "",            "", this));
+                tags.Add(new MetaTag("MusicBrainz Disc ID",             metaData.MusicBrainzDiscId ?? "",             "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Status",      metaData.MusicBrainzReleaseStatus ?? "",      "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Type",        metaData.MusicBrainzReleaseType ?? "",        "", this));
+                tags.Add(new MetaTag("MusicBrainz Release Country",     metaData.MusicBrainzReleaseCountry ?? "",     "", this));
+                tags.Add(new MetaTag("MusicBrainz Release ID",          metaData.MusicBrainzReleaseId ?? "",          "", this));
+                tags.Add(new MetaTag("MusicBrainz Artist ID",           metaData.MusicBrainzArtistId ?? "",           "", this));
             }
 
             return tags;
