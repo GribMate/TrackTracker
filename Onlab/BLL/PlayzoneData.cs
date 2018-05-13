@@ -50,5 +50,9 @@ namespace Onlab.BLL
             Track itemToRemove = Tracks.SingleOrDefault(t => t.FileHandle.Name == path);
             if (itemToRemove != null) Tracks.Remove(itemToRemove);
         }
+        public void Clear()
+        {
+            this.Tracks.Clear();
+        }
     }
 }

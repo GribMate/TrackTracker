@@ -94,6 +94,7 @@
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
+    <Compile Include="BLL\Statistics.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
     <Compile Include="DAL\AcoustIDProvider.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="BLL\TracklistData.cs" />
     <Compile Include="UI\MainWindow_Data.cs" />
     <Compile Include="UI\MainWindow_Playzone.cs" />
+    <Compile Include="UI\MainWindow_Statistics.cs" />
     <Compile Include="UI\MainWindow_Tracklist.cs" />
     <Page Include="UI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
@@ -173,6 +175,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="appicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon_playzone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon_dataSources.png" />
+    <Resource Include="Resources\icon_tracklist.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon_statistics.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

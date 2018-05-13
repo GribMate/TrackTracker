@@ -25,8 +25,6 @@ namespace Onlab
         {
             InitializeComponent();
 
-            hasRun = false;
-
             data_fileFormatSelected = false;
             data_driveLetterSelected = false;
 

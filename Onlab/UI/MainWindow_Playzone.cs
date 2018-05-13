@@ -53,18 +53,15 @@ namespace Onlab
             System.Diagnostics.Process.Start("D:\\testplaylist.m3u");
         }
 
-        private bool hasRun = false;
         private void playzone_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (!hasRun)
+            GlobalVariables.PlayzoneData.Clear();
+
+            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllActiveLMPs())
             {
-                hasRun = true;
-                foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllActiveLMPs())
+                foreach (var path in lmp.GetAllFilePaths())
                 {
-                    foreach (var path in lmp.GetAllFilePaths())
-                    {
-                        GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
-                    }
+                    GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
                 }
             }
         }

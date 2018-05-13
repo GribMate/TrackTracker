@@ -9,7 +9,7 @@ namespace Onlab.BLL
     Class: AppConfig
     Description:
         Holds the configuration of the application (every setting that can be altered by the user).
-*/
+    */
     public class AppConfig
     {
         private Dictionary<MediaPlayerType, string> mediaPlayerPaths; //holds exactly one path per MediaPlayerType (or nothing)

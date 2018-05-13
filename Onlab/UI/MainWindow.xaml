@@ -24,7 +24,13 @@
             </MenuItem>
         </Menu>
         <TabControl DockPanel.Dock="Top" TabStripPlacement="Top" Margin="0, 0, 0, 0" Height="710" BorderThickness="0" Padding="1">
-            <TabItem x:Name="datasources" Header="Data sources" Foreground="Red" Initialized="datasources_Initialized">
+            <TabItem x:Name="datasources" Foreground="Red" Initialized="datasources_Initialized">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="16" Width="16" Source="/Resources/icon_dataSources.png" />
+                        <TextBlock Text="Data sources" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF4B4B4B" Offset="0"/>
@@ -58,7 +64,13 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem x:Name="tracklist" Header="Tracklist" Foreground="Red" Initialized="tracklist_Initialized">
+            <TabItem x:Name="tracklist" Foreground="Red" Initialized="tracklist_Initialized">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="16" Width="16" Source="/Resources/icon_tracklist.png" />
+                        <TextBlock Text="Tracklist" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF4B4B4B" Offset="0"/>
@@ -87,7 +99,7 @@
                                 <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="tracklist_dataGridTrackList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" SelectionChanged="tracklist_dataGridTrackList_SelectionChanged">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" SelectionChanged="tracklist_dataGridTrackList_SelectionChanged" AlternatingRowBackground="#FFC8C8C8">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
                                     <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
@@ -96,7 +108,7 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid x:Name="tracklist_dataGridMatchList" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14" SelectionChanged="tracklist_dataGridMatchList_SelectionChanged">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14" SelectionChanged="tracklist_dataGridMatchList_SelectionChanged" AlternatingRowBackground="#FFC8C8C8">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Artist}" />
                                     <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Title}"/>
@@ -119,7 +131,7 @@
                         </Grid>
                         <Grid Grid.Row="3">
                             <DataGrid x:Name="tracklist_dataGridTagList" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" HorizontalAlignment="Left">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" HorizontalAlignment="Left" AlternatingRowBackground="#FFC8C8C8" AreRowDetailsFrozen="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tag" Width="300" Binding="{Binding Name, Mode=OneTime}" />
                                     <DataGridTextColumn Header="Old value" Width="*" Binding="{Binding OldValue, Mode=TwoWay}"/>
@@ -130,7 +142,13 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem x:Name="playzone" Header="Playzone" Foreground="Red" Initialized="playzone_Initialized" GotFocus="playzone_GotFocus">
+            <TabItem x:Name="playzone" Foreground="Red" Initialized="playzone_Initialized" GotFocus="playzone_GotFocus">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="16" Width="16" Source="/Resources/icon_playzone.png" />
+                        <TextBlock Text="Playzone" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FF4B4B4B" Offset="0"/>
@@ -181,6 +199,23 @@
                             <Button x:Name="playzone_buttonAddToMix" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" Click="playzone_buttonAddToMix_Click" FontSize="14" />
                         </Grid>
                     </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem x:Name="statistics" Foreground="Red" Initialized="datasources_Initialized">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="16" Width="16" Source="/Resources/icon_statistics.png" />
+                        <TextBlock Text="Statistics" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FF4B4B4B" Offset="0"/>
+                        <GradientStop Color="#FF323232" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <StackPanel Background="#FF323232">
+                    
                 </StackPanel>
             </TabItem>
         </TabControl>
