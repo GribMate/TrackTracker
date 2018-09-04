@@ -167,7 +167,7 @@
                                 <ColumnDefinition Width="250" />
                             </Grid.ColumnDefinitions>
                             <DataGrid x:Name="playzone_dataGridPlayList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
                                     <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.JoinedAlbumArtists}" />
