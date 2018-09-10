@@ -27,7 +27,7 @@ namespace Onlab.BLL
     /*
     Class: Statistics
     Description:
-        Generated each time, the Tracklist changes and holds all currently generated statistical values of it.
+        Generated each time the Tracklist changes and holds all currently generated statistical values of it.
     */
     public class Statistics
     {

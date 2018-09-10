@@ -16,6 +16,11 @@ namespace Onlab
     /// </summary>
     public partial class MainWindow : Window
     {
+        //--------------------------------------------------PIECHART--------------------------------------
+        private ObservableCollection<WPFPieChart.AssetClass> classes;
+        //--------------------------------------------------PIECHART--------------------------------------
+
+
         private bool data_fileFormatSelected;
         private bool data_driveLetterSelected;
         private WinForms.FolderBrowserDialog fbdMedia; //the FBD for the music folder path
@@ -24,6 +29,12 @@ namespace Onlab
         public MainWindow()
         {
             InitializeComponent();
+
+            //--------------------------------------------------PIECHART--------------------------------------
+            // create our test dataset and bind it
+            classes = new ObservableCollection<WPFPieChart.AssetClass>(WPFPieChart.AssetClass.ConstructTestData());
+            this.DataContext = classes;
+            //--------------------------------------------------PIECHART--------------------------------------
 
             data_fileFormatSelected = false;
             data_driveLetterSelected = false;

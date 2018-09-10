@@ -123,6 +123,24 @@
     <Compile Include="UI\MainWindow_Playzone.cs" />
     <Compile Include="UI\MainWindow_Statistics.cs" />
     <Compile Include="UI\MainWindow_Tracklist.cs" />
+    <Compile Include="UI\PieChart\BaseWPFHelpers.cs" />
+    <Compile Include="UI\PieChart\PieChart\ColourConverter.cs" />
+    <Compile Include="UI\PieChart\PieChart\IColorSelector.cs" />
+    <Compile Include="UI\PieChart\PieChart\IndexedColourSelector.cs" />
+    <Compile Include="UI\PieChart\PieChart\Legend.xaml.cs">
+      <DependentUpon>Legend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\PieChart\LegendConverter.cs" />
+    <Compile Include="UI\PieChart\PieChart\PieChartLayout.xaml.cs">
+      <DependentUpon>PieChartLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\PieChart\PiePlotter.xaml.cs">
+      <DependentUpon>PiePlotter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\Shapes\PiePiece.cs" />
+    <Compile Include="UI\PieChart\TestData\AssetClass.cs" />
+    <Compile Include="UI\PieChart\Util\FormattingConverter.cs" />
+    <Compile Include="UI\PieChart\Util\Utils.cs" />
     <Page Include="UI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +163,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\PieChart\PieChart\Legend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\PieChart\PieChart\PieChartLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\PieChart\PieChart\PiePlotter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -186,5 +216,6 @@
   <ItemGroup>
     <Resource Include="Resources\icon_statistics.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Onlab"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Onlab.MainWindow"
+        xmlns:c="clr-namespace:ScottLogic.Controls.PieChart"
         mc:Ignorable="d"
         Title="TrackTracker" Height="800" Width="1200" Foreground="White" FontSize="16" MinWidth="1200" MinHeight="797" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">
+
+    <Window.Resources>
+        <x:ArrayExtension Type="{x:Type Brush}" x:Key="brushes">
+            <SolidColorBrush Color="#9F15C3"/>
+            <SolidColorBrush Color="#FF8E01"/>
+            <SolidColorBrush Color="#339933"/>
+            <SolidColorBrush Color="#00AAFF"/>
+            <SolidColorBrush Color="#818183"/>
+            <SolidColorBrush Color="#000033"/>
+        </x:ArrayExtension>
+    </Window.Resources>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20" Background="#FF323232" Foreground="White">
             <MenuItem Header="Application" Foreground="White">
@@ -227,7 +240,14 @@
                                 <ColumnDefinition Width="600" />
                                 <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Height="250" Width="250" Source="/Resources/icon_statistics.png" Margin="10,40,340,10" />
+
+                            <c:PieChartLayout HorizontalAlignment="Center" Grid.Column="0" Margin="10,40,340,10"
+                              x:Name="piePlotter" PlottedProperty="Fund">
+                                <c:PieChartLayout.ColorSelector>
+                                    <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
+                                </c:PieChartLayout.ColorSelector>
+                            </c:PieChartLayout>
+
                             <Label Grid.Column="0" Content="Tracks by artist" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
                             <Label Grid.Column="0" Content="Most frequent artist:" HorizontalAlignment="Left" Margin="296,64,0,0" VerticalAlignment="Top" Foreground="White"/>
                             <Label x:Name="labelArtistName" Grid.Column="0" Content="Linkin Park" HorizontalAlignment="Left" Margin="339,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
