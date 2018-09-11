@@ -94,6 +94,7 @@
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
+    <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />

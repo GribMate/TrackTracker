@@ -244,7 +244,7 @@ namespace ScottLogic.Controls.PieChart
 
             //TODO possibel type conversion?
 
-            return (double)itemValue;
+            return (uint)itemValue;
         }
 
         /// <summary>

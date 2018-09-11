@@ -20,6 +20,10 @@ namespace Onlab
             Statistics statistics = new Statistics();
             statistics.GenerateStatistics(GlobalVariables.TracklistData.Tracks.ToList<Track>(), true, true, true, true, true, true);
 
+            //--------------------------------------------------PIECHART--------------------------------------
+            this.DataContext = new ObservableCollection<StatisticalData>(statistics.GetCountsByArtist());
+            //--------------------------------------------------PIECHART--------------------------------------
+
             if (statistics.TotalCount > 0) labelTotalCount.Content = statistics.TotalCount.ToString();
             else labelTotalCount.Content = "0";
             if (statistics.ProperlyTagged > 0) labelProperlyTagged.Content = statistics.ProperlyTagged.ToString();

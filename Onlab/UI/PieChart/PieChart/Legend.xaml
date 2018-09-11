@@ -57,7 +57,7 @@
                                        Fill="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource colourConverter}}"/>
                              
                             <!-- the name of this item -->
-                            <TextBlock Grid.Column="1" Margin="3" Text="{Binding Path=Class}"/>
+                            <TextBlock Grid.Column="1" Margin="3" Text="{Binding Path=Name}"/>
 
                             <!-- the value of the item's property which this pie chart represents -->
                             <TextBlock Grid.Column="2" Margin="3" Tag="{Binding}"
