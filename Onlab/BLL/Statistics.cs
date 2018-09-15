@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace Onlab.BLL
     /*
     Class: Statistics
     Description:
-        Generated each time, the Tracklist changes and holds all currently generated statistical values of it.
+        Generated each time the Tracklist changes and holds all currently generated statistical values of it.
     */
     public class Statistics
     {
@@ -168,6 +168,16 @@ namespace Onlab.BLL
             }
         }
 
+        public List<StatisticalData> GetCountsByArtist()
+        {
+            List<StatisticalData> data = new List<StatisticalData>();
+            foreach (KeyValuePair<string, uint> pair in countsByArtist)
+            {
+                data.Add(new StatisticalData() { Name = pair.Key, Count = pair.Value });
+            }
+            return data;
+        }
+
         private int CountProperlyTagged(List<Track> tracks)
         {
             int count = 0;
@@ -175,7 +185,7 @@ namespace Onlab.BLL
             {
                 //we assume that if MBID for the track / release was properly set, then every other metadata were too
                 //it's rather safe to do and avoids exhausting metadata check (furthermore doesn't raise the question: when do we recognize a set of metadata as complete)
-                if (!String.IsNullOrEmpty(track.MetaData.MusicBrainzReleaseId) || !String.IsNullOrEmpty(track.MetaData.MusicBrainzReleaseId)) count++;
+                if (!String.IsNullOrEmpty(track.MetaData.MusicBrainzReleaseId) || !String.IsNullOrEmpty(track.MetaData.MusicBrainzTrackId)) count++;
             }
             return count;
         }

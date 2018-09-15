@@ -94,17 +94,18 @@
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
+    <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
     <Compile Include="DAL\AcoustIDProvider.cs" />
-    <Compile Include="DAL\FingerprinterUtility\AudioDecoder.cs" />
-    <Compile Include="DAL\FingerprinterUtility\AudioProperties.cs" />
-    <Compile Include="DAL\FingerprinterUtility\IAudioDecoder.cs" />
     <Compile Include="DAL\FingerprinterUtility\NAudioDecoder.cs" />
+    <Compile Include="DAL\Interfaces\IAcoustIDProvider.cs" />
+    <Compile Include="DAL\Interfaces\IAudioDecoderProvider.cs" />
     <Compile Include="DAL\Interfaces\IDatabaseProvider.cs" />
     <Compile Include="DAL\Interfaces\IEnvironmentProvider.cs" />
     <Compile Include="DAL\Interfaces\IFileProvider.cs" />
+    <Compile Include="DAL\Interfaces\IFLACDecompresserProvider.cs" />
     <Compile Include="DAL\Interfaces\IMusicBrainzProvider.cs" />
     <Compile Include="DAL\MusicBrainzProvider.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
@@ -123,6 +124,24 @@
     <Compile Include="UI\MainWindow_Playzone.cs" />
     <Compile Include="UI\MainWindow_Statistics.cs" />
     <Compile Include="UI\MainWindow_Tracklist.cs" />
+    <Compile Include="UI\PieChart\BaseWPFHelpers.cs" />
+    <Compile Include="UI\PieChart\PieChart\ColourConverter.cs" />
+    <Compile Include="UI\PieChart\PieChart\IColorSelector.cs" />
+    <Compile Include="UI\PieChart\PieChart\IndexedColourSelector.cs" />
+    <Compile Include="UI\PieChart\PieChart\Legend.xaml.cs">
+      <DependentUpon>Legend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\PieChart\LegendConverter.cs" />
+    <Compile Include="UI\PieChart\PieChart\PieChartLayout.xaml.cs">
+      <DependentUpon>PieChartLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\PieChart\PiePlotter.xaml.cs">
+      <DependentUpon>PiePlotter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PieChart\Shapes\PiePiece.cs" />
+    <Compile Include="UI\PieChart\TestData\AssetClass.cs" />
+    <Compile Include="UI\PieChart\Util\FormattingConverter.cs" />
+    <Compile Include="UI\PieChart\Util\Utils.cs" />
     <Page Include="UI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +164,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\PieChart\PieChart\Legend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\PieChart\PieChart\PieChartLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\PieChart\PieChart\PiePlotter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -186,5 +217,6 @@
   <ItemGroup>
     <Resource Include="Resources\icon_statistics.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

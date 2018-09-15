@@ -18,7 +18,7 @@ namespace Onlab.DAL
     */
     public class AcoustIDProvider //TODO: add through interface, add proper async-await functions
     {
-        public delegate void FingerPrintCallback(string path, string fingerprint, int duration);
+        public delegate void FingerPrintCallback(string path, string fingerprint, int duration, NAudioDecoder decoder);
 
         public void GetFingerprint(string filePath, FingerPrintCallback callback)
         {
@@ -26,7 +26,7 @@ namespace Onlab.DAL
             if (filePath.Length < 8) throw new ArgumentException(); //"C:\x.mp3" is 8 chars long
             if (!File.Exists(filePath)) throw new FileNotFoundException();
 
-            IAudioDecoder decoder = new NAudioDecoder(filePath);
+            NAudioDecoder decoder = new NAudioDecoder(filePath);
 
             /*
              * Various audio data for example. Might be implemented later onto GUI.
@@ -47,13 +47,13 @@ namespace Onlab.DAL
                 decoder.Decode(context.Consumer, 120);
                 context.Finish();
 
-                callback(filePath, context.GetFingerprint(), decoder.Format.Duration); //returning results
+                callback(filePath, context.GetFingerprint(), decoder.Duration, decoder); //returning results
             });
         }
 
         public async Task<string> GetIDByFingerprint(string fingerprint, int duration)
         {
-            Configuration.ClientKey = "CImoilnU"; //TODO: get own client key
+            Configuration.ClientKey = "JRfomg6Xqm";
 
             LookupService service = new LookupService();
             LookupResponse response = await service.GetAsync(fingerprint, duration, new string[] { "recordings", "compress" });
@@ -63,7 +63,7 @@ namespace Onlab.DAL
                 Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error", "Error in AcoustID WebAPI.");
                 en.ShowDialog();
             }
-            if (response.Results.Count == 0)
+            else if (response.Results.Count == 0)
             {
                 Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Empty", "No results for given fingerprint.");
                 en.ShowDialog();

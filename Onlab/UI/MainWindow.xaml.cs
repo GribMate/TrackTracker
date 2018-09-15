@@ -24,7 +24,6 @@ namespace Onlab
         public MainWindow()
         {
             InitializeComponent();
-
             data_fileFormatSelected = false;
             data_driveLetterSelected = false;
 
