@@ -241,13 +241,19 @@
                                 <ColumnDefinition Width="600" />
                             </Grid.ColumnDefinitions>
 
-                            
+                            <!--
                             <c:PieChartLayout HorizontalAlignment="Center" Grid.Column="0" Height="250" Width="500" Margin="5,40,100,10"
                               x:Name="piePlotter" PlottedProperty="Count">
                                 <c:PieChartLayout.ColorSelector>
                                     <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
                                 </c:PieChartLayout.ColorSelector>
                             </c:PieChartLayout>
+                            
+                            THIS SECTION NEEDS THE MVVM PATTERN IMPLEMENTED (OR FIDDLING WITH DATACONTEXTS AND BINDIG)
+                            TO WORK PROPERLY.
+                            WILL FIX IN A LATER PHASE.
+                            
+                            -->
                             
                            
                             

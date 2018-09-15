@@ -99,13 +99,13 @@
     <Compile Include="DAL\DatabaseProvider.cs" />
     <Compile Include="DAL\EnvironmentProvider.cs" />
     <Compile Include="DAL\AcoustIDProvider.cs" />
-    <Compile Include="DAL\FingerprinterUtility\AudioDecoder.cs" />
-    <Compile Include="DAL\FingerprinterUtility\AudioProperties.cs" />
-    <Compile Include="DAL\FingerprinterUtility\IAudioDecoder.cs" />
     <Compile Include="DAL\FingerprinterUtility\NAudioDecoder.cs" />
+    <Compile Include="DAL\Interfaces\IAcoustIDProvider.cs" />
+    <Compile Include="DAL\Interfaces\IAudioDecoderProvider.cs" />
     <Compile Include="DAL\Interfaces\IDatabaseProvider.cs" />
     <Compile Include="DAL\Interfaces\IEnvironmentProvider.cs" />
     <Compile Include="DAL\Interfaces\IFileProvider.cs" />
+    <Compile Include="DAL\Interfaces\IFLACDecompresserProvider.cs" />
     <Compile Include="DAL\Interfaces\IMusicBrainzProvider.cs" />
     <Compile Include="DAL\MusicBrainzProvider.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">

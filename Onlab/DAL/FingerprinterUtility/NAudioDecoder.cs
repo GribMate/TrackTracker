@@ -1,27 +1,56 @@
 ﻿using System;
 using System.IO;
 using AcoustID.Chromaprint;
+using AcoustID.Audio;
 using NAudio.Wave;
 
 
 
 namespace Onlab.DAL.FingerprinterUtility
 {
-    public class NAudioDecoder : AudioDecoder
+    public class NAudioDecoder : IDecoder, IDisposable
     {
-        WaveStream reader;
-        string file;
+        private static readonly int BUFFER_SIZE = 2 * 192000;
+        private WaveStream reader;
+        private string file;
+
+        public int Duration { get; private set; } //Gets the duration of the audio source (in seconds).
+        public int SampleRate { get; private set; } //Gets the sample rate of the audio source.
+        public int Channels { get; private set; } //Gets the number of channels.
+        public int BitDepth { get; private set; } //Gets the sample rate of the audio source (must be 16 bits per sample).  
 
         public NAudioDecoder(string file)
         {
             this.file = file;
 
+            // Initialization.
             // Open the WaveStream and keep it open until Dispose() is called. This might lock
             // the file. A better approach would be to open the stream only when needed.
-            Initialize();
+            var extension = Path.GetExtension(file).ToLowerInvariant();
+
+            if (extension.Equals(".wav"))
+            {
+                reader = new WaveFileReader(file);
+            }
+            else
+            {
+                reader = new Mp3FileReader(file);
+            }
+
+            WaveFormat format = reader.WaveFormat;
+
+            Duration = (int)reader.TotalTime.TotalSeconds;
+            SampleRate = format.SampleRate;
+            Channels = format.Channels;
+            BitDepth = format.BitsPerSample;
+
+            if (format.BitsPerSample != 16)
+            {
+                Dispose(true);
+            }
         }
 
-        public override bool Decode(IAudioConsumer consumer, int maxLength)
+        public bool Decode(IAudioConsumer consumer, int maxLength)
         {
             if (reader == null) return false;
 
@@ -30,7 +59,7 @@ namespace Onlab.DAL.FingerprinterUtility
             short[] data = new short[BUFFER_SIZE];
 
             // Samples to read to get maxLength seconds of audio
-            remaining = maxLength * this.Format.Channels * this.sampleRate;
+            remaining = maxLength * Channels * SampleRate;
 
             // Bytes to read
             length = 2 * Math.Min(remaining, BUFFER_SIZE);
@@ -53,38 +82,12 @@ namespace Onlab.DAL.FingerprinterUtility
             return true;
         }
 
-        private void Initialize()
-        {
-            var extension = Path.GetExtension(file).ToLowerInvariant();
-
-            if (extension.Equals(".wav"))
-            {
-                reader = new WaveFileReader(file);
-            }
-            else
-            {
-                reader = new Mp3FileReader(file);
-            }
-
-            var format = reader.WaveFormat;
-
-            this.sampleRate = format.SampleRate;
-            this.channels = format.Channels;
-
-            this.Format = new AudioProperties(format.SampleRate, format.BitsPerSample,
-                format.Channels, (int)reader.TotalTime.TotalSeconds);
-
-            if (format.BitsPerSample != 16)
-            {
-                Dispose(true);
-            }
-        }
 
         #region IDisposable implementation
 
         private bool hasDisposed = false;
 
-        public override void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

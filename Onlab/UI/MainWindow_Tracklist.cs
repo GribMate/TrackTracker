@@ -17,6 +17,8 @@ namespace Onlab
     {
         private ObservableCollection<MetaTag> tags;
 
+        private int todo_duration = -1;
+
 
         private void tracklist_Initialized(object sender, EventArgs e)
         {
@@ -70,13 +72,15 @@ namespace Onlab
             }
         }
 
-        private void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e) //updating selected tracks
+        private async void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e) //updating selected tracks
         {
             foreach (Track track in GlobalVariables.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI)
                 {
-                    track.SetMetaDataFromActiveCandidate();
+                    //track.SetMetaDataFromActiveCandidate();
+                    string trial_ID = await GlobalVariables.AcoustIDProvider.GetIDByFingerprint(track.AcoustID, todo_duration);
+                    track.MetaData.Copyright = trial_ID;
                 }
             }
         }
@@ -118,7 +122,7 @@ namespace Onlab
                 }
             }
         }
-        private void callback_fv(string path, string fingerprint, int duration)
+        private void callback_fv(string path, string fingerprint, int duration, DAL.FingerprinterUtility.NAudioDecoder decoder)
         {
             this.Dispatcher.Invoke(() =>
             {
@@ -128,12 +132,15 @@ namespace Onlab
                     if (track.FileHandle.Name == path)
                     {
                         track.AcoustID = fingerprint;
+                        todo_duration = duration;
+                        //string trial_ID = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
                         //TODO: duration and other non-editable metadata
                         break; //1 match
                     }
                 }
                 SetProgressBarValue(0, " ");
             });
+            decoder.Dispose();
         }
     }
 }
