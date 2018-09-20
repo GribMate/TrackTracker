@@ -44,7 +44,7 @@ namespace Onlab.BLL
                     }
                     sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
                     values[3] = sb.ToString();
-                    GlobalVariables.DatabaseProvider.InsertInto("LocalMediaPacks", values);
+                    GlobalVariables.DatabaseService.InsertInto("LocalMediaPacks", values);
                 }
 
                 return true; //added successfully

@@ -3,19 +3,19 @@ using System.IO;
 using System.Data.SQLite;
 using System.Collections.Generic;
 
-using Onlab.DAL.Interfaces;
+using Onlab.Services.Interfaces;
 
 
 
-namespace Onlab.DAL
+namespace Onlab.Services
 {
     /*
-    Class: DatabaseProvider
+    Class: SQLiteService
     Description:
         Implements database persistence.
         Uses SQLite provider and locally stored DB file.
     */
-    public class DatabaseProvider : IDatabaseProvider
+    public class SQLiteService : IDatabaseService
     {
         //TODO: implement try-catch error handling and argument checking
         //TODO: more commenting
@@ -24,7 +24,7 @@ namespace Onlab.DAL
 
         private string connString;
 
-        public DatabaseProvider()
+        public SQLiteService()
         {
             connString = @"Data Source=" + databaseFileName + ";Version=3;Password=" + password;
         }

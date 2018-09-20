@@ -1,25 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-using Onlab.DAL.Interfaces;
+using Onlab.Services.Interfaces;
 
 
 
-namespace Onlab.DAL
+namespace Onlab.Services
 {
     /*
-    Class: FileProvider
+    Class: FileService
     Description:
-        Implements IFileProvider on Windows file systems.
+        Implements IFileService on Windows file systems.
     */
-    public class FileProvider : IFileProvider
+    public class FileService : IFileService
     {
         //TODO: try-catch error handling
 
         private List<string> paths; //helper variable to hold paths for recursive search (avoid stack overflow via parameter)
         private string extension; //helper variable to hold supported extension for recursive search (avoid stack overflow via parameter)
 
-        public FileProvider()
+        public FileService()
         {
             paths = new List<string>();
             extension = null; //must be overwritten by function calls
@@ -87,7 +87,7 @@ namespace Onlab.DAL
 
         private void RecursiveDirectorySearch(string path)
         {
-            string searchPattern = "*." + extension.ToLower(); //case shouldnt matter, but its probably safer in lower case
+            string searchPattern = "*." + extension.ToLower(); //case shouldn't matter, but its probably safer in lower case
             foreach (string file in Directory.GetFiles(path, searchPattern))
             {
                 paths.Add(file);

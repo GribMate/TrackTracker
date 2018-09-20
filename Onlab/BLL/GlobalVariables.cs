@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Onlab.DAL;
-using Onlab.DAL.Interfaces;
+using Onlab.Services;
+using Onlab.Services.Interfaces;
 
 
 
@@ -69,11 +69,11 @@ namespace Onlab.BLL
     */
     public static class GlobalVariables
     {
-        public static IDatabaseProvider DatabaseProvider;
-        public static IFileProvider FileProvider;
-        public static IEnvironmentProvider EnvironmentProvider;
-        public static IMusicBrainzProvider MusicBrainzProvider;
-        public static AcoustIDProvider AcoustIDProvider;
+        public static IDatabaseService DatabaseService;
+        public static IFileService FileService;
+        public static IEnvironmentService EnvironmentService;
+        public static IMetadataService MetadataService;
+        public static IFingerprintService FingerprintService;
 
         public static AppConfig AppConfig;
         public static LocalMediaPackContainer LocalMediaPackContainer; //persistent settings through the whole application
@@ -83,11 +83,11 @@ namespace Onlab.BLL
 
         public static void Initialize() //gets called by GlobalAlgorithms.Initalize() - first actual method to run when application starts
         {
-            DatabaseProvider = new DatabaseProvider();
-            FileProvider = new FileProvider();
-            EnvironmentProvider = new EnvironmentProvider();
-            MusicBrainzProvider = new MusicBrainzProvider();
-            AcoustIDProvider = new AcoustIDProvider();
+            DatabaseService = new SQLiteService();
+            FileService = new FileService();
+            EnvironmentService = new WindowsEnvironmentService();
+            MetadataService = new MusicBrainzService();
+            FingerprintService = new AcoustIDService();
 
             AppConfig = new AppConfig();
             LocalMediaPackContainer = new LocalMediaPackContainer();

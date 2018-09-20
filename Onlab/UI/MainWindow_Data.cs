@@ -19,7 +19,7 @@ namespace Onlab
         {
             //TODO: need to call only once, probably should be placed in constructor
 
-            foreach (string driveName in GlobalVariables.EnvironmentProvider.GetExternalDriveNames())
+            foreach (string driveName in GlobalVariables.EnvironmentService.GetExternalDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -54,7 +54,7 @@ namespace Onlab
         {
             if (fbdMedia.ShowDialog() == WinForms.DialogResult.OK)
             {
-                if (GlobalVariables.FileProvider.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
+                if (GlobalVariables.FileService.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
@@ -70,12 +70,12 @@ namespace Onlab
                 ExtensionType type = (ExtensionType)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
                 lmp = new LocalMediaPack(drive, true, type);
-                GlobalAlgorithms.LoadFilesFromDrive(GlobalVariables.FileProvider, lmp, drive, type);
+                GlobalAlgorithms.LoadFilesFromDrive(GlobalVariables.FileService, lmp, drive, type);
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
                 lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false);
-                GlobalAlgorithms.LoadFilesFromDirectory(GlobalVariables.FileProvider, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
+                GlobalAlgorithms.LoadFilesFromDirectory(GlobalVariables.FileService, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }

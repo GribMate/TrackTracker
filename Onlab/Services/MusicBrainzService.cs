@@ -11,18 +11,18 @@ using MetaBrainz.MusicBrainz.Interfaces.Searches;
 using MetaBrainz.MusicBrainz.Objects;
 using MetaBrainz.MusicBrainz.Objects.Submissions;
 
-using Onlab.DAL.Interfaces;
+using Onlab.Services.Interfaces;
 
 
 
-namespace Onlab.DAL
+namespace Onlab.Services
 {
     /*
     Class: IMusicBrainzProvider
     Description:
-        Implements IMusicBrainzProvider via MetaBrainz.MusicBrainz.
+        Implements IMusicBrainzService via MetaBrainz.MusicBrainz.
     */
-    class MusicBrainzProvider : IMusicBrainzProvider
+    class MusicBrainzService : IMetadataService
     {
         public async Task<Dictionary<string, string>> GetRecordingByMBID(string MBID) //returns exactly one recording by it's GUID MBID
         {

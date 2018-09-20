@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Onlab.DAL.Interfaces;
+using Onlab.Services.Interfaces;
 
 
 
@@ -22,17 +22,17 @@ namespace Onlab.BLL
         {
             GlobalVariables.Initialize(); //prepares data structures
 
-            if (!GlobalVariables.DatabaseProvider.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
+            if (!GlobalVariables.DatabaseService.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
             else LoadPersistence(); //app has run before, we need to load persistence from DB
         }
         private static void FirstRunSetup() //creates a new empty database and forms it's data structure
         {
-            GlobalVariables.DatabaseProvider.CreateDatabase(); //creating empty
-            GlobalVariables.DatabaseProvider.FormatNewDatabase(); //formatting existing
+            GlobalVariables.DatabaseService.CreateDatabase(); //creating empty
+            GlobalVariables.DatabaseService.FormatNewDatabase(); //formatting existing
         }
         private static void LoadPersistence() //loads all data from an already existing database file
         {
-            List<string[]> lmpRows = GlobalVariables.DatabaseProvider.GetAllRows("LocalMediaPacks"); //getting LocalMediaPack objects
+            List<string[]> lmpRows = GlobalVariables.DatabaseService.GetAllRows("LocalMediaPacks"); //getting LocalMediaPack objects
 
             // ============================== casting and loading LocalMediaPack objects ==============================
 
@@ -48,7 +48,7 @@ namespace Onlab.BLL
                     LocalMediaPack lmp = new LocalMediaPack(rootPath, isResultOfDriveSearch, baseExtension);
                     foreach (string path in filePaths.Split('|'))
                     {
-                        ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileProvider.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
+                        ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileService.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
                         lmp.AddFilePath(path, type);
                     }
                     GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, false); //adding to current container
@@ -56,20 +56,20 @@ namespace Onlab.BLL
             }
         }
 
-        public static void LoadFilesFromDrive(IFileProvider provider, LocalMediaPack lmp, string driveLetter, ExtensionType type) //loads all the files with the given extension from a given drive into an LMP object, using a provider
+        public static void LoadFilesFromDrive(IFileService service, LocalMediaPack lmp, string driveLetter, ExtensionType type) //loads all the files with the given extension from a given drive into an LMP object, using a service
         {
-            List<string> paths = provider.GetAllFilesFromDrive(driveLetter, type.ToString()); //no typed extensions when calling to DAL
+            List<string> paths = service.GetAllFilesFromDrive(driveLetter, type.ToString()); //no typed extensions when calling to DAL
             foreach (string path in paths)
             {
                 lmp.AddFilePath(path, type); //loading up the LMP object
             }
         }
-        public static void LoadFilesFromDirectory(IFileProvider provider, LocalMediaPack lmp, string path) //loads all the files with the given extension from a given directory into an LMP object, using a provider
+        public static void LoadFilesFromDirectory(IFileService service, LocalMediaPack lmp, string path) //loads all the files with the given extension from a given directory into an LMP object, using a service
         {
             //when loading from a directory, we want all the supported file types to be read, so we iterate through the extensions
             foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
             {
-                List<string> paths = provider.GetAllFilesFromDirectory(path, ext.ToString()); //no typed extensions when calling to DAL
+                List<string> paths = service.GetAllFilesFromDirectory(path, ext.ToString()); //no typed extensions when calling to DAL
                 foreach (string currPath in paths)
                 {
                     lmp.AddFilePath(currPath, ext); //loading up the LMP object
@@ -78,7 +78,7 @@ namespace Onlab.BLL
         }
         public static bool GetInternetState() //returns true if the application has live internet connection
         {
-            return GlobalVariables.EnvironmentProvider.InternetConnectionIsAlive();
+            return GlobalVariables.EnvironmentService.InternetConnectionIsAlive();
         }
 
 
@@ -100,7 +100,7 @@ namespace Onlab.BLL
             }
             else if (!String.IsNullOrEmpty(track.FileHandle.Name)) //we don't have MBID, nor a title, but we can try some magic from the file name
             {
-                string trackName = GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name);
+                string trackName = GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name);
                 if (trackName.Contains("-"))
                 {
                     string[] splitted = trackName.Split('-');
@@ -128,7 +128,7 @@ namespace Onlab.BLL
         }
         private async static Task<Track> GetMatchByMBID(string MBID)
         {
-            Dictionary<string, string> result = await GlobalVariables.MusicBrainzProvider.GetRecordingByMBID(MBID);
+            Dictionary<string, string> result = await GlobalVariables.MetadataService.GetRecordingByMBID(MBID);
 
             ;
 
@@ -137,7 +137,7 @@ namespace Onlab.BLL
         }
         private async static Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
-            List<Dictionary<string, string>> results = await GlobalVariables.MusicBrainzProvider.GetRecordingsByMetaData(title, 10, artist, album);
+            List<Dictionary<string, string>> results = await GlobalVariables.MetadataService.GetRecordingsByMetaData(title, 10, artist, album);
             //TODO: do not hardcode limit here
 
             foreach (Dictionary<string, string> result in results)

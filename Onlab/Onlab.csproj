@@ -96,18 +96,15 @@
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
-    <Compile Include="DAL\DatabaseProvider.cs" />
-    <Compile Include="DAL\EnvironmentProvider.cs" />
-    <Compile Include="DAL\AcoustIDProvider.cs" />
-    <Compile Include="DAL\FingerprinterUtility\NAudioDecoder.cs" />
-    <Compile Include="DAL\Interfaces\IAcoustIDProvider.cs" />
-    <Compile Include="DAL\Interfaces\IAudioDecoderProvider.cs" />
-    <Compile Include="DAL\Interfaces\IDatabaseProvider.cs" />
-    <Compile Include="DAL\Interfaces\IEnvironmentProvider.cs" />
-    <Compile Include="DAL\Interfaces\IFileProvider.cs" />
-    <Compile Include="DAL\Interfaces\IFLACDecompresserProvider.cs" />
-    <Compile Include="DAL\Interfaces\IMusicBrainzProvider.cs" />
-    <Compile Include="DAL\MusicBrainzProvider.cs" />
+    <Compile Include="Services\SQLiteService.cs" />
+    <Compile Include="Services\WindowsEnvironmentService.cs" />
+    <Compile Include="Services\AcoustIDService.cs" />
+    <Compile Include="Services\Interfaces\IFingerprintService.cs" />
+    <Compile Include="Services\Interfaces\IDatabaseService.cs" />
+    <Compile Include="Services\Interfaces\IEnvironmentService.cs" />
+    <Compile Include="Services\Interfaces\IFileService.cs" />
+    <Compile Include="Services\Interfaces\IMetadataService.cs" />
+    <Compile Include="Services\MusicBrainzService.cs" />
     <Compile Include="UI\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>
     </Compile>
@@ -158,7 +155,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DAL\FileProvider.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="BLL\GlobalVariables.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

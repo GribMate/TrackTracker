@@ -1,30 +1,9 @@
-// _________________________________________________________________________________________
-//  Name:       BaseWPHHelpers
-//  Purpose:    Common helpers for tree walking etc
-//  Author:     Andrew Whiddett
-//  (c) Copyright 2006 REZN8 Productions Inc
-// _________________________________________________________________________________________
-
-#region Using
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
-using System.Data.Common;
-using System.Configuration;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Threading;
 using System.Windows;
-using System.Windows.Threading;
-using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-#endregion
 
 
 namespace BaseWPFHelpers

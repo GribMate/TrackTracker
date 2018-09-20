@@ -2,14 +2,14 @@
 
 
 
-namespace Onlab.DAL.Interfaces
+namespace Onlab.Services.Interfaces
 {
     /*
-    Interface: IDatabaseProvider
+    Interface: IDatabaseService
     Description:
         Handles main data persistence.
     */
-    public interface IDatabaseProvider
+    public interface IDatabaseService
     {
         bool DatabaseExists { get; } //returns true if the SQLite database file already exists
 

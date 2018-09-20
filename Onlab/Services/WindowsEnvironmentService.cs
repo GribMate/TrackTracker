@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using System.Net;
 
-using Onlab.DAL.Interfaces;
+using Onlab.Services.Interfaces;
 
 
 
-namespace Onlab.DAL
+namespace Onlab.Services
 {
     /*
-    Class: EnvironmentProvider
+    Class: WindowsEnvironmentService
     Description:
-        Implements IEnvironmentProvider, currently on Windows platform via Win32 API and .NET Framework 4.6.1 calls.
+        Implements IEnvironmentService, currently on Windows platform via Win32 API and .NET Framework 4.6.1 calls.
     */
-    public class EnvironmentProvider : IEnvironmentProvider
+    public class WindowsEnvironmentService : IEnvironmentService
     {
         public bool InternetConnectionIsAlive() //returns true if the application can connect to the internet
         {

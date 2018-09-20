@@ -2,14 +2,14 @@
 
 
 
-namespace Onlab.DAL.Interfaces
+namespace Onlab.Services.Interfaces
 {
     /*
-    Interface: IFileProvider
+    Interface: IFileService
     Description:
         Handles input and output operations on the file system.
     */
-    public interface IFileProvider
+    public interface IFileService
     {
         bool MediaPathIsValid(string path); //determines whether the given media folder is valid
         bool FileExists(string path); //determines wether a given file path is valid and the file does exist

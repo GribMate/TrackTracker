@@ -54,10 +54,10 @@ namespace Onlab
                 if (track.IsSelectedInGUI)
                 {
                     List<Track> results = new List<Track>();
-                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name));
+                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
                     results = await GlobalAlgorithms.GetMatchesForTrack(track);
                     tracklist_dataGridMatchList.ItemsSource = results;
-                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalVariables.FileProvider.GetFileNameFromFilePath(track.FileHandle.Name));
+                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
                     System.Threading.Thread.Sleep(100);
                     SetProgressBarValue(0, " ");
 
@@ -79,7 +79,7 @@ namespace Onlab
                 if (track.IsSelectedInGUI)
                 {
                     //track.SetMetaDataFromActiveCandidate();
-                    string trial_ID = await GlobalVariables.AcoustIDProvider.GetIDByFingerprint(track.AcoustID, todo_duration);
+                    string trial_ID = await GlobalVariables.FingerprintService.GetIDByFingerprint(track.AcoustID, todo_duration);
                     track.MetaData.Copyright = trial_ID;
                 }
             }
@@ -118,11 +118,11 @@ namespace Onlab
             {
                 if (track.IsSelectedInGUI)
                 {
-                    GlobalVariables.AcoustIDProvider.GetFingerprint(track.FileHandle.Name, new DAL.AcoustIDProvider.FingerPrintCallback(callback_fv));
+                    GlobalVariables.FingerprintService.GetFingerprint(track.FileHandle.Name, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
                 }
             }
         }
-        private void callback_fv(string path, string fingerprint, int duration, DAL.FingerprinterUtility.NAudioDecoder decoder)
+        private void callback_fv(string path, string fingerprint, int duration, Services.NAudioDecoder decoder)
         {
             this.Dispatcher.Invoke(() =>
             {

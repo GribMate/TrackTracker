@@ -71,7 +71,7 @@ namespace Onlab
             switch (type)
             {
                 case MediaPlayerType.Foobar2000:
-                    string path = GlobalVariables.EnvironmentProvider.TryFindFoobar();
+                    string path = GlobalVariables.EnvironmentService.TryFindFoobar();
                     if (path.Length > 2)
                     {
                         GlobalVariables.AppConfig.AddMediaPlayerPath(type, path);
