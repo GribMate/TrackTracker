@@ -12,6 +12,6 @@ namespace Onlab.Services.Interfaces
     public interface IMetadataService
     {       
         Task<AudioMetaData> GetRecordingByMBID(string MBID); //returns exactly one recording by it's GUID MBID
-        Task<List<AudioMetaData>> GetRecordingsByMetaData(string title, int limit, string artist = null, string album = null); //returns all the recordings which correspond to the parameters
+        Task<List<AudioMetaData>> GetRecordingsByMetaData(string title, string artist = null, string album = null, int? limit = null); //returns all the recordings which correspond to the parameters
     }
 }

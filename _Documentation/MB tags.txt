@@ -1,0 +1,21 @@
+.ArtistCredit[x].Artist = Linkin Park
+.EntityType = Recording
+.Isrcs = null
+.Length = null
+.MbId = {MBID}
+.Title = "Faint"
+
+.Releases[x].ArtistCredit[x].Artist = Linkin Park
+	.Asin
+	.Barcode
+	.Country (Code)
+	.Date
+	.EntityType
+	.MbId
+	.Media[x]
+		.Format = CD
+		.Position
+		.TrackCount
+
+
+.Score = 100

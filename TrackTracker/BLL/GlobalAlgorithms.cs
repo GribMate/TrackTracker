@@ -130,85 +130,20 @@ namespace Onlab.BLL
         {
             AudioMetaData result = await GlobalVariables.MetadataService.GetRecordingByMBID(MBID);
 
-            ;
-
-            throw new Exception();
-            //TODO breakpoint debug
+            return new Track(result);
         }
         private async static Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
-            List<AudioMetaData> results = await GlobalVariables.MetadataService.GetRecordingsByMetaData(title, 10, artist, album);
-            //TODO: do not hardcode limit here
+            List<AudioMetaData> results = await GlobalVariables.MetadataService.GetRecordingsByMetaData(title, artist, album);
+
+            List<Track> toReturn = new List<Track>();
 
             foreach (AudioMetaData result in results)
             {
-
+                toReturn.Add(new Track(result));
             }
 
-            throw new Exception();
-            //TODO: breakpoint debug
-            /*
-            try
-            {
-                foreach (var item in recordings.Results)
-                {
-                    string title = item.Title;
-                    string artist = null;
-                    if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
-                    else artist = "Unknown";
-                    string mbid = item.MbId.ToString();
-                    test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
-                    rows.Add(row);
-                }
-                return rows;
-            }
-            catch (Exception exc)
-            {
-                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error while searching MusicBrainz",
-                    exc.Message, "File: " + track.MetaData.Title);
-                en.ShowDialog();
-                //TODO: not here
-            }
-            */
+            return toReturn;
         }
-
-        /*
-        private static MetaBrainz.MusicBrainz.Interfaces.Searches.ISearchResults<MetaBrainz.MusicBrainz.Interfaces.Searches.IFoundRelease> GetReleases(string title, int? tries)
-        {
-            MetaBrainz.MusicBrainz.Query q = new MetaBrainz.MusicBrainz.Query("TrackTracker");
-
-            try
-            {
-                return q.FindRecordingsAsync(title, tries);
-            }
-            catch (Exception)
-            {
-                if (tries == null) tries = 10;
-                else if (tries > 1) tries--;
-                else return null;
-
-                return GetReleases(title, tries);
-            }
-        }
-        */
-
-        /*
-        else
-        {
-            var recordings = q.FindRecordings(selectedTrack.MetaData.Title);
-            List<test_MatchTableRow> rows = new List<test_MatchTableRow>();
-            foreach (var item in recordings.Results)
-            {
-                string title = item.Title;
-                string artist = null;
-                if (item.ArtistCredit.Count > 0) artist = item.ArtistCredit[0].Artist.Name;
-                else artist = "Unknown";
-                string mbid = item.MbId.ToString();
-                test_MatchTableRow row = new test_MatchTableRow(artist, title, mbid);
-                rows.Add(row);
-            }
-            tracklist_dataGridMatchList.ItemsSource = rows;
-        }
-        */
     }
 }
