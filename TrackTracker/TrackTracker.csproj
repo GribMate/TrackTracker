@@ -60,6 +60,9 @@
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="SpotifyAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpotifyAPI-NET.2.19.0\lib\SpotifyAPI.dll</HintPath>
+    </Reference>
     <Reference Include="SQLite.Designer">
       <HintPath>..\packages\SQLite\SQLite.Designer.dll</HintPath>
     </Reference>
@@ -106,6 +109,8 @@
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
+    <Compile Include="Services\Interfaces\ISpotifyService.cs" />
+    <Compile Include="Services\SpotifyService.cs" />
     <Compile Include="Services\SQLiteService.cs" />
     <Compile Include="Services\WindowsEnvironmentService.cs" />
     <Compile Include="Services\AcoustIDService.cs" />
