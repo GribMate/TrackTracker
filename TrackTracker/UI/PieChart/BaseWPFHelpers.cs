@@ -403,7 +403,7 @@ namespace BaseWPFHelpers
                         {
                             meCast.Pause();
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                         }
                     }
@@ -430,7 +430,7 @@ namespace BaseWPFHelpers
                     {
                         meCast.Play();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }

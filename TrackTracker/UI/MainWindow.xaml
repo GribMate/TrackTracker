@@ -74,6 +74,16 @@
                                 <Button x:Name="data_buttonAddFiles" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" IsEnabled="False" Click="data_buttonAddFiles_Click" />
                             </Grid>
                         </GroupBox>
+                        <GroupBox Grid.Row="1" Header="Spotify account" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14">
+                            <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="1150">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="You can add playlists from Spotify to TrackTracker. Note that these can be used for playback (on Spotify) and statistics only." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
+                                <Button Grid.Row="1" x:Name="data_buttonLinkSpotify" Content="Link Spotify account" Width="200" Height="40" Click="data_buttonLinkSpotify_Click" />
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </StackPanel>
             </TabItem>

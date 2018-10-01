@@ -82,6 +82,10 @@ namespace Onlab
 
             GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, true);
         }
+        private void data_buttonLinkSpotify_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalVariables.SpotifyService.TEST_LOGIN_PLAYLIST();
+        }
         private void data_comboBoxFileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             data_fileFormatSelected = true;

@@ -2,6 +2,9 @@
 
 using Onlab.Services;
 using Onlab.Services.Interfaces;
+//TODO
+using TrackTracker.Services;
+using TrackTracker.Services.Interfaces;
 
 
 
@@ -74,6 +77,7 @@ namespace Onlab.BLL
         public static IEnvironmentService EnvironmentService;
         public static IMetadataService MetadataService;
         public static IFingerprintService FingerprintService;
+        public static ISpotifyService SpotifyService;
 
         public static AppConfig AppConfig;
         public static LocalMediaPackContainer LocalMediaPackContainer; //persistent settings through the whole application
@@ -88,6 +92,7 @@ namespace Onlab.BLL
             EnvironmentService = new WindowsEnvironmentService();
             MetadataService = new MusicBrainzService();
             FingerprintService = new AcoustIDService();
+            SpotifyService = new SpotifyService();
 
             AppConfig = new AppConfig();
             LocalMediaPackContainer = new LocalMediaPackContainer();
