@@ -113,6 +113,11 @@
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
+    <Compile Include="BLL\Model\MetaData.cs" />
+    <Compile Include="BLL\Model\MetaTagBase.cs" />
+    <Compile Include="BLL\Model\MetaTagCollection.cs" />
+    <Compile Include="BLL\Model\MetaTagNumber.cs" />
+    <Compile Include="BLL\Model\MetaTagString.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="Services\Interfaces\ISpotifyService.cs" />
