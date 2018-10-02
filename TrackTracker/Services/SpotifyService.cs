@@ -18,12 +18,33 @@ namespace TrackTracker.Services
         private static string _clientId = "dda143ae78d64b43a8e390d5fdbc8cce";
         private static string _secretId = "045ea52fa6d440718c900bacbd3dd4f5";
 
+        private static SpotifyWebAPI api = null;
+
         public void TEST_LOGIN_PLAYLIST()
         {
-            AuthorizationCodeAuth auth = new AuthorizationCodeAuth(_clientId, _secretId, "http://localhost:4002", "http://localhost:4002", Scope.PlaylistReadPrivate | Scope.PlaylistReadCollaborative);
+            AuthorizationCodeAuth auth = new AuthorizationCodeAuth(_clientId, _secretId, "http://localhost:4002", "http://localhost:4002",
+                Scope.PlaylistModifyPrivate | Scope.PlaylistModifyPublic | Scope.PlaylistReadCollaborative |
+                Scope.PlaylistReadPrivate | Scope.Streaming | Scope.UserFollowModify | Scope.UserFollowRead |
+                Scope.UserLibraryModify | Scope.UserLibraryRead | Scope.UserModifyPlaybackState |
+                Scope.UserReadBirthdate | Scope.UserReadCurrentlyPlaying | Scope.UserReadEmail |
+                Scope.UserReadPlaybackState | Scope.UserReadPrivate | Scope.UserReadRecentlyPlayed |
+                Scope.UserTopRead);
             auth.AuthReceived += AuthOnAuthReceived;
             auth.Start();
             auth.OpenBrowser();
+        }
+
+        public async Task<string> TEST_PLAYING()
+        {
+            PlaybackContext context = await api.GetPlaybackAsync();
+            if (context.Item != null)
+            {
+                return context.Item.Name;
+            }
+            else
+            {
+                return "No playing track found / error.";
+            }
         }
 
         private async void AuthOnAuthReceived(object sender, AuthorizationCode payload)
@@ -32,15 +53,15 @@ namespace TrackTracker.Services
             auth.Stop();
 
             Token token = await auth.ExchangeCode(payload.Code);
-            SpotifyWebAPI api = new SpotifyWebAPI
+            api = new SpotifyWebAPI
             {
                 AccessToken = token.AccessToken,
                 TokenType = token.TokenType
             };
-            PrintUsefulData(api);
+            PrintUsefulData();
         }
 
-        private async void PrintUsefulData(SpotifyWebAPI api)
+        private async void PrintUsefulData()
         {
             PrivateProfile profile = await api.GetPrivateProfileAsync();
             string name = string.IsNullOrEmpty(profile.DisplayName) ? profile.Id : profile.DisplayName;
@@ -56,8 +77,6 @@ namespace TrackTracker.Services
                     System.Windows.MessageBox.Show($"- {playlist.Name}", "Playlist found:");
                 });
             } while (playlists.HasNextPage());
-
-
         }
     }
 }

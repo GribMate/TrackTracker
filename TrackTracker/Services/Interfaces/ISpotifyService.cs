@@ -9,5 +9,6 @@ namespace TrackTracker.Services.Interfaces
     public interface ISpotifyService
     {
         void TEST_LOGIN_PLAYLIST();
+        Task<string> TEST_PLAYING();
     }
 }

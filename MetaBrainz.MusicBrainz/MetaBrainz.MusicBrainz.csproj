@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <OutputPath>D:\Projektek\WIP\Onlab\MetaBrainz.MusicBrainz\\Debug\</OutputPath>
+    <OutputPath>D:\Projektek\WIP\TrackTracker\MetaBrainz.MusicBrainz\\Debug\</OutputPath>
   </PropertyGroup>
 
 </Project>

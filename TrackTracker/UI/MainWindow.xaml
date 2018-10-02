@@ -210,6 +210,7 @@
                                 <ComboBox x:Name="playzone_comboBoxPlayerType" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" SelectionChanged="playzone_comboBoxPlayerType_SelectionChanged" Margin="0,0,10,0" FontSize="14" />
                                 <Label Grid.Row="2" Content="Player detected @" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" />
                                 <TextBlock Grid.Row="3" x:Name="playzone_textBlockPlayerLocation" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="14" Height="70" Width="215" Foreground="#FF00C800"/>
+                                <Button x:Name="playzone_buttonSpotifyPlayPause" Grid.Row="4" Content="Spotify Play/Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="125" Margin="1,0,0,0" Click="playzone_buttonSpotifyPlayPause_Click" FontSize="14" />
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="1">

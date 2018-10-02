@@ -80,5 +80,9 @@ namespace Onlab
                     break;
             }
         }
+        private async void playzone_buttonSpotifyPlayPause_Click(object sender, RoutedEventArgs e)
+        {
+            playzone_textBlockPlayerLocation.Text = await GlobalVariables.SpotifyService.TEST_PLAYING();
+        }
     }
 }
