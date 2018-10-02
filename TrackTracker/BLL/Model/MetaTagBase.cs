@@ -18,5 +18,10 @@ namespace TrackTracker.BLL.Model
             Key = key;
             Value = value;
         }
+
+        public new virtual string ToString() // Default printing service by ToString() redefinement - ease of use
+        {
+            return (Value == null) ? null : Value.ToString();
+        }
     }
 }

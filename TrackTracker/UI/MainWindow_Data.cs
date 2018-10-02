@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 using WinForms = System.Windows.Forms;
 using Onlab.BLL;
+using TrackTracker.BLL.Enums;
 
 
 
@@ -67,7 +68,7 @@ namespace Onlab
 
             if (data_radioButtonDrive.IsChecked == true)
             {
-                ExtensionType type = (ExtensionType)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
+                SupportedFileExtension type = (SupportedFileExtension)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
                 lmp = new LocalMediaPack(drive, true, type);
                 GlobalAlgorithms.LoadFilesFromDrive(GlobalVariables.FileService, lmp, drive, type);

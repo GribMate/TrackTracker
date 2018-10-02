@@ -4,13 +4,13 @@ namespace TrackTracker.BLL.Model
 {
     /*
      * Represents one single key-value pair that is associated with a metadata element of a track (can be local file or remote data),
-     * where the value is a number.
+     * where the value is a Globally Unique Identifier (GUID).
     */
-    public class MetaTagNumber : MetaTagBase
+    public class MetaTagGUID : MetaTagBase
     {
-        public new int? Value { get; set; }
+        public new Guid? Value { get; set; }
 
-        public MetaTagNumber(string key, int? value = null) : base(key, value)
+        public MetaTagGUID(string key, Guid? value = null) : base(key, value)
         {
             Value = value;
         }

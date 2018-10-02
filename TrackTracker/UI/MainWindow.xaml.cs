@@ -6,6 +6,7 @@ using System.Windows;
 
 using WinForms = System.Windows.Forms;
 using Onlab.BLL;
+using TrackTracker.BLL.Enums;
 
 
 
@@ -27,8 +28,8 @@ namespace Onlab
             data_fileFormatSelected = false;
             data_driveLetterSelected = false;
 
-            //load up the file format selection box with the currently supported values from ExtensionType instead of burning values in
-            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
+            //load up the file format selection box with the currently supported values from SupportedFileExtension instead of burning values in
+            foreach (SupportedFileExtension ext in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>()) //casting to get typed iteration, just in case
             {
                 data_comboBoxFileFormat.Items.Add(ext.ToString());
             }

@@ -11,7 +11,6 @@ namespace TrackTracker.BLL.Model
         public static char Delimiter { get; } // Cannot be changed per instance
 
         // Value and JoinedValue properties are always synchronized and consistent with each other
-
         private string[] _value;
         public new string[] Value
         {
@@ -51,6 +50,11 @@ namespace TrackTracker.BLL.Model
         public MetaTagCollection(string key, string joinedValue = null) : base (key, joinedValue)
         {
             JoinedValue = joinedValue;
+        }
+
+        public new string ToString() // Joined string printing service by ToString() redefinement - ease of use
+        {
+            return (String.IsNullOrWhiteSpace(JoinedValue)) ? null : JoinedValue;
         }
 
         private string GetJoinedFromArray(string[] array)

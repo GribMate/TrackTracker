@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
+using TrackTracker.BLL.Enums;
+
 namespace Onlab.BLL
 {
     public class TracklistData
@@ -13,7 +15,7 @@ namespace Onlab.BLL
             Tracks = new ObservableCollection<Track>();
         }
 
-        public void AddMusicFile(ExtensionType type, string path)
+        public void AddMusicFile(SupportedFileExtension type, string path)
         {
             if (path == null) throw new ArgumentNullException();
             if (path.Length < 3) throw new ArgumentException();
@@ -23,10 +25,10 @@ namespace Onlab.BLL
                 TagLib.File audioFile = null;
                 switch (type)
                 {
-                    case ExtensionType.MP3:
+                    case SupportedFileExtension.MP3:
                         audioFile = new TagLib.Mpeg.AudioFile(path);
                         break;
-                    case ExtensionType.FLAC:
+                    case SupportedFileExtension.FLAC:
                         audioFile = new TagLib.Flac.File(path);
                         break;
                     default:

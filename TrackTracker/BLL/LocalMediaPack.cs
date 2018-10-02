@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using TrackTracker.BLL.Enums;
+
 
 
 namespace Onlab.BLL
@@ -15,8 +17,8 @@ namespace Onlab.BLL
     public class LocalMediaPack
     {
         private string rootPath; //the root of the LMP can be the drive letter (external drive search) or the root folder path (folder search)
-        private ExtensionType baseExtension; //only relevant if the pack contains the results of an external drive search
-        private Dictionary<string, ExtensionType> filePaths; //the found paths (each path is unique)
+        private SupportedFileExtension baseExtension; //only relevant if the pack contains the results of an external drive search
+        private Dictionary<string, SupportedFileExtension> filePaths; //the found paths (each path is unique)
         private bool isResultOfDriveSearch; //decides between the two supported modes of searches
 
         public static string GetRootPathFromFormattedName(string formattedName) //returns the rootPath of any LMP object by its formatted name
@@ -29,11 +31,11 @@ namespace Onlab.BLL
             else return formattedName; //result of folder search
         }
 
-        public LocalMediaPack(string rootPath, bool isResultOfDriveSearch, ExtensionType baseExtension = ExtensionType.MP3)
+        public LocalMediaPack(string rootPath, bool isResultOfDriveSearch, SupportedFileExtension baseExtension = SupportedFileExtension.MP3)
         {
             this.rootPath = rootPath;
             this.baseExtension = baseExtension; //will not be used if isResultOfDriveSearch = false
-            this.filePaths = new Dictionary<string, ExtensionType>();
+            this.filePaths = new Dictionary<string, SupportedFileExtension>();
             this.isResultOfDriveSearch = isResultOfDriveSearch;
         }
 
@@ -41,7 +43,7 @@ namespace Onlab.BLL
         {
             get => rootPath;
         }
-        public ExtensionType BaseExtension
+        public SupportedFileExtension BaseExtension
         {
             get => baseExtension;
         }
@@ -50,7 +52,7 @@ namespace Onlab.BLL
             get => isResultOfDriveSearch;
         }
 
-        public bool AddFilePath(string path, ExtensionType type) //adds a new path of a file inside the LMP's root directory
+        public bool AddFilePath(string path, SupportedFileExtension type) //adds a new path of a file inside the LMP's root directory
         {
             if (path is null) throw new ArgumentNullException();
             if (path.Length < 8) throw new ArgumentException(); //"C:\x.mp3" is 8 chars
@@ -62,7 +64,7 @@ namespace Onlab.BLL
                 return true; //added successfully
             }
         }
-        public bool ModifyFilePath(string oldPath, string newPath, ExtensionType newType) //changes an already existing file path
+        public bool ModifyFilePath(string oldPath, string newPath, SupportedFileExtension newType) //changes an already existing file path
         {
             if (oldPath is null || newPath is null) throw new ArgumentNullException();
             if (oldPath.Length < 8 || newPath.Length < 8) throw new ArgumentException(); //"C:\x.mp3" is 8 chars
@@ -87,15 +89,15 @@ namespace Onlab.BLL
                 return true; //deleted successfully
             }
         }
-        public bool GetFileExtensionType(string path, out ExtensionType type) //returns an already existing path's extension type
+        public bool GetFileSupportedFileExtension(string path, out SupportedFileExtension type) //returns an already existing path's extension type
         {
             //we don't have to re-write "get value" logic, since Dictionary already provides it
             //however, we still want to hide the internal data structure
             return filePaths.TryGetValue(path, out type);
         }
-        public Dictionary<string, ExtensionType> GetAllFilePaths() //returns all of the file paths if any
+        public Dictionary<string, SupportedFileExtension> GetAllFilePaths() //returns all of the file paths if any
         {
-            return new Dictionary<string, ExtensionType>(filePaths); //copying to avoid modification via reference
+            return new Dictionary<string, SupportedFileExtension>(filePaths); //copying to avoid modification via reference
         }
         public string GetFormattedName() //returns the displayable name of the object
         {

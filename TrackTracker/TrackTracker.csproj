@@ -110,14 +110,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BLL\AppConfig.cs" />
+    <Compile Include="BLL\Enums\LyricsLanguages.cs" />
+    <Compile Include="BLL\Enums\MusicGenres.cs" />
+    <Compile Include="BLL\Enums\MusicMoods.cs" />
+    <Compile Include="BLL\Enums\SupportedFileExtension.cs" />
+    <Compile Include="BLL\Enums\SupportedMediaPlayers.cs" />
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalAlgorithms.cs" />
     <Compile Include="BLL\Model\MetaData.cs" />
+    <Compile Include="BLL\Model\MetaDataExtended.cs" />
     <Compile Include="BLL\Model\MetaTagBase.cs" />
     <Compile Include="BLL\Model\MetaTagCollection.cs" />
+    <Compile Include="BLL\Model\MetaTagGUID.cs" />
     <Compile Include="BLL\Model\MetaTagNumber.cs" />
     <Compile Include="BLL\Model\MetaTagString.cs" />
+    <Compile Include="BLL\Model\MusicFileProperties.cs" />
+    <Compile Include="BLL\Model\TrackBase.cs" />
+    <Compile Include="BLL\Model\TrackLocal.cs" />
+    <Compile Include="BLL\Model\TrackVirtual.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="Services\Interfaces\ISpotifyService.cs" />

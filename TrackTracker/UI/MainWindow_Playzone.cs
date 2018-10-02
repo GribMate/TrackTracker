@@ -8,8 +8,7 @@ using System.Windows.Input;
 
 using WinForms = System.Windows.Forms;
 using Onlab.BLL;
-
-
+using TrackTracker.BLL.Enums;
 
 namespace Onlab
 {
@@ -17,8 +16,9 @@ namespace Onlab
     {
         private void playzone_Initialized(object sender, EventArgs e)
         {
+            //TODO: after refactor this will not work this way
             //load up the player type selection box with the currently supported values from MediaPlayerType instead of burning values in
-            foreach (MediaPlayerType ext in Enum.GetValues(typeof(MediaPlayerType)).Cast<MediaPlayerType>()) //casting to get typed iteration, just in case
+            foreach (SupportedMediaPlayers ext in Enum.GetValues(typeof(SupportedMediaPlayers)).Cast<SupportedMediaPlayers>()) //casting to get typed iteration, just in case
             {
                 playzone_comboBoxPlayerType.Items.Add(ext.ToString());
             }
@@ -67,10 +67,10 @@ namespace Onlab
         }
         private void playzone_comboBoxPlayerType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MediaPlayerType type = (MediaPlayerType)playzone_comboBoxPlayerType.SelectedIndex; //will always correspond to the proper value (see constructor)
+            SupportedMediaPlayers type = (SupportedMediaPlayers)playzone_comboBoxPlayerType.SelectedIndex; //will always correspond to the proper value (see constructor)
             switch (type)
             {
-                case MediaPlayerType.Foobar2000:
+                case SupportedMediaPlayers.Foobar2000:
                     string path = GlobalVariables.EnvironmentService.TryFindFoobar();
                     if (path.Length > 2)
                     {

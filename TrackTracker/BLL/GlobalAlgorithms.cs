@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Onlab.Services.Interfaces;
+using TrackTracker.BLL.Enums;
 
 
 
@@ -20,8 +21,6 @@ namespace Onlab.BLL
     {
         public static void Initialize() //first function to be called after OS gave control (and before GUI loads)
         {
-            GlobalVariables.Initialize(); //prepares data structures
-
             if (!GlobalVariables.DatabaseService.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
             else LoadPersistence(); //app has run before, we need to load persistence from DB
         }
@@ -41,14 +40,14 @@ namespace Onlab.BLL
                 foreach (string[] row in lmpRows)
                 {
                     string rootPath = row[0];
-                    ExtensionType baseExtension = (row[1].Length > 0) ? (ExtensionType)Enum.Parse(typeof(ExtensionType), row[1]) : ExtensionType.MP3; //default type is MP3 if cell is null
+                    SupportedFileExtension baseExtension = (row[1].Length > 0) ? (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), row[1]) : SupportedFileExtension.MP3; //default type is MP3 if cell is null
                     bool isResultOfDriveSearch = Int32.Parse(row[2]) == 1;
                     string filePaths = row[3]; //array of strings, divided by "|"
 
                     LocalMediaPack lmp = new LocalMediaPack(rootPath, isResultOfDriveSearch, baseExtension);
                     foreach (string path in filePaths.Split('|'))
                     {
-                        ExtensionType type = (ExtensionType)Enum.Parse(typeof(ExtensionType), GlobalVariables.FileService.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
+                        SupportedFileExtension type = (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), GlobalVariables.FileService.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
                         lmp.AddFilePath(path, type);
                     }
                     GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, false); //adding to current container
@@ -56,7 +55,7 @@ namespace Onlab.BLL
             }
         }
 
-        public static void LoadFilesFromDrive(IFileService service, LocalMediaPack lmp, string driveLetter, ExtensionType type) //loads all the files with the given extension from a given drive into an LMP object, using a service
+        public static void LoadFilesFromDrive(IFileService service, LocalMediaPack lmp, string driveLetter, SupportedFileExtension type) //loads all the files with the given extension from a given drive into an LMP object, using a service
         {
             List<string> paths = service.GetAllFilesFromDrive(driveLetter, type.ToString()); //no typed extensions when calling to DAL
             foreach (string path in paths)
@@ -67,7 +66,7 @@ namespace Onlab.BLL
         public static void LoadFilesFromDirectory(IFileService service, LocalMediaPack lmp, string path) //loads all the files with the given extension from a given directory into an LMP object, using a service
         {
             //when loading from a directory, we want all the supported file types to be read, so we iterate through the extensions
-            foreach (ExtensionType ext in Enum.GetValues(typeof(ExtensionType)).Cast<ExtensionType>()) //casting to get typed iteration, just in case
+            foreach (SupportedFileExtension ext in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>()) //casting to get typed iteration, just in case
             {
                 List<string> paths = service.GetAllFilesFromDirectory(path, ext.ToString()); //no typed extensions when calling to DAL
                 foreach (string currPath in paths)
