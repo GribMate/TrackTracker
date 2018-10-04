@@ -40,7 +40,7 @@ namespace TrackTracker.BLL.Model
 
         #endregion
 
-        public virtual Dictionary<string, string> GetAllMetaTags() // Returns all metadata of the track
+        public Dictionary<string, string> GetAllMetaTags() // Returns all metadata of the track
         {
             Dictionary<string, string> allTags = new Dictionary<string, string>();
 
@@ -67,7 +67,7 @@ namespace TrackTracker.BLL.Model
 
             return allTags;
         }
-        public virtual Dictionary<string, string> GetAllMetaTagsNonEmpty() // Returns non-empty metadata of the track
+        public Dictionary<string, string> GetAllMetaTagsNonEmpty() // Returns non-empty metadata of the track
         {
             Dictionary<string, string> allTags = GetAllMetaTags();
 

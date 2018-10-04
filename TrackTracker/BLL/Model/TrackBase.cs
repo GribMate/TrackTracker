@@ -1,6 +1,7 @@
 ﻿using System;
 
 using TrackTracker.BLL.Enums;
+using Onlab.Services.Interfaces; //TODO RENAME
 
 namespace TrackTracker.BLL.Model
 {
@@ -15,5 +16,10 @@ namespace TrackTracker.BLL.Model
         public bool PlayableOnline { get; set; } // Is this track playable by some online service or not?
         public bool PlayableOffline { get; set; } // Is this track accessible on local computer and hence playable offline?
         public SupportedMediaPlayers SupportedMediaPlayers { get; set; } // If it is playable, this shows by what exactly
+
+        public virtual void Save(IDatabaseService db)
+        {
+            throw new NotImplementedException(); //TODO
+        }
     }
 }

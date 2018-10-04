@@ -131,9 +131,11 @@
     <Compile Include="BLL\Model\TrackVirtual.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
+    <Compile Include="Services\Interfaces\IMusicFileTaggingService.cs" />
     <Compile Include="Services\Interfaces\ISpotifyService.cs" />
     <Compile Include="Services\SpotifyService.cs" />
     <Compile Include="Services\SQLiteService.cs" />
+    <Compile Include="Services\TagLibSharpService.cs" />
     <Compile Include="Services\WindowsEnvironmentService.cs" />
     <Compile Include="Services\AcoustIDService.cs" />
     <Compile Include="Services\Interfaces\IFingerprintService.cs" />
