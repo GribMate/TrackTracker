@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace Onlab.Services.Interfaces
+namespace TrackTracker.Services.Interfaces
 {
     /*
     Interface: IDatabaseService

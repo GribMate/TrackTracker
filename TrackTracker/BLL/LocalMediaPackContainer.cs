@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Onlab.BLL
+
+
+namespace TrackTracker.BLL
 {
     public class LocalMediaPackContainer
     {
@@ -44,7 +46,7 @@ namespace Onlab.BLL
                     }
                     sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
                     values[3] = sb.ToString();
-                    GlobalVariables.DatabaseService.InsertInto("LocalMediaPacks", values);
+                    GlobalAlgorithms.DatabaseService.InsertInto("LocalMediaPacks", values);
                 }
 
                 return true; //added successfully
@@ -64,7 +66,7 @@ namespace Onlab.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalVariables.TracklistData.AddMusicFile(path.Value, path.Key);
+                    GlobalAlgorithms.TracklistData.AddMusicFile(path.Value, path.Key);
                 }
             }
         }
@@ -82,7 +84,7 @@ namespace Onlab.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalVariables.TracklistData.RemoveMusicFile(path.Key);
+                    GlobalAlgorithms.TracklistData.RemoveMusicFile(path.Key);
                 }
             }
         }

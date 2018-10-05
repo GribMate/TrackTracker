@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Net.Http;
 
 using MetaBrainz.MusicBrainz;
 using MetaBrainz.MusicBrainz.Interfaces;
@@ -12,12 +11,12 @@ using MetaBrainz.MusicBrainz.Interfaces.Searches;
 using MetaBrainz.MusicBrainz.Objects;
 using MetaBrainz.MusicBrainz.Objects.Submissions;
 
-using Onlab.Services.Interfaces;
-using Onlab.BLL;
+using TrackTracker.Services.Interfaces;
+using TrackTracker.BLL;
 
 
 
-namespace Onlab.Services
+namespace TrackTracker.Services
 {
     /*
     Class: IMusicBrainzProvider

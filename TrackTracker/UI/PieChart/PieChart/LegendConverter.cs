@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Controls;
-using BaseWPFHelpers;
 using System.Windows.Media;
 using System.Windows;
 using System.ComponentModel;
+
+using BaseWPFHelpers;
+
+
 
 namespace ScottLogic.Controls.PieChart
 {

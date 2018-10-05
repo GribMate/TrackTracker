@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
-using WinForms = System.Windows.Forms;
-using Onlab.BLL;
+using TrackTracker.BLL;
 
 
 
-namespace Onlab
+namespace TrackTracker
 {
     public partial class MainWindow : Window
     {
@@ -22,7 +19,7 @@ namespace Onlab
 
         private void tracklist_Initialized(object sender, EventArgs e)
         {
-            tracklist_dataGridTrackList.ItemsSource = GlobalVariables.TracklistData.Tracks;
+            tracklist_dataGridTrackList.ItemsSource = GlobalAlgorithms.TracklistData.Tracks;
             tracklist_dataGridTagList.ItemsSource = tags;
         }
         private void tracklist_buttonManageSources_Click(object sender, RoutedEventArgs e)
@@ -33,14 +30,14 @@ namespace Onlab
         }
         private void tracklist_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 track.IsSelectedInGUI = true;
             }
         }
         private void tracklist_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
                 else track.IsSelectedInGUI = true;
@@ -49,22 +46,22 @@ namespace Onlab
 
         private async void tracklist_buttonSearch_Click(object sender, RoutedEventArgs e) //querying MBAPI
         {
-            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI)
                 {
                     List<Track> results = new List<Track>();
-                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
+                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
                     results = await GlobalAlgorithms.GetMatchesForTrack(track);
                     tracklist_dataGridMatchList.ItemsSource = results;
-                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
+                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
                     System.Threading.Thread.Sleep(100);
                     SetProgressBarValue(0, " ");
 
                     if (tracklist_checkBoxAutoSelect.IsChecked.Value && results.Count > 0)
                     {
                         //TODO: implement magic
-                        //_id = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
+                        //_id = GlobalAlgorithms.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
                         track.AddCandidateTrack(results[0]);
                         track.SelectActiveCandidate(results[0].MetaData.MusicBrainzTrackId);
                     }
@@ -74,12 +71,12 @@ namespace Onlab
 
         private async void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e) //updating selected tracks
         {
-            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI)
                 {
                     //track.SetMetaDataFromActiveCandidate();
-                    string trial_ID = await GlobalVariables.FingerprintService.GetIDByFingerprint(track.AcoustID, todo_duration);
+                    string trial_ID = await GlobalAlgorithms.FingerprintService.GetIDByFingerprint(track.AcoustID, todo_duration);
                     track.MetaData.Copyright = trial_ID;
                 }
             }
@@ -114,11 +111,11 @@ namespace Onlab
         private void tracklist_buttonGetFingerprint_Click(object sender, RoutedEventArgs e) //getting fingerprint for selected tracks
         {
             SetProgressBarValue(25, "Generating fingerprints...");
-            foreach (Track track in GlobalVariables.TracklistData.Tracks)
+            foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI)
                 {
-                    GlobalVariables.FingerprintService.GetFingerprint(track.FileHandle.Name, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
+                    GlobalAlgorithms.FingerprintService.GetFingerprint(track.FileHandle.Name, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
                 }
             }
         }
@@ -127,13 +124,13 @@ namespace Onlab
             this.Dispatcher.Invoke(() =>
             {
                 SetProgressBarValue(75, "Generating fingerprints for" + path);
-                foreach (Track track in GlobalVariables.TracklistData.Tracks)
+                foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
                 {
                     if (track.FileHandle.Name == path)
                     {
                         track.AcoustID = fingerprint;
                         todo_duration = duration;
-                        //string trial_ID = GlobalVariables.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
+                        //string trial_ID = GlobalAlgorithms.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
                         //TODO: duration and other non-editable metadata
                         break; //1 match
                     }

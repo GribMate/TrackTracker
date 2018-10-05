@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
-using WinForms = System.Windows.Forms;
-using Onlab.BLL;
+using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 
-namespace Onlab
+
+
+namespace TrackTracker
 {
     public partial class MainWindow : Window
     {
@@ -23,18 +21,18 @@ namespace Onlab
                 playzone_comboBoxPlayerType.Items.Add(ext.ToString());
             }
 
-            playzone_dataGridPlayList.ItemsSource = GlobalVariables.PlayzoneData.Tracks;
+            playzone_dataGridPlayList.ItemsSource = GlobalAlgorithms.PlayzoneData.Tracks;
         }
         private void playzone_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
             {
                 track.IsSelectedInGUI = true;
             }
         }
         private void playzone_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
             {
                 if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
                 else track.IsSelectedInGUI = true;
@@ -43,7 +41,7 @@ namespace Onlab
         private void playzone_buttonAddToMix_Click(object sender, RoutedEventArgs e)
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\testplaylist.m3u");
-            foreach (Track track in GlobalVariables.PlayzoneData.Tracks)
+            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
             {
                 if (track.IsSelectedInGUI) sw.WriteLine(track.FileHandle.Name);
             }
@@ -55,13 +53,13 @@ namespace Onlab
 
         private void playzone_GotFocus(object sender, RoutedEventArgs e)
         {
-            GlobalVariables.PlayzoneData.Clear();
+            GlobalAlgorithms.PlayzoneData.Clear();
 
-            foreach (LocalMediaPack lmp in GlobalVariables.LocalMediaPackContainer.GetAllActiveLMPs())
+            foreach (LocalMediaPack lmp in GlobalAlgorithms.LocalMediaPackContainer.GetAllActiveLMPs())
             {
                 foreach (var path in lmp.GetAllFilePaths())
                 {
-                    GlobalVariables.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                    GlobalAlgorithms.PlayzoneData.AddMusicFile(path.Value, path.Key);
                 }
             }
         }
@@ -71,10 +69,10 @@ namespace Onlab
             switch (type)
             {
                 case SupportedMediaPlayers.Foobar2000:
-                    string path = GlobalVariables.EnvironmentService.TryFindFoobar();
+                    string path = GlobalAlgorithms.EnvironmentService.TryFindFoobar();
                     if (path.Length > 2)
                     {
-                        GlobalVariables.AppConfig.AddMediaPlayerPath(type, path);
+                        GlobalAlgorithms.AppConfig.AddMediaPlayerPath(type, path);
                         playzone_textBlockPlayerLocation.Text = path + " | PLAYER LINKED!";
                     }
                     break;
@@ -82,7 +80,7 @@ namespace Onlab
         }
         private async void playzone_buttonSpotifyPlayPause_Click(object sender, RoutedEventArgs e)
         {
-            playzone_textBlockPlayerLocation.Text = await GlobalVariables.SpotifyService.TEST_PLAYING();
+            playzone_textBlockPlayerLocation.Text = await GlobalAlgorithms.SpotifyService.TEST_PLAYING();
         }
     }
 }

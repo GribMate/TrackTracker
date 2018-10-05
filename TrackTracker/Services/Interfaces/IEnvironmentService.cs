@@ -2,7 +2,7 @@
 
 
 
-namespace Onlab.Services.Interfaces
+namespace TrackTracker.Services.Interfaces
 {
     /*
     Interface: IEnvironmentService

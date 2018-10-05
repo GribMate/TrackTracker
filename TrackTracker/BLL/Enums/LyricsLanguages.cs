@@ -1,5 +1,7 @@
 ﻿using System;
 
+
+
 namespace TrackTracker.BLL.Enums
 {
     /*
@@ -9,10 +11,13 @@ namespace TrackTracker.BLL.Enums
     [Flags]
     public enum LyricsLanguages
     {
-        ENG = 0, // Default
-        HUN = 1,
-        GER = 2,
-        FRE = 4,
-        SPA = 8
+        //TODO: support most languages
+        ENG = 1 << 0,
+        HUN = 1 << 1,
+        GER = 1 << 2,
+        FRA = 1 << 3,
+        SPA = 1 << 4,
+
+        Unknown = 0 // Default
     }
 }

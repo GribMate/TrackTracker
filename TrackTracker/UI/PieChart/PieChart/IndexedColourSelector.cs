@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Media;
-using ScottLogic.ScottLogic.PieChart;
 using System.Windows;
+
+using ScottLogic.ScottLogic.PieChart;
+
+
 
 namespace ScottLogic.Controls.PieChart
 {

@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
-using WinForms = System.Windows.Forms;
-using Onlab.BLL;
+using TrackTracker.BLL;
 
 
 
-namespace Onlab
+namespace TrackTracker
 {
     public partial class MainWindow : Window
     {
         private void statistics_GotFocus(object sender, RoutedEventArgs e)
         {
             Statistics statistics = new Statistics();
-            statistics.GenerateStatistics(GlobalVariables.TracklistData.Tracks.ToList<Track>(), true, true, true, true, true, true);
+            statistics.GenerateStatistics(GlobalAlgorithms.TracklistData.Tracks.ToList<Track>(), true, true, true, true, true, true);
 
             //--------------------------------------------------PIECHART--------------------------------------
             this.DataContext = new ObservableCollection<StatisticalData>(statistics.GetCountsByArtist());

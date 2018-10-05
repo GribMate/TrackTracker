@@ -3,35 +3,51 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Onlab.Services.Interfaces;
 using TrackTracker.BLL.Enums;
+using TrackTracker.Services;
+using TrackTracker.Services.Interfaces;
 
 
 
-namespace Onlab.BLL
+namespace TrackTracker.BLL
 {
     /*
     Class: GlobalAlgorithms
     Description:
         Provides static and global functions for the application.
         Main point of the BLL layer.
-        Uses GlobalVariables data.
+        Uses GlobalAlgorithms data.
     */
     public static class GlobalAlgorithms
     {
+        public static IDatabaseService DatabaseService = new SQLiteService();
+        public static IFileService FileService = new FileService();
+        public static IEnvironmentService EnvironmentService = new WindowsEnvironmentService();
+        public static IMetadataService MetadataService = new MusicBrainzService();
+        public static IFingerprintService FingerprintService = new AcoustIDService();
+        public static ISpotifyService SpotifyService = new SpotifyService();
+
+        public static AppConfig AppConfig = new AppConfig();
+        public static LocalMediaPackContainer LocalMediaPackContainer = new LocalMediaPackContainer(); //persistent settings through the whole application
+        public static TracklistData TracklistData = new TracklistData(); //dynamic wrapper of data currently represented @ Tracklist tab table
+        public static PlayzoneData PlayzoneData = new PlayzoneData(); //dynamic wrapper of data currently represented @ Playzone tab table
+        //TODO: MVVM and DI
+
+        
+        
         public static void Initialize() //first function to be called after OS gave control (and before GUI loads)
         {
-            if (!GlobalVariables.DatabaseService.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
+            if (!DatabaseService.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
             else LoadPersistence(); //app has run before, we need to load persistence from DB
         }
         private static void FirstRunSetup() //creates a new empty database and forms it's data structure
         {
-            GlobalVariables.DatabaseService.CreateDatabase(); //creating empty
-            GlobalVariables.DatabaseService.FormatNewDatabase(); //formatting existing
+            DatabaseService.CreateDatabase(); //creating empty
+            DatabaseService.FormatNewDatabase(); //formatting existing
         }
         private static void LoadPersistence() //loads all data from an already existing database file
         {
-            List<string[]> lmpRows = GlobalVariables.DatabaseService.GetAllRows("LocalMediaPacks"); //getting LocalMediaPack objects
+            List<string[]> lmpRows = DatabaseService.GetAllRows("LocalMediaPacks"); //getting LocalMediaPack objects
 
             // ============================== casting and loading LocalMediaPack objects ==============================
 
@@ -47,10 +63,10 @@ namespace Onlab.BLL
                     LocalMediaPack lmp = new LocalMediaPack(rootPath, isResultOfDriveSearch, baseExtension);
                     foreach (string path in filePaths.Split('|'))
                     {
-                        SupportedFileExtension type = (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), GlobalVariables.FileService.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
+                        SupportedFileExtension type = (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), FileService.GetExtensionFromFilePath(path).ToUpper()); //eg. "MP3" or "FLAC"
                         lmp.AddFilePath(path, type);
                     }
-                    GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, false); //adding to current container
+                    LocalMediaPackContainer.AddLMP(lmp, false); //adding to current container
                 }
             }
         }
@@ -77,7 +93,7 @@ namespace Onlab.BLL
         }
         public static bool GetInternetState() //returns true if the application has live internet connection
         {
-            return GlobalVariables.EnvironmentService.InternetConnectionIsAlive();
+            return EnvironmentService.InternetConnectionIsAlive();
         }
 
 
@@ -99,7 +115,7 @@ namespace Onlab.BLL
             }
             else if (!String.IsNullOrEmpty(track.FileHandle.Name)) //we don't have MBID, nor a title, but we can try some magic from the file name
             {
-                string trackName = GlobalVariables.FileService.GetFileNameFromFilePath(track.FileHandle.Name);
+                string trackName = FileService.GetFileNameFromFilePath(track.FileHandle.Name);
                 if (trackName.Contains("-"))
                 {
                     string[] splitted = trackName.Split('-');
@@ -127,13 +143,13 @@ namespace Onlab.BLL
         }
         private async static Task<Track> GetMatchByMBID(string MBID)
         {
-            AudioMetaData result = await GlobalVariables.MetadataService.GetRecordingByMBID(MBID);
+            AudioMetaData result = await MetadataService.GetRecordingByMBID(MBID);
 
             return new Track(result);
         }
         private async static Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
-            List<AudioMetaData> results = await GlobalVariables.MetadataService.GetRecordingsByMetaData(title, artist, album);
+            List<AudioMetaData> results = await MetadataService.GetRecordingsByMetaData(title, artist, album);
 
             List<Track> toReturn = new List<Track>();
 

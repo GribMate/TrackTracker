@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Onlab.Services.Interfaces
+
+
+namespace TrackTracker.Services.Interfaces
 {
     /*
-    Interface: IFingerprintService
-    Description:
-        Handles getting the fingerprint and AcoustID of a music file (and also decompressing FLAC files).
+     * Handles getting the fingerprint and AcoustID of a music file (and also decompressing FLAC files into WAV for fingerprinting).
     */
     public interface IFingerprintService
     {

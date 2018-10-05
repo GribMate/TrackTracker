@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Onlab.BLL
+
+
+namespace TrackTracker.BLL
 {
     public class StatisticalData : INotifyPropertyChanged
     {

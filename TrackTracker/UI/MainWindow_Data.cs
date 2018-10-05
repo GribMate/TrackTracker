@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 using WinForms = System.Windows.Forms;
-using Onlab.BLL;
+using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 
 
 
-namespace Onlab
+namespace TrackTracker
 {
     public partial class MainWindow : Window
     {
@@ -20,7 +16,7 @@ namespace Onlab
         {
             //TODO: need to call only once, probably should be placed in constructor
 
-            foreach (string driveName in GlobalVariables.EnvironmentService.GetExternalDriveNames())
+            foreach (string driveName in GlobalAlgorithms.EnvironmentService.GetExternalDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -55,7 +51,7 @@ namespace Onlab
         {
             if (fbdMedia.ShowDialog() == WinForms.DialogResult.OK)
             {
-                if (GlobalVariables.FileService.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
+                if (GlobalAlgorithms.FileService.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
@@ -71,21 +67,21 @@ namespace Onlab
                 SupportedFileExtension type = (SupportedFileExtension)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
                 lmp = new LocalMediaPack(drive, true, type);
-                GlobalAlgorithms.LoadFilesFromDrive(GlobalVariables.FileService, lmp, drive, type);
+                GlobalAlgorithms.LoadFilesFromDrive(GlobalAlgorithms.FileService, lmp, drive, type);
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
                 lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false);
-                GlobalAlgorithms.LoadFilesFromDirectory(GlobalVariables.FileService, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
+                GlobalAlgorithms.LoadFilesFromDirectory(GlobalAlgorithms.FileService, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }
 
-            GlobalVariables.LocalMediaPackContainer.AddLMP(lmp, true);
+            GlobalAlgorithms.LocalMediaPackContainer.AddLMP(lmp, true);
         }
         private void data_buttonLinkSpotify_Click(object sender, RoutedEventArgs e)
         {
-            GlobalVariables.SpotifyService.TEST_LOGIN_PLAYLIST();
+            GlobalAlgorithms.SpotifyService.TEST_LOGIN_PLAYLIST();
         }
         private void data_comboBoxFileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

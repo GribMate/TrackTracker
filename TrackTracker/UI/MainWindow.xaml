@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Onlab"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Onlab.MainWindow"
+        xmlns:local="clr-namespace:TrackTracker"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TrackTracker.MainWindow"
         xmlns:c="clr-namespace:ScottLogic.Controls.PieChart"
         mc:Ignorable="d"
         Title="TrackTracker" Height="800" Width="1200" Foreground="White" FontSize="16" MinWidth="1200" MinHeight="797" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">

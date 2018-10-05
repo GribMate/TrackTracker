@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Onlab")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TrackTracker")]
+[assembly: AssemblyDescription("A music collection manager program, that allows syncing of metadata, building a profile and controlling various players.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Onlab")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCompany("BME AUT")]
+[assembly: AssemblyProduct("TrackTracker")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
 
 using ScottLogic.Util;
+
+
 
 namespace ScottLogic.Shapes
 {
