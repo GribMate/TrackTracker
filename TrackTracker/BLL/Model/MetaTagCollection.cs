@@ -43,7 +43,7 @@ namespace TrackTracker.BLL.Model
 
         static MetaTagCollection()
         {
-            Delimiter = ';'; // Considered "/", but Windows uses ";" by default
+            Delimiter = ';'; // TODO: Consider "/" (Windows uses ";" by default)
         }
         public MetaTagCollection(string key, string[] value = null) : base(key, value)
         {
@@ -59,7 +59,7 @@ namespace TrackTracker.BLL.Model
             return (String.IsNullOrWhiteSpace(JoinedValue)) ? null : JoinedValue;
         }
 
-        private string GetJoinedFromArray(string[] array)
+        private string GetJoinedFromArray(string[] array) // Gets a joined string, each part separated by delimiter from an array
         {
             if (array != null && array.Length > 0) // We have some value
             {
@@ -83,7 +83,7 @@ namespace TrackTracker.BLL.Model
                 return null;
             }
         }
-        private string[] GetArrayFromJoined(string joined)
+        private string[] GetArrayFromJoined(string joined) // Gets an array of parts, from a delimiter-separated joined string
         {
             if (!String.IsNullOrWhiteSpace(joined)) // We have some value string
             {

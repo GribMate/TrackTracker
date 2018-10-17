@@ -18,12 +18,12 @@ namespace TrackTracker.BLL.Model
         public List<TrackVirtual> MatchCandidates { get; set; } // All the candidate tracks, that MBAPI returned
         public int ActiveCandidateIndex { get; set; } // Currently selected match to sync metadata from
 
-        public void SaveToDisk(IMusicFileTaggingService tagger)
+        public void SaveToDisk(ITaggingService tagger)
         {
             if (MusicFileProperties.PathIsValid == false)
-                throw new InvalidOperationException("Cannot save to file, because file path is empty or not sufficient.");
+                throw new InvalidOperationException("Cannot save to file, because file path is not sufficient.");
 
-            tagger.Save(MusicFileProperties.Path, MetaData.GetAllMetaTags());
+            tagger.Save(MusicFileProperties.Path, MetaData.GetAllMetaTagsNative()); // Using native object tags for save
         }
     }
 }
