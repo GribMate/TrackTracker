@@ -37,6 +37,13 @@ namespace TrackTracker.BLL
         
         public static void Initialize() //first function to be called after OS gave control (and before GUI loads)
         {
+            DependencyInjector.AddService<IDatabaseService, SQLiteService>();
+            DependencyInjector.AddService<IFileService, FileService>();
+            DependencyInjector.AddService<IEnvironmentService, WindowsEnvironmentService>();
+            DependencyInjector.AddService<IMetadataService, MusicBrainzService>();
+            DependencyInjector.AddService<IFingerprintService, AcoustIDService>();
+            DependencyInjector.AddService<ISpotifyService, SpotifyService>();
+
             if (!DatabaseService.DatabaseExists) FirstRunSetup(); //we don't have a database file, that means it's the first time the app runs
             else LoadPersistence(); //app has run before, we need to load persistence from DB
         }
