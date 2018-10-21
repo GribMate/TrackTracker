@@ -131,6 +131,9 @@
     <Compile Include="BLL\Model\TrackVirtual.cs" />
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
+    <Compile Include="BLL\_newBLL\DependencyInjector.cs" />
+    <Compile Include="GUI\ViewModels\DataViewModel.cs" />
+    <Compile Include="GUI\ViewModels\ViewModelBase.cs" />
     <Compile Include="Services\Interfaces\ITaggingService.cs" />
     <Compile Include="Services\Interfaces\ISpotifyService.cs" />
     <Compile Include="Services\SpotifyService.cs" />
@@ -253,7 +256,9 @@
   <ItemGroup>
     <Resource Include="Resources\icon_statistics.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GUI\Views\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
