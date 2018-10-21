@@ -61,7 +61,11 @@ namespace TrackTracker.BLL
             get => acoustID;
             set
             {
-                if (acoustID != value) acoustID = value;
+                if (acoustID != value)
+                {
+                    acoustID = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcoustID)));
+                }
             }
         }
 
