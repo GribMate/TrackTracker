@@ -111,6 +111,7 @@
     </ApplicationDefinition>
     <Compile Include="BLL\AppConfig.cs" />
     <Compile Include="BLL\Enums\LyricsLanguages.cs" />
+    <Compile Include="BLL\Enums\MusicEra.cs" />
     <Compile Include="BLL\Enums\MusicGenres.cs" />
     <Compile Include="BLL\Enums\MusicMoods.cs" />
     <Compile Include="BLL\Enums\SupportedFileExtension.cs" />

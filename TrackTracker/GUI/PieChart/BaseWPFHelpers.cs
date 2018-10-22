@@ -12,25 +12,6 @@ namespace BaseWPFHelpers
     public class Helpers
     {
         /// <summary>
-        /// Helper method to create a snapshot of a visual item as a bitmap image. Typically used for things like drag and drop
-        /// or any time we want to do something where we don't want the hit of a video running in an animating object
-        /// </summary>
-        /// <param name="element">Element to take a snapshot of</param>
-        /// <returns>Bitmap image of the element</returns>
-        public static RenderTargetBitmap CreateImageBrushFromVisual(FrameworkElement element)
-        {
-
-            RenderTargetBitmap bitmapImage =
-                new RenderTargetBitmap((int)element.ActualWidth,
-                            (int)element.ActualHeight,
-                            96, 96,
-                            PixelFormats.Pbgra32);
-            bitmapImage.Render(element);
-
-            return bitmapImage;
-        }
-
-        /// <summary>
         /// Base Interface that describes the visual match pattern
         /// Part of the Visual tree walkers
         /// </summary>
@@ -351,29 +332,6 @@ namespace BaseWPFHelpers
         }
 
         /// <summary>
-        /// Simple form call that returns all elements of a given type down in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="ty"></param>
-        /// <returns></returns>
-        public static List<FrameworkElement> FindElementsOfType(Visual parent, Type ty)
-        {
-            return FindDownInTree(parent, new FinderMatchType(ty));
-
-        }
-
-        /// <summary>
-        /// Simple form call that returns the first element of a given type down in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="ty"></param>
-        /// <returns></returns>
-        public static FrameworkElement FindElementOfType(Visual parent, Type ty)
-        {
-            return SingleFindDownInTree(parent, new FinderMatchType(ty));
-        }
-
-        /// <summary>
         /// Simple form call that returns the first element of a given type up in the visual tree
         /// </summary>
         /// <param name="parent"></param>
@@ -383,104 +341,5 @@ namespace BaseWPFHelpers
         {
             return SingleFindInTree(parent, new FinderMatchType(ty));
         }
-        
-        /// <summary>
-        /// Helper to pause any media elements down in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        public static void TurnOffMediaElements(Visual parent)
-        {
-            List<FrameworkElement> lst = FindElementsOfType(parent,typeof(MediaElement));
-
-            foreach (FrameworkElement me in lst)
-            {
-                MediaElement meCast = me as MediaElement;
-
-                if (meCast != null)
-                {
-                    if (meCast.CanPause)
-                    {
-                        try
-                        {
-                            meCast.Pause();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Helper to resume playing any media elements down in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        public static void TurnOnMediaElements(Visual parent)
-        {
-            List<FrameworkElement> lst = FindElementsOfType(parent, typeof(MediaElement));
-
-            foreach (FrameworkElement me in lst)
-            {
-                MediaElement meCast = me as MediaElement;
-
-                if (meCast != null)
-                {
-                    try
-                    {
-                        meCast.Play();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Helper to find the currently focused element
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        public static FrameworkElement FindFocusedElement(Visual parent)
-        {
-            return SingleFindInTree(parent, new FinderMatchFocused());
-        }
-
-        /// <summary>
-        /// Helper to find a items host (e.g. in a listbox etc) down in the tree
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        public static FrameworkElement FindItemsHost(Visual parent)
-        {
-            return SingleFindDownInTree(parent, new FinderMatchItemHost());
-        }
-
-        /// <summary>
-        /// Helper to find the given named element down in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="ElementName"></param>
-        /// <returns></returns>
-        public static FrameworkElement FindVisualElement(Visual parent, String ElementName)
-        {
-            return SingleFindDownInTree(parent, new FinderMatchName(ElementName));
-        }
-
-        /// <summary>
-        /// Helper to find the given named element up in the visual tree
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="ElementName"></param>
-        /// <returns></returns>
-        public static FrameworkElement FindVisualElementUp(Visual parent, String ElementName)
-        {
-            return SingleFindInTree(parent, new FinderMatchName(ElementName));
-        }
-
     }
-
 }

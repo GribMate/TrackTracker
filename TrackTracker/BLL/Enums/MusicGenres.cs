@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 
 
@@ -25,7 +26,7 @@ namespace TrackTracker.BLL.Enums
         Pop = 1 << 11,
 
         // Specific genres, usually coming in pair with a general one from above
-        Rap = 1 << 12,  
+        Rap = 1 << 12,
         D_and_B = 1 << 13,
         Dubstep = 1 << 14,
         House = 1 << 15,
@@ -35,7 +36,7 @@ namespace TrackTracker.BLL.Enums
         Dance = 1 << 19,
         KPop = 1 << 20,
         JPop = 1 << 21,
-        ElectroSwing = 1 << 22,
+        Electroswing = 1 << 22,
         Synthwave = 1 << 23,
         Nightcore = 1 << 24,
 
@@ -43,5 +44,41 @@ namespace TrackTracker.BLL.Enums
         Special = 1 << 26, // Used to mark specific musics that are, by some measures, odd
 
         Unknown = 0 // Default
+    }
+
+    public static class MusicGenresConverter // Provides static methods to manipulate MusicGenres
+    {
+        public static string GetFormattedString(MusicGenres genre) // Returns a user-friendly string representation of a MusicGenres enum value
+        {
+            string[] genreFlags = genre.ToString().Split(',');
+            StringBuilder formatted = new StringBuilder();
+
+            foreach (string genreFlag in genreFlags)
+            {
+                string genreFlagTrimmed = genreFlag.Trim();
+
+                // Handling two special cases where a "-" should be inserted
+                if (MusicGenres.JPop.ToString().Equals(genreFlagTrimmed))
+                {
+                    formatted.Append("J-Pop, ");
+                    continue;
+                }
+                else if (MusicGenres.KPop.ToString().Equals(genreFlagTrimmed))
+                {
+                    formatted.Append("K-Pop, ");
+                    continue;
+                }
+
+                // Handling generic cases
+                string step1 = genreFlagTrimmed.Replace("_and_", "&"); // D_and_B like values
+                string step2 = step1.Replace('_', '-'); // If there wasn't "_and_" present, but there is "_", like in "Hip_hop"
+
+                formatted.Append(step2 + ", ");
+            }
+
+            formatted.Remove(formatted.Length - 2, 2); // Removing unnecessary last ", " chars
+
+            return formatted.ToString();
+        }
     }
 }

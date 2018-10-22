@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 
 using TrackTracker.BLL;
+using TrackTracker.BLL.Enums;
 
 
 
@@ -58,7 +59,7 @@ namespace TrackTracker
                 labelGenreCount.Content = "0";
             }
 
-            if (statistics.GetMostFrequentDecade(out Decades decadeName, out uint decadeCount))
+            if (statistics.GetMostFrequentDecade(out MusicEra decadeName, out uint decadeCount))
             {
                 labelDecadeName.Content = decadeName.ToString(); //TODO: convert properly
                 labelDecadeCount.Content = decadeCount.ToString();

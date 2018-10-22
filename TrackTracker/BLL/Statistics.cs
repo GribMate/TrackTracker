@@ -1,32 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using TrackTracker.BLL.Enums;
+
 
 
 namespace TrackTracker.BLL
 {
     /*
-    Enum: Decades
-    Description:
-        Custom enumeration of decades for various tracks. For statistical grouping purposes.
-    */
-    public enum Decades
-    {
-        Unknown,
-        Years_1950_1959,
-        Years_1960_1969,
-        Years_1970_1979,
-        Years_1980_1989,
-        Years_1990_1999,
-        Years_2000_2009,
-        Years_2010_2019,
-        Years_2020_2029,
-    }
-
-    /*
-    Class: Statistics
-    Description:
-        Generated each time the Tracklist changes and holds all currently generated statistical values of it.
+     * Generated each time the Tracklist changes and holds all currently generated statistical values of it.
     */
     public class Statistics
     {
@@ -35,14 +17,14 @@ namespace TrackTracker.BLL
         private Dictionary<string, uint> countsByArtist;
         private Dictionary<string, uint> countsByAlbum;
         private Dictionary<string, uint> countsByGenre;
-        private Dictionary<Decades, uint> countsByDecade;
+        private Dictionary<MusicEra, uint> countsByDecade;
 
         public int TotalCount { get => totalCount; }
         public int ProperlyTagged { get => properlyTagged; }
         public Dictionary<string, uint> CountsByArtist { get => new Dictionary<string, uint>(countsByArtist); } //copying to avoid modifications from outside
         public Dictionary<string, uint> CountsByAlbum { get => new Dictionary<string, uint>(countsByAlbum); } //copying to avoid modifications from outside
         public Dictionary<string, uint> CountsByGenre { get => new Dictionary<string, uint>(countsByGenre); } //copying to avoid modifications from outside
-        public Dictionary<Decades, uint> CountsByDecade { get => new Dictionary<Decades, uint>(countsByDecade); } //copying to avoid modifications from outside
+        public Dictionary<MusicEra, uint> CountsByDecade { get => new Dictionary<MusicEra, uint>(countsByDecade); } //copying to avoid modifications from outside
 
         public Statistics()
         {
@@ -51,7 +33,7 @@ namespace TrackTracker.BLL
             this.countsByArtist = new Dictionary<string, uint>();
             this.countsByAlbum = new Dictionary<string, uint>();
             this.countsByGenre = new Dictionary<string, uint>();
-            this.countsByDecade = new Dictionary<Decades, uint>();
+            this.countsByDecade = new Dictionary<MusicEra, uint>();
         }
 
         public void GenerateStatistics(List<Track> tracks,
@@ -141,13 +123,13 @@ namespace TrackTracker.BLL
                 return false;
             }
         }
-        public bool GetMostFrequentDecade(out Decades decade, out uint count)
+        public bool GetMostFrequentDecade(out MusicEra decade, out uint count)
         {
             if (countsByDecade.Count > 0)
             {
                 uint maxCount = 0;
-                Decades maxDecade = Decades.Unknown;
-                foreach (KeyValuePair<Decades, uint> entry in countsByDecade)
+                MusicEra maxDecade = MusicEra.Unknown;
+                foreach (KeyValuePair<MusicEra, uint> entry in countsByDecade)
                 {
                     if (entry.Value > maxCount)
                     {
@@ -161,7 +143,7 @@ namespace TrackTracker.BLL
             }
             else
             {
-                decade = Decades.Unknown;
+                decade = MusicEra.Unknown;
                 count = 0;
                 return false;
             }
@@ -302,12 +284,12 @@ namespace TrackTracker.BLL
             }
             return counts;
         }
-        private Dictionary<Decades, uint> CalculateCountsByDecade(List<Track> tracks)
+        private Dictionary<MusicEra, uint> CalculateCountsByDecade(List<Track> tracks)
         {
-            Dictionary<Decades, uint> counts = new Dictionary<Decades, uint>();
+            Dictionary<MusicEra, uint> counts = new Dictionary<MusicEra, uint>();
             foreach (Track track in tracks)
             {
-                Decades decade = GetDecadeFromYear(track.MetaData.Year); //we do not have to worry about value check, since it will "unknown" if not recognized
+                MusicEra decade = MusicErasConverter.ConvertFromYear((int)track.MetaData.Year); //we do not have to worry about value check, since it will "unknown" if not recognized
 
                 if (!counts.ContainsKey(decade)) //it is the first time we encounter this particular decade
                 {
@@ -323,18 +305,6 @@ namespace TrackTracker.BLL
                 }
             }
             return counts;
-        }
-        private Decades GetDecadeFromYear(uint year)
-        {
-                 if (year >= 1950 && year <= 1959) return Decades.Years_1950_1959;
-            else if (year >= 1960 && year <= 1969) return Decades.Years_1960_1969;
-            else if (year >= 1970 && year <= 1979) return Decades.Years_1970_1979;
-            else if (year >= 1980 && year <= 1989) return Decades.Years_1980_1989;
-            else if (year >= 1990 && year <= 1999) return Decades.Years_1990_1999;
-            else if (year >= 2000 && year <= 2009) return Decades.Years_2000_2009;
-            else if (year >= 2010 && year <= 2019) return Decades.Years_2010_2019;
-            else if (year >= 2020 && year <= 2029) return Decades.Years_2020_2029;
-            else return Decades.Unknown;
         }
     }
 }

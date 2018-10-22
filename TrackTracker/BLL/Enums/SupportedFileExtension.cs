@@ -10,7 +10,11 @@ namespace TrackTracker.BLL.Enums
     */
     public enum SupportedFileExtension
     {
-        MP3 = 0, // Default
-        FLAC = 1
+        MP3 = 1,
+        FLAC = 2,
+
+        All = 0, // Means that all of the supported formats should be handled
+
+        Unknown = -1
     }
 }

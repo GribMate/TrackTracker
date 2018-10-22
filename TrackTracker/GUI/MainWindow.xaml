@@ -260,6 +260,8 @@
                                 </c:PieChartLayout.ColorSelector>
                             </c:PieChartLayout>
                             
+                            
+                            
                             THIS SECTION NEEDS THE MVVM PATTERN IMPLEMENTED (OR FIDDLING WITH DATACONTEXTS AND BINDIG)
                             TO WORK PROPERLY.
                             WILL FIX IN A LATER PHASE.

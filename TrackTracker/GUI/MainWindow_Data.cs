@@ -12,6 +12,7 @@ namespace TrackTracker
 {
     public partial class MainWindow : Window
     {
+
         private void datasources_Initialized(object sender, EventArgs e)
         {
             //TODO: need to call only once, probably should be placed in constructor
