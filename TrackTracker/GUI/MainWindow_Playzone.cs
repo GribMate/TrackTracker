@@ -51,18 +51,6 @@ namespace TrackTracker
             System.Diagnostics.Process.Start("D:\\testplaylist.m3u");
         }
 
-        private void playzone_GotFocus(object sender, RoutedEventArgs e)
-        {
-            GlobalAlgorithms.PlayzoneData.Clear();
-
-            foreach (LocalMediaPack lmp in GlobalAlgorithms.LocalMediaPackContainer.GetAllActiveLMPs())
-            {
-                foreach (var path in lmp.GetAllFilePaths())
-                {
-                    GlobalAlgorithms.PlayzoneData.AddMusicFile(path.Value, path.Key);
-                }
-            }
-        }
         private void playzone_comboBoxPlayerType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SupportedMediaPlayers type = (SupportedMediaPlayers)playzone_comboBoxPlayerType.SelectedIndex; //will always correspond to the proper value (see constructor)
@@ -74,6 +62,7 @@ namespace TrackTracker
                     {
                         GlobalAlgorithms.AppConfig.AddMediaPlayerPath(type, path);
                         playzone_textBlockPlayerLocation.Text = path + " | PLAYER LINKED!";
+                        playzone_buttonAddToMix.IsEnabled = true;
                     }
                     break;
             }
