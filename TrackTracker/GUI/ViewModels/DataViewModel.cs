@@ -14,6 +14,9 @@ namespace TrackTracker.GUI.ViewModels
     {
         private IEnvironmentService environmentService;
 
+        private List<string> ExternalDriveNames { get; set; }
+        private List<string> SupportedFileFormats { get; set; }
+
         DataViewModel() : base()
         {
             environmentService = DependencyInjector.GetService<IEnvironmentService>();
@@ -28,22 +31,12 @@ namespace TrackTracker.GUI.ViewModels
             {
                 SupportedFileFormats.Add(ext.ToString());
             }
-
-            // Folder search is the default selected option
-            FolderOption = true;
-            DriveOption = false;
         }
-
-        public List<string> ExternalDriveNames { get; set; }
-        public List<string> SupportedFileFormats { get; set; }
 
         public string SelectedExternalDriveName { get; set; }
         public string SelectedSupportedFileFormat { get; set; }
 
-        public bool FolderOption { get; set; }
-        public bool DriveOption { get; set; }
-
-        public string offlineFolderPath;
+        private string offlineFolderPath;
         public string OfflineFolderPath
         {
             get => offlineFolderPath;
