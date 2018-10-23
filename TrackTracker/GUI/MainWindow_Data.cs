@@ -82,8 +82,52 @@ namespace TrackTracker
         }
         private void data_buttonLinkSpotify_Click(object sender, RoutedEventArgs e)
         {
-            GlobalAlgorithms.SpotifyService.TEST_LOGIN_PLAYLIST();
+            GlobalAlgorithms.SpotifyService.TEST_LOGIN_PLAYLIST(new Services.SpotifyService.LoginCallback(callback_login));
         }
+        private void data_SpotifyLists_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (data_SpotifyLists.SelectedIndex != -1)
+                data_buttonAddSpotifyLists.IsEnabled = true;
+            else
+                data_buttonAddSpotifyLists.IsEnabled = false;
+        }
+        private void data_buttonAddSpotifyLists_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPlaylistName = data_SpotifyLists.SelectedItem.ToString();
+
+            GlobalAlgorithms.SpotifyService.TEST_PLAYLISTDATA(selectedPlaylistName, new Services.SpotifyService.PlaylistCallback(callback_playlists));
+        }
+
+        private void callback_login(string name, System.Collections.Generic.List<string> playlistNames)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                data_SpotifyName.Content = name;
+                data_SpotifyCount.Content = playlistNames.Count;
+
+                data_SpotifyLists.Items.Clear();
+
+                foreach (string playlistName in playlistNames)
+                {
+                    data_SpotifyLists.Items.Add(playlistName);
+                }
+            });
+        }
+
+        private void callback_playlists(System.Collections.Generic.List<string> tracks)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                string s = null;
+                foreach (string track in tracks)
+                {
+                    s += track;
+                    s += "\n";
+                }
+                MessageBox.Show(s, "Tracks on list are:");
+            });
+        }
+
         private void data_comboBoxFileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             data_fileFormatSelected = true;

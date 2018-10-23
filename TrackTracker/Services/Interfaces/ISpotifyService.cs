@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
+using static TrackTracker.Services.SpotifyService;
 
 namespace TrackTracker.Services.Interfaces
 {
@@ -11,8 +11,10 @@ namespace TrackTracker.Services.Interfaces
     */
     public interface ISpotifyService
     {
-        void TEST_LOGIN_PLAYLIST();
+        void TEST_LOGIN_PLAYLIST(LoginCallback callback);
+        void TEST_PLAYLISTDATA(string selectedPlaylistName, PlaylistCallback callback);
         Task<string> TEST_PLAYING();
+        void TEST_PLAY_PAUSE();
 
         /*
         void Login();

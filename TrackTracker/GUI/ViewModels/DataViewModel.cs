@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 using TrackTracker.Services.Interfaces;
 using TrackTracker.BLL;
@@ -96,6 +97,38 @@ namespace TrackTracker.GUI.ViewModels
                 }
             }
         }
+
+        private string spotifyAccName;
+        public string SpotifyAccName
+        {
+            get => spotifyAccName;
+            set
+            {
+                if (spotifyAccName != value)
+                {
+                    spotifyAccName = value;
+                    RaisePropertyChangedEvent(x => x.SpotifyAccName);
+                }
+            }
+        }
+
+        private int spotifyListCount;
+        public int SpotifyListCount
+        {
+            get => spotifyListCount;
+            set
+            {
+                if (spotifyListCount != value)
+                {
+                    spotifyListCount = value;
+                    RaisePropertyChangedEvent(x => x.SpotifyListCount);
+                }
+            }
+        }
+
+        public ObservableCollection<string> SpotifyPlaylists { get; set; }
+
+
 
         public bool CanExecuteAddFiles
         {

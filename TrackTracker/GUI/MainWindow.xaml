@@ -74,14 +74,20 @@
                                 <Button x:Name="data_buttonAddFiles" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" IsEnabled="False" Click="data_buttonAddFiles_Click" />
                             </Grid>
                         </GroupBox>
-                        <GroupBox Grid.Row="1" Header="Spotify account" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14">
+                        <GroupBox Grid.Row="1" Header="Spotify account" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14" Height="189" Grid.RowSpan="2">
                             <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="1150">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Label Grid.Row="0" Content="You can add playlists from Spotify to TrackTracker. Note that these can be used for playback (on Spotify) and statistics only." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
-                                <Button Grid.Row="1" x:Name="data_buttonLinkSpotify" Content="Link Spotify account" Width="200" Height="40" Click="data_buttonLinkSpotify_Click" />
+                                <Button x:Name="data_buttonLinkSpotify" Content="Link Spotify account" Width="200" Height="40" Click="data_buttonLinkSpotify_Click" Margin="775,40,177,40" Grid.RowSpan="2" />
+                                <ListBox x:Name="data_SpotifyLists" Grid.Row="0" HorizontalAlignment="Left" Height="100" Margin="190,59,0,-25" VerticalAlignment="Top" Width="322" SelectionMode="Single" Grid.RowSpan="2" SelectionChanged="data_SpotifyLists_SelectionChanged"/>
+                                <Button x:Name="data_buttonAddSpotifyLists" Grid.Row="1" Content="Add lists" Width="200" Height="40" Margin="543,20,407,0" IsEnabled="False" Click="data_buttonAddSpotifyLists_Click" />
+                                <Label Content="Profil name:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,46,0,45" FontSize="14" Grid.RowSpan="2"/>
+                                <Label x:Name="data_SpotifyName" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,10,0,21" FontSize="14" Grid.Row="1" Width="175"/>
+                                <Label Content="Playlists found:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,36,0,-5" FontSize="14" Grid.Row="1"/>
+                                <Label x:Name="data_SpotifyCount" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,60,0,-29" FontSize="14" Grid.Row="1" Width="175"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -267,9 +273,9 @@
                             WILL FIX IN A LATER PHASE.
                             
                             -->
-                            
-                           
-                            
+
+
+
 
                             <Label Grid.Column="0" Content="Tracks by artist" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
                             <Label Grid.Column="0" Content="Most frequent artist:" HorizontalAlignment="Left" Margin="430,64,0,0" VerticalAlignment="Top" Foreground="White"/>

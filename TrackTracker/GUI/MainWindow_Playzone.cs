@@ -70,6 +70,8 @@ namespace TrackTracker
         private async void playzone_buttonSpotifyPlayPause_Click(object sender, RoutedEventArgs e)
         {
             playzone_textBlockPlayerLocation.Text = await GlobalAlgorithms.SpotifyService.TEST_PLAYING();
+
+            GlobalAlgorithms.SpotifyService.TEST_PLAY_PAUSE();
         }
     }
 }
