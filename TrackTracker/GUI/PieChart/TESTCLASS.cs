@@ -4,9 +4,9 @@ using System.ComponentModel;
 
 
 
-namespace WPFPieChart
+namespace PieChart
 {
-    public class AssetClass : INotifyPropertyChanged
+    public class TESTCLASS : INotifyPropertyChanged
     {
         private string category;
 
@@ -34,13 +34,13 @@ namespace WPFPieChart
 
 
 
-        public static List<AssetClass> ConstructTestData()
+        public static List<TESTCLASS> ConstructTestData()
         {
-            List<AssetClass> assetClasses = new List<AssetClass>();
+            List<TESTCLASS> assetClasses = new List<TESTCLASS>();
 
-            assetClasses.Add(new AssetClass() { Category = "Rock", Count = 12 });
-            assetClasses.Add(new AssetClass() { Category = "Pop", Count = 25 });
-            assetClasses.Add(new AssetClass() { Category = "Rap", Count = 50 });
+            assetClasses.Add(new TESTCLASS() { Category = "Rock", Count = 12 });
+            assetClasses.Add(new TESTCLASS() { Category = "Pop", Count = 25 });
+            assetClasses.Add(new TESTCLASS() { Category = "Rap", Count = 50 });
 
             return assetClasses;
         }

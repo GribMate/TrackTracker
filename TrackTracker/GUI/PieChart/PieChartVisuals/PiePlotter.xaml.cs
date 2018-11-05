@@ -9,12 +9,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Media.Animation;
 
-using ScottLogic.Shapes;
-using ScottLogic.ScottLogic.PieChart;
 
 
-
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// Renders a bound dataset as a pie chart

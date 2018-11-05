@@ -2,11 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using ScottLogic.ScottLogic.PieChart;
 
 
-
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// Defines the layout of the pie chart

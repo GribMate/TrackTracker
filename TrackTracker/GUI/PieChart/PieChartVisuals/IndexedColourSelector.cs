@@ -2,11 +2,10 @@
 using System.Windows.Media;
 using System.Windows;
 
-using ScottLogic.ScottLogic.PieChart;
 
 
 
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// Selects a colour purely based on its location within a collection.

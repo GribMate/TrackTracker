@@ -3,11 +3,10 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
 
-using ScottLogic.Util;
+using PieChart.Utility;
 
 
-
-namespace ScottLogic.Shapes
+namespace PieChart
 {
     /// <summary>
     /// A pie piece shape
@@ -166,23 +165,23 @@ namespace ScottLogic.Shapes
         {           
             Point startPoint = new Point(CentreX, CentreY);
 
-            Point innerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
+            Point innerArcStartPoint = Helpers.ComputeCartesianCoordinate(RotationAngle, InnerRadius);
             innerArcStartPoint.Offset(CentreX, CentreY);
 
-            Point innerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
+            Point innerArcEndPoint = Helpers.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, InnerRadius);
             innerArcEndPoint.Offset(CentreX, CentreY);
 
-            Point outerArcStartPoint = Utils.ComputeCartesianCoordinate(RotationAngle, Radius);
+            Point outerArcStartPoint = Helpers.ComputeCartesianCoordinate(RotationAngle, Radius);
             outerArcStartPoint.Offset(CentreX, CentreY);
 
-            Point outerArcEndPoint = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
+            Point outerArcEndPoint = Helpers.ComputeCartesianCoordinate(RotationAngle + WedgeAngle, Radius);
             outerArcEndPoint.Offset(CentreX, CentreY);
 
             bool largeArc = WedgeAngle>180.0;
 
             if (PushOut > 0)
             {
-                Point offset = Utils.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
+                Point offset = Helpers.ComputeCartesianCoordinate(RotationAngle + WedgeAngle / 2, PushOut);
                 innerArcStartPoint.Offset(offset.X, offset.Y);
                 innerArcEndPoint.Offset(offset.X, offset.Y);
                 outerArcStartPoint.Offset(offset.X, offset.Y);

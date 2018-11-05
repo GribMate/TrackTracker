@@ -5,11 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 
-using BaseWPFHelpers;
+using PieChart.Utility;
 
 
 
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// Converter which uses the IColorSelector associated with the Legend to

@@ -6,11 +6,11 @@ using System.Windows.Media;
 using System.Windows;
 using System.ComponentModel;
 
-using BaseWPFHelpers;
+using PieChart.Utility;
 
 
 
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// Obtain the value of the property from the item, which is currently displayed by the pie chart.

@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 
 
-namespace ScottLogic.ScottLogic.PieChart
+namespace PieChart
 {
     public interface IColorSelector
     {

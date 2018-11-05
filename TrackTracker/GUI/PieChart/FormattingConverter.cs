@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 
 
-namespace ScottLogic.Util
+namespace PieChart.Utility
 {
     /// <summary>
     /// A value converter that delegates to String.Format
@@ -12,8 +12,7 @@ namespace ScottLogic.Util
     [ValueConversion(typeof(object), typeof(string))]
     public class FormattingConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType,
-            object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string formatString = parameter as string;
             if (formatString != null)
@@ -26,8 +25,7 @@ namespace ScottLogic.Util
             }
         }
 
-        public object ConvertBack(object value, Type targetType,
-            object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -189,23 +189,22 @@
     <Compile Include="BLL\Track.cs" />
     <Compile Include="BLL\TracklistData.cs" />
     <Compile Include="GUI\PieChart\BaseWPFHelpers.cs" />
-    <Compile Include="GUI\PieChart\PieChart\ColourConverter.cs" />
-    <Compile Include="GUI\PieChart\PieChart\IColorSelector.cs" />
-    <Compile Include="GUI\PieChart\PieChart\IndexedColourSelector.cs" />
-    <Compile Include="GUI\PieChart\PieChart\Legend.xaml.cs">
+    <Compile Include="GUI\PieChart\PieChartVisuals\ColourConverter.cs" />
+    <Compile Include="GUI\PieChart\PieChartVisuals\IColorSelector.cs" />
+    <Compile Include="GUI\PieChart\PieChartVisuals\IndexedColourSelector.cs" />
+    <Compile Include="GUI\PieChart\PieChartVisuals\Legend.xaml.cs">
       <DependentUpon>Legend.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\PieChart\PieChart\LegendConverter.cs" />
-    <Compile Include="GUI\PieChart\PieChart\PieChartLayout.xaml.cs">
+    <Compile Include="GUI\PieChart\PieChartVisuals\LegendConverter.cs" />
+    <Compile Include="GUI\PieChart\PieChartVisuals\PieChartLayout.xaml.cs">
       <DependentUpon>PieChartLayout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\PieChart\PieChart\PiePlotter.xaml.cs">
+    <Compile Include="GUI\PieChart\PieChartVisuals\PiePlotter.xaml.cs">
       <DependentUpon>PiePlotter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\PieChart\Shapes\PiePiece.cs" />
-    <Compile Include="GUI\PieChart\TestData\AssetClass.cs" />
-    <Compile Include="GUI\PieChart\Util\FormattingConverter.cs" />
-    <Compile Include="GUI\PieChart\Util\Utils.cs" />
+    <Compile Include="GUI\PieChart\PiePiece.cs" />
+    <Compile Include="GUI\PieChart\TESTCLASS.cs" />
+    <Compile Include="GUI\PieChart\FormattingConverter.cs" />
     <Page Include="GUI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -231,15 +230,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="GUI\PieChart\PieChart\Legend.xaml">
+    <Page Include="GUI\PieChart\PieChartVisuals\Legend.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GUI\PieChart\PieChart\PieChartLayout.xaml">
+    <Page Include="GUI\PieChart\PieChartVisuals\PieChartLayout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GUI\PieChart\PieChart\PiePlotter.xaml">
+    <Page Include="GUI\PieChart\PieChartVisuals\PiePlotter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

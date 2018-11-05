@@ -5,11 +5,9 @@ using System.Windows.Data;
 using System.ComponentModel;
 using System.Collections.Specialized;
 
-using ScottLogic.ScottLogic.PieChart;
 
 
-
-namespace ScottLogic.Controls.PieChart
+namespace PieChart
 {
     /// <summary>
     /// A pie chart legend
