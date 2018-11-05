@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="TrackTracker.GUI.Views.CommonControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrackTracker.GUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel DockPanel.Dock="Bottom" Height="30" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="95" />
+                <ColumnDefinition Width="285" />
+                <ColumnDefinition Width="160" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="250" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Online status:" Foreground="White" FontSize="14" />
+            <Label x:Name="labelOnlineStatus" Grid.Column="1" Content="Checking..." Foreground="Yellow" FontSize="14" />
+            <Label x:Name="labelProcessingName" Grid.Column="2" Content="Currently processing:" Foreground="White" FontSize="14" Visibility="Hidden" />
+            <Label x:Name="labelProcessingValue" Grid.Column="3" Content="Parsing offline files..." Foreground="White" FontSize="14" Visibility="Hidden" />
+            <ProgressBar x:Name="progressBar" Grid.Column="4" Foreground="#FFC80000" Value="25" FontSize="14" Height="20" Width="250" Visibility="Hidden" />
+        </Grid>
+    </StackPanel>
+</UserControl>

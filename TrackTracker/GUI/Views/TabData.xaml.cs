@@ -1,27 +1,48 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-using WinForms = System.Windows.Forms;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
+using WinForms = System.Windows.Forms;
 
 
 
-namespace TrackTracker
+namespace TrackTracker.GUI.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for TabData.xaml
+    /// </summary>
+    public partial class TabData : UserControl
     {
+        private bool data_fileFormatSelected;
+        private bool data_driveLetterSelected;
+        private WinForms.FolderBrowserDialog fbdMedia; //the FBD for the music folder path
 
-        private void datasources_Initialized(object sender, EventArgs e)
+        public TabData()
         {
-            //TODO: need to call only once, probably should be placed in constructor
+            InitializeComponent();
+
+            data_fileFormatSelected = false;
+            data_driveLetterSelected = false;
+
+            fbdMedia = new WinForms.FolderBrowserDialog();
+            fbdMedia.ShowNewFolderButton = false; //folder is supposed to exist already
+            fbdMedia.Description = "Select local music library folder:";
+
+            //load up the file format selection box with the currently supported values from SupportedFileExtension instead of burning values in
+            foreach (SupportedFileExtension ext in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>()) //casting to get typed iteration, just in case
+            {
+                data_comboBoxFileFormat.Items.Add(ext.ToString());
+            }
 
             foreach (string driveName in GlobalAlgorithms.EnvironmentService.GetExternalDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
         }
+
         private void data_radioButtonFolder_Checked(object sender, RoutedEventArgs e)
         {
             if (data_radioButtonFolder.IsInitialized) //just in case, default IsChecked throws null exception

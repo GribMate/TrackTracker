@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 
-
-
-namespace TrackTracker
+namespace TrackTracker.GUI.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for TabPlayzone.xaml
+    /// </summary>
+    public partial class TabPlayzone : UserControl
     {
-        private void playzone_Initialized(object sender, EventArgs e)
+        public TabPlayzone()
         {
+            InitializeComponent();
+
             //TODO: after refactor this will not work this way
             //load up the player type selection box with the currently supported values from MediaPlayerType instead of burning values in
             foreach (SupportedMediaPlayers ext in Enum.GetValues(typeof(SupportedMediaPlayers)).Cast<SupportedMediaPlayers>()) //casting to get typed iteration, just in case
@@ -23,6 +35,7 @@ namespace TrackTracker
 
             playzone_dataGridPlayList.ItemsSource = GlobalAlgorithms.PlayzoneData.Tracks;
         }
+
         private void playzone_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
             foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)

@@ -1,31 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using TrackTracker.BLL;
 
-
-
-namespace TrackTracker
+namespace TrackTracker.GUI.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for TabTracklist.xaml
+    /// </summary>
+    public partial class TabTracklist : UserControl
     {
         private ObservableCollection<MetaTag> tags;
 
         private int todo_duration = -1;
 
 
-        private void tracklist_Initialized(object sender, EventArgs e)
+        public TabTracklist()
         {
+            InitializeComponent();
+
+            tags = new ObservableCollection<MetaTag>();
+
             tracklist_dataGridTrackList.ItemsSource = GlobalAlgorithms.TracklistData.Tracks;
             tracklist_dataGridTagList.ItemsSource = tags;
         }
+
         private void tracklist_buttonManageSources_Click(object sender, RoutedEventArgs e)
         {
             Dialogs.ManageTracklistSources mts = new Dialogs.ManageTracklistSources();
-            mts.Owner = this; //enables center-screen display
+            //mts.Owner = this; //enables center-screen display  //TODO
             mts.ShowDialog();
         }
         private void tracklist_buttonSelectAll_Click(object sender, RoutedEventArgs e)
@@ -51,12 +66,12 @@ namespace TrackTracker
                 if (track.IsSelectedInGUI)
                 {
                     List<Track> results = new List<Track>();
-                    SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
+                    //SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
                     results = await GlobalAlgorithms.GetMatchesForTrack(track);
                     tracklist_dataGridMatchList.ItemsSource = results;
-                    SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));
+                    //SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalAlgorithms.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
                     System.Threading.Thread.Sleep(100);
-                    SetProgressBarValue(0, " ");
+                    //SetProgressBarValue(0, " ");  //TODO
 
                     if (tracklist_checkBoxAutoSelect.IsChecked.Value && results.Count > 0)
                     {
@@ -104,13 +119,13 @@ namespace TrackTracker
 
                 //FOR DEBUG ONLY
                 Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("For debug", "Active candidate selected!");
-                en.Owner = this;
+                //en.Owner = this;  //TODO
                 en.ShowDialog();
             }
         }
         private void tracklist_buttonGetFingerprint_Click(object sender, RoutedEventArgs e) //getting fingerprint for selected tracks
         {
-            SetProgressBarValue(25, "Generating fingerprints...");
+            //SetProgressBarValue(25, "Generating fingerprints...");  //TODO
             foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
             {
                 if (track.IsSelectedInGUI)
@@ -123,7 +138,7 @@ namespace TrackTracker
         {
             this.Dispatcher.Invoke(() =>
             {
-                SetProgressBarValue(75, "Generating fingerprints for" + path);
+                //SetProgressBarValue(75, "Generating fingerprints for" + path); //TODO
                 foreach (Track track in GlobalAlgorithms.TracklistData.Tracks)
                 {
                     if (track.FileHandle.Name == path)
@@ -135,7 +150,7 @@ namespace TrackTracker
                         break; //1 match
                     }
                 }
-                SetProgressBarValue(0, " ");
+                //SetProgressBarValue(0, " ");  //TODO
             });
             decoder.Dispose();
         }

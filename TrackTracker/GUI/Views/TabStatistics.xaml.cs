@@ -1,17 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 
-
-
-namespace TrackTracker
+namespace TrackTracker.GUI.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for TabStatistics.xaml
+    /// </summary>
+    public partial class TabStatistics : UserControl
     {
+        public TabStatistics()
+        {
+            InitializeComponent();
+        }
+
         private void statistics_GotFocus(object sender, RoutedEventArgs e)
         {
             Statistics statistics = new Statistics();
