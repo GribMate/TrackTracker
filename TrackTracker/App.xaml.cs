@@ -9,10 +9,11 @@ namespace TrackTracker
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e) //entry point before GUI loads
+        protected override void OnStartup(StartupEventArgs e) // Entry point before GUI loads
         {
             base.OnStartup(e);
-            TrackTracker.BLL.GlobalAlgorithms.Initialize(); //must be called before GUI loads to avoid null reference exceptions
+
+            TrackTracker.Startup.Initialize(); // Must be called before GUI loads (sets up DI, and first run settings)
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
+using TrackTracker.Services.Interfaces;
 using WinForms = System.Windows.Forms;
 
 
@@ -37,7 +39,7 @@ namespace TrackTracker.GUI.Views
                 data_comboBoxFileFormat.Items.Add(ext.ToString());
             }
 
-            foreach (string driveName in GlobalAlgorithms.EnvironmentService.GetExternalDriveNames())
+            foreach (string driveName in DependencyInjector.GetService<IEnvironmentService>().GetExternalDriveNames())
             {
                 data_comboBoxDriveLetter.Items.Add(driveName);
             }
@@ -73,7 +75,7 @@ namespace TrackTracker.GUI.Views
         {
             if (fbdMedia.ShowDialog() == WinForms.DialogResult.OK)
             {
-                if (GlobalAlgorithms.FileService.MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
+                if (DependencyInjector.GetService<IFileService>().MediaPathIsValid(fbdMedia.SelectedPath)) //matches all criteria to validate folder
                 {
                     data_textBoxOfflineFolderPath.Text = fbdMedia.SelectedPath;
                     data_buttonAddFiles.IsEnabled = true;
@@ -89,21 +91,21 @@ namespace TrackTracker.GUI.Views
                 SupportedFileExtension type = (SupportedFileExtension)data_comboBoxFileFormat.SelectedIndex; //will always correspond to the proper value (see constructor)
                 string drive = data_comboBoxDriveLetter.SelectedItem.ToString();
                 lmp = new LocalMediaPack(drive, true, type);
-                GlobalAlgorithms.LoadFilesFromDrive(GlobalAlgorithms.FileService, lmp, drive, type);
+                LoadFilesFromDrive(DependencyInjector.GetService<IFileService>(), lmp, drive, type);
             }
             else if (data_radioButtonFolder.IsChecked == true)
             {
                 lmp = new LocalMediaPack(data_textBoxOfflineFolderPath.Text, false);
-                GlobalAlgorithms.LoadFilesFromDirectory(GlobalAlgorithms.FileService, lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
+                LoadFilesFromDirectory(DependencyInjector.GetService<IFileService>(), lmp, data_textBoxOfflineFolderPath.Text); //loading up LMP object with file paths
                 data_buttonAddFiles.IsEnabled = false;
                 data_textBoxOfflineFolderPath.Text = "Please select your offline music folder...";
             }
 
-            GlobalAlgorithms.LocalMediaPackContainer.AddLMP(lmp, true);
+            GlobalData.LocalMediaPackContainer.AddLMP(lmp, true);
         }
         private void data_buttonLinkSpotify_Click(object sender, RoutedEventArgs e)
         {
-            GlobalAlgorithms.SpotifyService.TEST_LOGIN_PLAYLIST(new Services.SpotifyService.LoginCallback(callback_login));
+            DependencyInjector.GetService<ISpotifyService>().TEST_LOGIN_PLAYLIST(new Services.SpotifyService.LoginCallback(callback_login));
         }
         private void data_SpotifyLists_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -116,7 +118,7 @@ namespace TrackTracker.GUI.Views
         {
             string selectedPlaylistName = data_SpotifyLists.SelectedItem.ToString();
 
-            GlobalAlgorithms.SpotifyService.TEST_PLAYLISTDATA(selectedPlaylistName, new Services.SpotifyService.PlaylistCallback(callback_playlists));
+            DependencyInjector.GetService<ISpotifyService>().TEST_PLAYLISTDATA(selectedPlaylistName, new Services.SpotifyService.PlaylistCallback(callback_playlists));
         }
 
         private void callback_login(string name, System.Collections.Generic.List<string> playlistNames)
@@ -159,6 +161,29 @@ namespace TrackTracker.GUI.Views
         {
             data_driveLetterSelected = true;
             if (data_fileFormatSelected && data_driveLetterSelected) data_buttonAddFiles.IsEnabled = true;
+        }
+
+
+
+        private void LoadFilesFromDrive(IFileService service, LocalMediaPack lmp, string driveLetter, SupportedFileExtension type) //loads all the files with the given extension from a given drive into an LMP object, using a service
+        {
+            List<string> paths = service.GetAllFilesFromDrive(driveLetter, type.ToString()); //no typed extensions when calling to DAL
+            foreach (string path in paths)
+            {
+                lmp.AddFilePath(path, type); //loading up the LMP object
+            }
+        }
+        private void LoadFilesFromDirectory(IFileService service, LocalMediaPack lmp, string path) //loads all the files with the given extension from a given directory into an LMP object, using a service
+        {
+            //when loading from a directory, we want all the supported file types to be read, so we iterate through the extensions
+            foreach (SupportedFileExtension ext in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>()) //casting to get typed iteration, just in case
+            {
+                List<string> paths = service.GetAllFilesFromDirectory(path, ext.ToString()); //no typed extensions when calling to DAL
+                foreach (string currPath in paths)
+                {
+                    lmp.AddFilePath(currPath, ext); //loading up the LMP object
+                }
+            }
         }
     }
 }

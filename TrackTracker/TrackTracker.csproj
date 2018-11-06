@@ -131,7 +131,7 @@
     <Compile Include="BLL\Enums\SupportedMediaPlayers.cs" />
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
-    <Compile Include="BLL\GlobalAlgorithms.cs" />
+    <Compile Include="BLL\GlobalData.cs" />
     <Compile Include="BLL\Model\MetaData.cs" />
     <Compile Include="BLL\Model\MetaDataExtended.cs" />
     <Compile Include="BLL\Model\MetaTagBase.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="BLL\_newBLL\DependencyInjector.cs" />
+    <Compile Include="BLL\_newBLL\PersistenceHelper.cs" />
     <Compile Include="GUI\Views\CommonControls.xaml.cs">
       <DependentUpon>CommonControls.xaml</DependentUpon>
     </Compile>
@@ -205,6 +206,7 @@
     <Compile Include="GUI\PieChart\PiePiece.cs" />
     <Compile Include="GUI\PieChart\TESTCLASS.cs" />
     <Compile Include="GUI\PieChart\FormattingConverter.cs" />
+    <Compile Include="Startup.cs" />
     <Page Include="GUI\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -16,7 +16,7 @@ namespace TrackTracker.BLL.Model
         public MusicFileProperties MusicFileProperties { get; set; } // Local music file related data
 
         public List<TrackVirtual> MatchCandidates { get; set; } // All the candidate tracks, that MBAPI returned
-        public int ActiveCandidateIndex { get; set; } // Currently selected match to sync metadata from
+        public MetaTagGUID ActiveCandidateMBTrackID { get; set; } // Currently selected match to sync metadata from, identified by its MB Track ID
 
         public void SaveToDisk(ITaggingService tagger)
         {

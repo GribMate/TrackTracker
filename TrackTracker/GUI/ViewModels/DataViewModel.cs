@@ -14,6 +14,7 @@ namespace TrackTracker.GUI.ViewModels
     public class DataViewModel : ViewModelBase<DataViewModel>
     {
         private IEnvironmentService environmentService;
+        private IFileService fileService;
 
         private List<string> ExternalDriveNames { get; set; }
         private List<string> SupportedFileFormats { get; set; }
@@ -21,6 +22,8 @@ namespace TrackTracker.GUI.ViewModels
         public DataViewModel() : base()
         {
             environmentService = DependencyInjector.GetService<IEnvironmentService>();
+            fileService = DependencyInjector.GetService<IFileService>();
+
             Init();
         }
 
@@ -146,16 +149,18 @@ namespace TrackTracker.GUI.ViewModels
             if (IsFolderSelected)  // Parsing an offline folder, all supported file formats may appear
             {
                 lmp = new LocalMediaPack(OfflineFolderPath, false);
-                GlobalAlgorithms.LoadFilesFromDirectory(GlobalAlgorithms.FileService, lmp, OfflineFolderPath); // Loading up LMP object with file paths
+                //GlobalData.LoadFilesFromDirectory(fileService, lmp, OfflineFolderPath); // Loading up LMP object with file paths
+                // TODO: Will be here after MVVM
                 OfflineFolderPath = "Please select your offline music folder...";
             }
             else  // Parsing an external drive, with a given file format
             {
                 lmp = new LocalMediaPack(SelectedExternalDriveName, true, SelectedSupportedFileExtension);
-                GlobalAlgorithms.LoadFilesFromDrive(GlobalAlgorithms.FileService, lmp, SelectedExternalDriveName, SelectedSupportedFileExtension); // Loading up LMP object with file paths
+                //GlobalData.LoadFilesFromDrive(fileService, lmp, SelectedExternalDriveName, SelectedSupportedFileExtension); // Loading up LMP object with file paths
+                // TODO: Will be here after MVVM
             }
 
-            GlobalAlgorithms.LocalMediaPackContainer.AddLMP(lmp, true);
+            GlobalData.LocalMediaPackContainer.AddLMP(lmp, true);
         }
     }
 }

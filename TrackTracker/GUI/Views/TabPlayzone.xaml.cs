@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
+using TrackTracker.Services.Interfaces;
 
 namespace TrackTracker.GUI.Views
 {
@@ -33,19 +34,19 @@ namespace TrackTracker.GUI.Views
                 playzone_comboBoxPlayerType.Items.Add(ext.ToString());
             }
 
-            playzone_dataGridPlayList.ItemsSource = GlobalAlgorithms.PlayzoneData.Tracks;
+            playzone_dataGridPlayList.ItemsSource = GlobalData.PlayzoneData.Tracks;
         }
 
         private void playzone_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
+            foreach (Track track in GlobalData.PlayzoneData.Tracks)
             {
                 track.IsSelectedInGUI = true;
             }
         }
         private void playzone_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
+            foreach (Track track in GlobalData.PlayzoneData.Tracks)
             {
                 if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
                 else track.IsSelectedInGUI = true;
@@ -54,7 +55,7 @@ namespace TrackTracker.GUI.Views
         private void playzone_buttonAddToMix_Click(object sender, RoutedEventArgs e)
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\testplaylist.m3u");
-            foreach (Track track in GlobalAlgorithms.PlayzoneData.Tracks)
+            foreach (Track track in GlobalData.PlayzoneData.Tracks)
             {
                 if (track.IsSelectedInGUI) sw.WriteLine(track.FileHandle.Name);
             }
@@ -70,10 +71,10 @@ namespace TrackTracker.GUI.Views
             switch (type)
             {
                 case SupportedMediaPlayers.Foobar2000:
-                    string path = GlobalAlgorithms.EnvironmentService.TryFindFoobar();
+                    string path = DependencyInjector.GetService<IEnvironmentService>().TryFindFoobar();
                     if (path.Length > 2)
                     {
-                        GlobalAlgorithms.AppConfig.AddMediaPlayerPath(type, path);
+                        GlobalData.AppConfig.AddMediaPlayerPath(type, path);
                         playzone_textBlockPlayerLocation.Text = path + " | PLAYER LINKED!";
                         playzone_buttonAddToMix.IsEnabled = true;
                     }
@@ -82,9 +83,9 @@ namespace TrackTracker.GUI.Views
         }
         private async void playzone_buttonSpotifyPlayPause_Click(object sender, RoutedEventArgs e)
         {
-            playzone_textBlockPlayerLocation.Text = await GlobalAlgorithms.SpotifyService.TEST_PLAYING();
+            playzone_textBlockPlayerLocation.Text = await DependencyInjector.GetService<ISpotifyService>().TEST_PLAYING();
 
-            GlobalAlgorithms.SpotifyService.TEST_PLAY_PAUSE();
+            DependencyInjector.GetService<ISpotifyService>().TEST_PLAY_PAUSE();
         }
     }
 }

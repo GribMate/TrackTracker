@@ -19,7 +19,7 @@ namespace TrackTracker.BLL.Model
         public bool PlayableOffline { get; set; } // Is this track accessible on local computer and hence playable offline?
         public SupportedMediaPlayers SupportedMediaPlayers { get; set; } // If it is playable, this shows by what exactly
 
-        public virtual void Save(IDatabaseService db)
+        public virtual void Save(IDatabaseService dbService)
         {
             throw new NotImplementedException(); //TODO
         }

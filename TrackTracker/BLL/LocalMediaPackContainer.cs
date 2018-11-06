@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-
+using TrackTracker.Services.Interfaces;
 
 namespace TrackTracker.BLL
 {
@@ -46,7 +45,7 @@ namespace TrackTracker.BLL
                     }
                     sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
                     values[3] = sb.ToString();
-                    GlobalAlgorithms.DatabaseService.InsertInto("LocalMediaPacks", values);
+                    DependencyInjector.GetService<IDatabaseService>().InsertInto("LocalMediaPacks", values);
                 }
 
                 return true; //added successfully
@@ -66,8 +65,8 @@ namespace TrackTracker.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalAlgorithms.TracklistData.AddMusicFile(path.Value, path.Key);
-                    GlobalAlgorithms.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                    GlobalData.TracklistData.AddMusicFile(path.Value, path.Key);
+                    GlobalData.PlayzoneData.AddMusicFile(path.Value, path.Key);
                 }
             }
         }
@@ -85,8 +84,8 @@ namespace TrackTracker.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalAlgorithms.TracklistData.RemoveMusicFile(path.Key);
-                    GlobalAlgorithms.PlayzoneData.RemoveMusicFile(path.Key);
+                    GlobalData.TracklistData.RemoveMusicFile(path.Key);
+                    GlobalData.PlayzoneData.RemoveMusicFile(path.Key);
                 }
             }
         }

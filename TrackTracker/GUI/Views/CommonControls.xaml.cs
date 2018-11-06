@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TrackTracker.BLL;
+using TrackTracker.Services.Interfaces;
 
 namespace TrackTracker.GUI.Views
 {
@@ -36,7 +37,7 @@ namespace TrackTracker.GUI.Views
         {
             labelOnlineStatus.Dispatcher.Invoke(() =>
             {
-                if (GlobalAlgorithms.GetInternetState()) //we have connection
+                if (DependencyInjector.GetService<IEnvironmentService>().InternetConnectionIsAlive()) //we have connection
                 {
                     labelOnlineStatus.Content = "Connected";
                     labelOnlineStatus.Foreground = System.Windows.Media.Brushes.LawnGreen;

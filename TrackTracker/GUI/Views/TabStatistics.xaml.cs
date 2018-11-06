@@ -31,7 +31,7 @@ namespace TrackTracker.GUI.Views
         private void statistics_GotFocus(object sender, RoutedEventArgs e)
         {
             Statistics statistics = new Statistics();
-            statistics.GenerateStatistics(GlobalAlgorithms.TracklistData.Tracks.ToList<Track>(), true, true, true, true, true, true);
+            statistics.GenerateStatistics(GlobalData.TracklistData.Tracks.ToList<Track>(), true, true, true, true, true, true);
 
             //--------------------------------------------------PIECHART--------------------------------------
             this.DataContext = new ObservableCollection<StatisticalData>(statistics.GetCountsByArtist());
