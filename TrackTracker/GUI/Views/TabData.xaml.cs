@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
 
-using TrackTracker.GUI.ViewModels;
-
 
 
 namespace TrackTracker.GUI.Views
@@ -12,8 +10,6 @@ namespace TrackTracker.GUI.Views
         public TabData()
         {
             InitializeComponent();
-            
-            DataContext = new DataViewModel(); // Binding VM
         }
     }
 }
