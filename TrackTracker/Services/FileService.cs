@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using TrackTracker.Services.Interfaces;
@@ -27,6 +28,9 @@ namespace TrackTracker.Services
 
         public bool MediaPathIsValid(string path) //determines whether the given media folder is valid
         {
+            if (String.IsNullOrWhiteSpace(path) || path.Length < 8) // "C:\x.mp3" is 8 chars long, anything less is considered invalid
+                return false; // No need to throw exception, "false" will signal the path is not valid
+
             DirectoryInfo media = new DirectoryInfo(path);
 
             if (!media.Exists) return false; //exists

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="1200">
 
     <StackPanel Background="#FF323232">
         <Grid>
@@ -22,13 +22,13 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Content="You can add files from your local computer to the tracklist here. Metadata can be viewed or updated on Tracklist tab." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
-                    <RadioButton x:Name="data_radioButtonFolder" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonFolder_Checked" IsChecked="True" GroupName="SearchMode"/>
-                    <RadioButton x:Name="data_radioButtonDrive" Grid.Row="2" Content="Search external drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" Checked="data_radioButtonDrive_Checked" GroupName="SearchMode"/>
-                    <TextBox x:Name="data_textBoxOfflineFolderPath" Grid.Row="1" Text="Please select your offline music folder..." IsReadOnly="True" Margin="-300,0,0,0" Width="300" Height="25" />
-                    <ComboBox x:Name="data_comboBoxFileFormat" Grid.Row="2" Width="100" Height="30" Margin="-400,0,0,0" IsReadOnly="True" IsEnabled="False" SelectionChanged="data_comboBoxFileFormat_SelectionChanged" />
-                    <ComboBox x:Name="data_comboBoxDriveLetter" Grid.Row="2" Width="50" Height="30" Margin="-160,0,0,0" IsReadOnly="True" IsEnabled="False" SelectionChanged="data_comboBoxDriveLetter_SelectionChanged"/>
-                    <Button x:Name="data_buttonBrowse" Grid.Row="1" Content="Browse" Width="75" Height="25" Margin="100,0,0,0" Click="data_buttonBrowse_Click" />
-                    <Button x:Name="data_buttonAddFiles" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" IsEnabled="False" Click="data_buttonAddFiles_Click" />
+                    <RadioButton IsChecked="{Binding FolderIsChecked}" Grid.Row="1" Content="Select folder" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" GroupName="SearchMode"/>
+                    <RadioButton IsChecked="{Binding DriveIsChecked}" Grid.Row="2" Content="Search external drive" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="50,0,0,0" GroupName="SearchMode"/>
+                    <TextBox Text="{Binding OfflineFolderPath}" IsEnabled="{Binding IsEnabledOfflineFolderPath}" Grid.Row="1" IsReadOnly="True" Margin="-300,0,0,0" Width="300" Height="25" />
+                    <ComboBox ItemsSource="{Binding SupportedFileFormats}" IsEnabled="{Binding IsEnabledSelectFileExtension}" SelectedValue="{Binding SelectedSupportedFileExtension}" Grid.Row="2" Width="100" Height="30" Margin="-400,0,0,0" IsReadOnly="True" />
+                    <ComboBox ItemsSource="{Binding ExternalDriveNames}" IsEnabled="{Binding IsEnabledSelectDriveName}" SelectedValue="{Binding SelectedExternalDriveName}" Grid.Row="2" Width="50" Height="30" Margin="-160,0,0,0" IsReadOnly="True" />
+                    <Button Command="{Binding BrowseCommand}"  Grid.Row="1" Content="Browse" Width="75" Height="25" Margin="100,0,0,0" />
+                    <Button Command="{Binding AddFilesCommand}" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" />
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="1" Header="Spotify account" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14" Height="189" Grid.RowSpan="2">
@@ -38,13 +38,13 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Content="You can add playlists from Spotify to TrackTracker. Note that these can be used for playback (on Spotify) and statistics only." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
-                    <Button x:Name="data_buttonLinkSpotify" Content="Link Spotify account" Width="200" Height="40" Click="data_buttonLinkSpotify_Click" Margin="775,40,177,40" Grid.RowSpan="2" />
-                    <ListBox x:Name="data_SpotifyLists" Grid.Row="0" HorizontalAlignment="Left" Height="100" Margin="190,59,0,-25" VerticalAlignment="Top" Width="322" SelectionMode="Single" Grid.RowSpan="2" SelectionChanged="data_SpotifyLists_SelectionChanged"/>
-                    <Button x:Name="data_buttonAddSpotifyLists" Grid.Row="1" Content="Add lists" Width="200" Height="40" Margin="543,20,407,0" IsEnabled="False" Click="data_buttonAddSpotifyLists_Click" />
+                    <Button Command="{Binding LinkSpotifyCommand}" Content="Link Spotify account" Width="200" Height="40" Margin="775,40,177,40" Grid.RowSpan="2" />
+                    <ListBox ItemsSource="{Binding SpotifyPlaylists}" SelectedValue="{Binding SelectedSpotifyPlaylist}" Grid.Row="0" HorizontalAlignment="Left" Height="100" Margin="190,59,0,-25" VerticalAlignment="Top" Width="322" SelectionMode="Single" Grid.RowSpan="2"/>
+                    <Button Command="{Binding AddSpotifyListsCommand}" Grid.Row="1" Content="Add lists" Width="200" Height="40" Margin="543,20,407,0" />
                     <Label Content="Profil name:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,46,0,45" FontSize="14" Grid.RowSpan="2"/>
-                    <Label x:Name="data_SpotifyName" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,10,0,21" FontSize="14" Grid.Row="1" Width="175"/>
+                    <Label Content="{Binding SpotifyAccName}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,10,0,21" FontSize="14" Grid.Row="1" Width="175"/>
                     <Label Content="Playlists found:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,36,0,-5" FontSize="14" Grid.Row="1"/>
-                    <Label x:Name="data_SpotifyCount" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,60,0,-29" FontSize="14" Grid.Row="1" Width="175"/>
+                    <Label Content="{Binding SpotifyListCount}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,60,0,-29" FontSize="14" Grid.Row="1" Width="175"/>
                 </Grid>
             </GroupBox>
         </Grid>
