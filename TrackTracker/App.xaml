@@ -6,5 +6,9 @@
              StartupUri="GUI/Views/MainWindow.xaml">
     <Application.Resources>
         <vm:DataViewModel x:Key="DataViewModel"/>
+        <vm:PlayzoneViewModel x:Key="PlayzoneViewModel"/>
+        <vm:StatisticsViewModel x:Key="StatisticsViewModel"/>
+        <vm:TracklistViewModel x:Key="TracklistViewModel"/>
+        <vm:CommonControlsViewModel x:Key="CommonControlsViewModel"/>
     </Application.Resources>
 </Application>

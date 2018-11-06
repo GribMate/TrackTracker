@@ -147,7 +147,11 @@
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="BLL\_newBLL\DependencyInjector.cs" />
     <Compile Include="BLL\_newBLL\PersistenceHelper.cs" />
+    <Compile Include="GUI\ViewModels\CommonControlsViewModel.cs" />
+    <Compile Include="GUI\ViewModels\PlayzoneViewModel.cs" />
     <Compile Include="GUI\ViewModels\RelayCommand.cs" />
+    <Compile Include="GUI\ViewModels\StatisticsViewModel.cs" />
+    <Compile Include="GUI\ViewModels\TracklistViewModel.cs" />
     <Compile Include="GUI\Views\CommonControls.xaml.cs">
       <DependentUpon>CommonControls.xaml</DependentUpon>
     </Compile>
