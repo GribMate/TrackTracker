@@ -117,8 +117,8 @@ namespace TrackTracker.GUI.ViewModels
             set { SetProperty(ref spotifyAccName, value); }
         }
 
-        private int spotifyListCount;
-        public int SpotifyListCount
+        private string spotifyListCount;
+        public string SpotifyListCount
         {
             get => spotifyListCount;
             set { SetProperty(ref spotifyListCount, value); }
@@ -218,7 +218,7 @@ namespace TrackTracker.GUI.ViewModels
         private void callback_login(string name, List<string> playlistNames) // TODO: pls...
         {
             SpotifyAccName = name;
-            SpotifyListCount = playlistNames.Count;
+            SpotifyListCount = playlistNames.Count.ToString();
 
             SpotifyPlaylists.Clear();
 
