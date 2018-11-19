@@ -34,7 +34,7 @@ namespace TrackTracker.GUI.Views
 
             tags = new ObservableCollection<MetaTag>();
 
-            tracklist_dataGridTrackList.ItemsSource = GlobalData.TracklistData.Tracks;
+            tracklist_dataGridTrackList.ItemsSource = GlobalContext.TracklistTracks;
             tracklist_dataGridTagList.ItemsSource = tags;
         }
 
@@ -46,14 +46,14 @@ namespace TrackTracker.GUI.Views
         }
         private void tracklist_buttonSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalData.TracklistData.Tracks)
+            foreach (Track track in GlobalContext.TracklistTracks)
             {
                 track.IsSelectedInGUI = true;
             }
         }
         private void tracklist_buttonReverseSelection_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Track track in GlobalData.TracklistData.Tracks)
+            foreach (Track track in GlobalContext.TracklistTracks)
             {
                 if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
                 else track.IsSelectedInGUI = true;
@@ -62,22 +62,22 @@ namespace TrackTracker.GUI.Views
 
         private async void tracklist_buttonSearch_Click(object sender, RoutedEventArgs e) //querying MBAPI
         {
-            foreach (Track track in GlobalData.TracklistData.Tracks)
+            foreach (Track track in GlobalContext.TracklistTracks)
             {
                 if (track.IsSelectedInGUI)
                 {
                     List<Track> results = new List<Track>();
-                    //SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalData.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
+                    //SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalContext.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
                     results = await GetMatchesForTrack(track);
                     tracklist_dataGridMatchList.ItemsSource = results;
-                    //SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalData.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
+                    //SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalContext.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
                     System.Threading.Thread.Sleep(100);
                     //SetProgressBarValue(0, " ");  //TODO
 
                     if (tracklist_checkBoxAutoSelect.IsChecked.Value && results.Count > 0)
                     {
                         //TODO: implement magic
-                        //_id = GlobalData.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
+                        //_id = GlobalContext.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
                         track.AddCandidateTrack(results[0]);
                         track.SelectActiveCandidate(results[0].MetaData.MusicBrainzTrackId);
                     }
@@ -87,7 +87,7 @@ namespace TrackTracker.GUI.Views
 
         private async void tracklist_buttonUpdateTags_Click(object sender, RoutedEventArgs e) //updating selected tracks
         {
-            foreach (Track track in GlobalData.TracklistData.Tracks)
+            foreach (Track track in GlobalContext.TracklistTracks)
             {
                 if (track.IsSelectedInGUI)
                 {
@@ -127,7 +127,7 @@ namespace TrackTracker.GUI.Views
         private void tracklist_buttonGetFingerprint_Click(object sender, RoutedEventArgs e) //getting fingerprint for selected tracks
         {
             //SetProgressBarValue(25, "Generating fingerprints...");  //TODO
-            foreach (Track track in GlobalData.TracklistData.Tracks)
+            foreach (Track track in GlobalContext.TracklistTracks)
             {
                 if (track.IsSelectedInGUI)
                 {
@@ -140,13 +140,13 @@ namespace TrackTracker.GUI.Views
             this.Dispatcher.Invoke(() =>
             {
                 //SetProgressBarValue(75, "Generating fingerprints for" + path); //TODO
-                foreach (Track track in GlobalData.TracklistData.Tracks)
+                foreach (Track track in GlobalContext.TracklistTracks)
                 {
                     if (track.FileHandle.Name == path)
                     {
                         track.AcoustID = fingerprint;
                         todo_duration = duration;
-                        //string trial_ID = GlobalData.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
+                        //string trial_ID = GlobalContext.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
                         //TODO: duration and other non-editable metadata
                         break; //1 match
                     }

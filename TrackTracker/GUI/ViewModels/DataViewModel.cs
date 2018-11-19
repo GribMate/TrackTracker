@@ -39,13 +39,13 @@ namespace TrackTracker.GUI.ViewModels
             SupportedFileFormats = GetSupportedFileFormats();
             SpotifyPlaylists = new ObservableCollection<string>();
 
-            OfflineFolderPath = "Please select your offline music folder...";
-            FolderIsChecked = true;
-
             BrowseCommand = new RelayCommand(exe => ExecuteBrowse(), can => CanExecuteBrowse);
             AddFilesCommand = new RelayCommand(exe => ExecuteAddFiles(), can => CanExecuteAddFiles);
             LinkSpotifyCommand = new RelayCommand(exe => ExecuteLinkSpotify(), can => CanExecuteLinkSpotify);
             AddSpotifyListsCommand = new RelayCommand(exe => ExecuteAddSpotifyLists(), can => CanExecuteAddSpotifyLists);
+
+            OfflineFolderPath = "Please select your offline music folder...";
+            FolderIsChecked = true;
         }
 
 
@@ -203,7 +203,7 @@ namespace TrackTracker.GUI.ViewModels
                 LoadFilesFromDrive(lmp, SelectedExternalDriveName, SelectedSupportedFileExtension); // Loading up LMP object with file paths
             }
 
-            GlobalData.LocalMediaPackContainer.AddLMP(lmp, true); // TODO: REFACTOR
+            GlobalContext.LocalMediaPackContainer.AddLMP(lmp, true); // TODO: REFACTOR
         }
 
         public bool CanExecuteLinkSpotify

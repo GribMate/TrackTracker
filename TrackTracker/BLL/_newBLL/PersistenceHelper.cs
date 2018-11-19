@@ -46,7 +46,7 @@ namespace TrackTracker.BLL
                         SupportedFileExtension type = (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), fileService.GetExtensionFromFilePath(path).ToUpper()); // Eg. "MP3" or "FLAC"
                         lmp.AddFilePath(path, type);
                     }
-                    GlobalData.LocalMediaPackContainer.AddLMP(lmp, false); // Adding to current container
+                    GlobalContext.LocalMediaPackContainer.AddLMP(lmp, false); // Adding to current container
                 }
             }
         }

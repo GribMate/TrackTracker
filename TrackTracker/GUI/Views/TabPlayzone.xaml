@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
+             xmlns:BLL="clr-namespace:TrackTracker.BLL"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="700" d:DesignWidth="1200"
              DataContext="{StaticResource PlayzoneViewModel}">
-    
+
     <StackPanel Background="#FF323232">
         <Grid>
             <Grid.RowDefinitions>
@@ -19,7 +20,7 @@
                     <ColumnDefinition Width="950" />
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
-                <DataGrid x:Name="playzone_dataGridPlayList" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <DataGrid ItemsSource="{Binding Source={x:Static BLL:GlobalContext.PlayzoneTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
@@ -37,10 +38,10 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Content="Select music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" />
-                    <ComboBox x:Name="playzone_comboBoxPlayerType" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" SelectionChanged="playzone_comboBoxPlayerType_SelectionChanged" Margin="0,0,10,0" FontSize="14" />
+                    <ComboBox ItemsSource="{Binding SupportedPlayers}" SelectedValue="{Binding SelectedSupportedMediaPlayer}" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="14" />
                     <Label Grid.Row="2" Content="Player detected @" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" />
-                    <TextBlock Grid.Row="3" x:Name="playzone_textBlockPlayerLocation" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="14" Height="70" Width="215" Foreground="#FF00C800"/>
-                    <Button x:Name="playzone_buttonSpotifyPlayPause" Grid.Row="4" Content="Spotify Play/Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="125" Margin="1,0,0,0" Click="playzone_buttonSpotifyPlayPause_Click" FontSize="14" />
+                    <TextBlock Text="{Binding PlayerLocation}" Grid.Row="3" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="70" Width="215" Foreground="#FF00C800"/>
+                    <Button Command="{Binding SpotifyPlayPauseCommand}" Grid.Row="4" Content="Spotify Play/Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
                 </Grid>
             </Grid>
             <Grid Grid.Row="1">
@@ -48,9 +49,9 @@
                     <ColumnDefinition Width="950" />
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="playzone_buttonSelectAll" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" Click="playzone_buttonSelectAll_Click" FontSize="14" />
-                <Button x:Name="playzone_buttonReverseSelection" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="playzone_buttonReverseSelection_Click" FontSize="14" />
-                <Button x:Name="playzone_buttonAddToMix" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" Click="playzone_buttonAddToMix_Click" FontSize="14" IsEnabled="False" />
+                <Button Command="{Binding SelectAllCommand}" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
+                <Button Command="{Binding SelectReverseCommand}" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" />
+                <Button Command="{Binding AddToMixCommand}" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" FontSize="14" />
             </Grid>
         </Grid>
     </StackPanel>

@@ -65,8 +65,7 @@ namespace TrackTracker.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalData.TracklistData.AddMusicFile(path.Value, path.Key);
-                    GlobalData.PlayzoneData.AddMusicFile(path.Value, path.Key);
+                    GlobalContext.AddMusicFile(path.Value, path.Key);
                 }
             }
         }
@@ -84,8 +83,7 @@ namespace TrackTracker.BLL
 
                 foreach (var path in toChange.GetAllFilePaths())
                 {
-                    GlobalData.TracklistData.RemoveMusicFile(path.Key);
-                    GlobalData.PlayzoneData.RemoveMusicFile(path.Key);
+                    GlobalContext.RemoveMusicFile(path.Key);
                 }
             }
         }

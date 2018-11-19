@@ -21,7 +21,7 @@
     <Node Id="@25" Category="CodeSchema_Class" Bounds="-946.670066859101,-51.6229342168639,167.273333333334,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="DependencyInjector" />
     <Node Id="@26" Category="CodeSchema_Class" Bounds="606.158502061243,-852.195808776094,174.33,25" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ExceptionNotification" />
     <Node Id="@27" Category="CodeSchema_Class" Bounds="-401.424304971358,453.362451473716,116.246666666667,25.0000000000001" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="FileService" />
-    <Node Id="@28" Category="CodeSchema_Class" Bounds="-792.998400192432,-164.997934216864,119.93,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="GlobalData" />
+    <Node Id="@28" Category="CodeSchema_Class" Bounds="-792.998400192432,-164.997934216864,119.93,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="GlobalContext" />
     <Node Id="@29" Category="CodeSchema_Interface" Bounds="301.520997122618,529.375431253009,150.713333333333,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="IDatabaseService" />
     <Node Id="@3" Category="CodeSchema_Namespace" Bounds="-272.46190117235,-1036.74669695365,139.243333333333,140.0003" DelayedChildNodesState="Fetched" DelayedCrossGroupLinksState="Fetched" FetchedChildrenCount="2" Group="Expanded" Label="TrackTracker" UseManualLocation="True" />
     <Node Id="@30" Category="CodeSchema_Interface" Bounds="128.087663789285,639.37563125388,168.466666666667,25" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsPublic="True" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="IEnvironmentService" />
@@ -510,7 +510,7 @@
     <Alias n="25" Id="(@1 @4 Type=DependencyInjector)" />
     <Alias n="26" Id="(@1 Namespace=TrackTracker.Dialogs Type=ExceptionNotification)" />
     <Alias n="27" Id="(@1 @14 Type=FileService)" />
-    <Alias n="28" Id="(@1 @4 Type=GlobalData)" />
+    <Alias n="28" Id="(@1 @4 Type=GlobalContext)" />
     <Alias n="29" Id="(@1 @16 Type=IDatabaseService)" />
     <Alias n="30" Id="(@1 @16 Type=IEnvironmentService)" />
     <Alias n="31" Id="(@1 @16 Type=IFileService)" />
