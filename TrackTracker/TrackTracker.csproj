@@ -140,7 +140,6 @@
     <Compile Include="BLL\Model\TrackBase.cs" />
     <Compile Include="BLL\Model\TrackLocal.cs" />
     <Compile Include="BLL\Model\TrackVirtual.cs" />
-    <Compile Include="BLL\StatisticalData.cs" />
     <Compile Include="BLL\Statistics.cs" />
     <Compile Include="BLL\_newBLL\DependencyInjector.cs" />
     <Compile Include="BLL\_newBLL\PersistenceHelper.cs" />

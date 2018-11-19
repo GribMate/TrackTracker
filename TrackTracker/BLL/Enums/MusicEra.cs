@@ -63,10 +63,16 @@ namespace TrackTracker.BLL.Enums
         }
         public static MusicEra ConvertFromYear(int year) // Determines in which era is the given year
         {
+            if (year == 0)
+                return MusicEra.Unknown;
+
             // Probably not the most resource efficient way, but it suffices for now
             // Might be better to implement some logic based on the (int) values of the enum and last 2 digits of year
             foreach (MusicEra era in Enum.GetValues(typeof(MusicEra)).Cast<MusicEra>()) // Casting to get typed iteration, just in case
             {
+                if (era == MusicEra.Unknown)
+                    continue; // Cannot determine inclusion
+
                 if (IsDateInEra(year, era))
                     return era;
             }

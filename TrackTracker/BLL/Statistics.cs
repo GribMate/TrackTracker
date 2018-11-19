@@ -12,15 +12,15 @@ namespace TrackTracker.BLL
     */
     public class Statistics
     {
-        private int totalCount;
-        private int properlyTagged;
+        private uint totalCount;
+        private uint properlyTaggedCount;
         private Dictionary<string, uint> countsByArtist;
         private Dictionary<string, uint> countsByAlbum;
         private Dictionary<string, uint> countsByGenre;
         private Dictionary<MusicEra, uint> countsByDecade;
 
-        public int TotalCount { get => totalCount; }
-        public int ProperlyTagged { get => properlyTagged; }
+        public uint TotalCount { get => totalCount; }
+        public uint ProperlyTaggedCount { get => properlyTaggedCount; }
         public Dictionary<string, uint> CountsByArtist { get => new Dictionary<string, uint>(countsByArtist); } //copying to avoid modifications from outside
         public Dictionary<string, uint> CountsByAlbum { get => new Dictionary<string, uint>(countsByAlbum); } //copying to avoid modifications from outside
         public Dictionary<string, uint> CountsByGenre { get => new Dictionary<string, uint>(countsByGenre); } //copying to avoid modifications from outside
@@ -28,8 +28,8 @@ namespace TrackTracker.BLL
 
         public Statistics()
         {
-            this.totalCount = -1;
-            this.properlyTagged = -1;
+            this.totalCount = 0;
+            this.properlyTaggedCount = 0;
             this.countsByArtist = new Dictionary<string, uint>();
             this.countsByAlbum = new Dictionary<string, uint>();
             this.countsByGenre = new Dictionary<string, uint>();
@@ -40,8 +40,8 @@ namespace TrackTracker.BLL
             bool totalCount, bool properlyTagged, bool countsByArtist,
             bool countsByAlbum, bool countsByGenre, bool countsByDecade)
         {
-            if (totalCount) this.totalCount = tracks.Count; //does not require own method
-            if (properlyTagged) this.properlyTagged = CountProperlyTagged(tracks);
+            if (totalCount) this.totalCount = (uint)tracks.Count; //does not require own method
+            if (properlyTagged) this.properlyTaggedCount = (uint)CountProperlyTagged(tracks);
             if (countsByArtist) this.countsByArtist = CalculateCountsByArtist(tracks);
             if (countsByAlbum) this.countsByAlbum = CalculateCountsByAlbum(tracks);
             if (countsByGenre) this.countsByGenre = CalculateCountsByGenre(tracks);
@@ -149,12 +149,12 @@ namespace TrackTracker.BLL
             }
         }
 
-        public List<StatisticalData> GetCountsByArtist()
+        public Dictionary<string, uint> GetCountsByArtist()
         {
-            List<StatisticalData> data = new List<StatisticalData>();
+            Dictionary<string, uint> data = new Dictionary<string, uint>();
             foreach (KeyValuePair<string, uint> pair in countsByArtist)
             {
-                data.Add(new StatisticalData() { Name = pair.Key, Count = pair.Value });
+                data.Add(pair.Key, pair.Value);
             }
             return data;
         }
