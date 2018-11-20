@@ -53,9 +53,11 @@ namespace TrackTracker.BLL
                         break;
                 }
 
-                Track t = new Track(audioFile);
-                TracklistTracks.Add(t);
-                PlayzoneTracks.Add(t);
+                // We need two different object copies to store
+                Track tT = new Track(audioFile);
+                Track tP = new Track(audioFile);
+                TracklistTracks.Add(tT);
+                PlayzoneTracks.Add(tP);
             }
             catch (Exception) //TODO: more polished exception handling
             {
@@ -66,11 +68,15 @@ namespace TrackTracker.BLL
         }
         public static void RemoveMusicFile(string path)
         {
-            Track itemToRemove = TracklistTracks.SingleOrDefault(t => t.FileHandle.Name == path);
-            if (itemToRemove != null)
+            Track itemToRemoveT = TracklistTracks.SingleOrDefault(t => t.FileHandle.Name == path);
+            if (itemToRemoveT != null)
             {
-                TracklistTracks.Remove(itemToRemove);
-                PlayzoneTracks.Remove(itemToRemove);
+                TracklistTracks.Remove(itemToRemoveT);
+            }
+            Track itemToRemoveP = PlayzoneTracks.SingleOrDefault(t => t.FileHandle.Name == path);
+            if (itemToRemoveP != null)
+            {
+                PlayzoneTracks.Remove(itemToRemoveP);
             }
         }
         public static void Clear()

@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 using TrackTracker.BLL;
 using TrackTracker.Services.Interfaces;
 
+
+
 namespace TrackTracker.GUI.Views
 {
-    /// <summary>
-    /// Interaction logic for CommonControls.xaml
-    /// </summary>
     public partial class CommonControls : UserControl
     {
         private Timer onlineStatusTimer;
@@ -40,12 +31,12 @@ namespace TrackTracker.GUI.Views
                 if (DependencyInjector.GetService<IEnvironmentService>().InternetConnectionIsAlive()) //we have connection
                 {
                     labelOnlineStatus.Content = "Connected";
-                    labelOnlineStatus.Foreground = System.Windows.Media.Brushes.LawnGreen;
+                    labelOnlineStatus.Foreground = Brushes.LawnGreen;
                 }
                 else //no or failed internet connection
                 {
                     labelOnlineStatus.Content = "Disconnected";
-                    labelOnlineStatus.Foreground = System.Windows.Media.Brushes.Red;
+                    labelOnlineStatus.Foreground = Brushes.Red;
                 }
             }
             );
@@ -65,7 +56,7 @@ namespace TrackTracker.GUI.Views
                 labelProcessingValue.Visibility = Visibility.Hidden;
                 progressBar.Visibility = Visibility.Hidden;
             }
-            progressBar.Dispatcher.Invoke(() => progressBar.Value = value, System.Windows.Threading.DispatcherPriority.Background);
+            progressBar.Dispatcher.Invoke(() => progressBar.Value = value, DispatcherPriority.Background);
             labelProcessingValue.Content = description;
         }
     }
