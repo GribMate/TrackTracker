@@ -10,9 +10,6 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaTagBase
     {
-        public string Key { get; } // Cannot be modified after initialization and is unique for a given track
-        public virtual object Value { get; set; } // Default data
-
         public MetaTagBase(string key, object value = null)
         {
             if (String.IsNullOrWhiteSpace(key)) throw new ArgumentNullException(nameof(key), "MetaTag key value must be initialized.");
@@ -20,6 +17,9 @@ namespace TrackTracker.BLL.Model
             Key = key;
             Value = value;
         }
+
+        public string Key { get; } // Cannot be modified after initialization and is unique for a given track
+        public virtual object Value { get; set; } // Default data
 
         public new virtual string ToString() // Default printing service by ToString() redefinement - ease of use
         {

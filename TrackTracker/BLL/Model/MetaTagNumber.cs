@@ -10,11 +10,11 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaTagNumber : MetaTagBase
     {
-        public new int? Value { get; set; }
-
         public MetaTagNumber(string key, int? value = null) : base(key, value)
         {
             Value = value;
         }
+
+        public new int? Value { get; set; }
     }
 }

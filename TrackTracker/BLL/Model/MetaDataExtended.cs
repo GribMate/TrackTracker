@@ -12,6 +12,23 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaDataExtended
     {
+        public MetaDataExtended(MusicMoods? musicMoods = null, string lyrics = null, LyricsLanguages? lyricsLanguages = null, bool isSupported = false)
+        {
+            if (musicMoods.HasValue)
+                MusicMoods = (MusicMoods)musicMoods;
+            else
+                MusicMoods = MusicMoods.Unknown;
+
+            Lyrics = lyrics;
+
+            if (lyricsLanguages.HasValue)
+                LyricsLanguages = (LyricsLanguages)lyricsLanguages;
+            else
+                LyricsLanguages = LyricsLanguages.Unknown;
+
+            IsSupported = isSupported;
+        }
+
         public bool IsSupported { get; set; } // Is extended metadata info supported for the current track?
         public MusicMoods MusicMoods { get; set; } // A flag set of user-provided moods that apply for this track
         public string Lyrics { get; set; } // The lyrics of the track for future usage

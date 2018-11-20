@@ -12,16 +12,47 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaData
     {
+        // A default constructor, that allocates each MetaTag, with given keys (names) and null values
+        // Setting of each MetaTag's value is handled directly
+        public MetaData()
+        {
+            Genres = MusicGenres.Unknown;
+
+            Title = new MetaTagString(nameof(Title));
+            Album = new MetaTagString(nameof(Album));
+            Copyright = new MetaTagString(nameof(Copyright));
+            AlbumArtists = new MetaTagCollection(nameof(AlbumArtists));
+            AlbumArtistsSort = new MetaTagCollection(nameof(AlbumArtistsSort));
+            BeatsPerMinute = new MetaTagNumber(nameof(BeatsPerMinute));
+            Year = new MetaTagNumber(nameof(Year));
+            Track = new MetaTagNumber(nameof(Track));
+            TrackCount = new MetaTagNumber(nameof(TrackCount));
+            Disc = new MetaTagNumber(nameof(Disc));
+            DiscCount = new MetaTagNumber(nameof(DiscCount));
+
+            AcoustID = new MetaTagGUID(nameof(AcoustID));
+            MusicBrainzReleaseArtistId = new MetaTagGUID(nameof(MusicBrainzReleaseArtistId));
+            MusicBrainzTrackId = new MetaTagGUID(nameof(MusicBrainzTrackId));
+            MusicBrainzDiscId = new MetaTagGUID(nameof(MusicBrainzDiscId));
+            MusicBrainzReleaseId = new MetaTagGUID(nameof(MusicBrainzReleaseId));
+            MusicBrainzArtistId = new MetaTagGUID(nameof(MusicBrainzArtistId));
+
+            MusicBrainzReleaseStatus = new MetaTagString(nameof(MusicBrainzReleaseStatus));
+            MusicBrainzReleaseType = new MetaTagString(nameof(MusicBrainzReleaseType));
+            MusicBrainzReleaseCountry = new MetaTagString(nameof(MusicBrainzReleaseCountry));
+        }
+
         // Currently Supported ID3 tags
         // TODO: Review ID3 tags and finalize support
         #region MetaTagProperties
-        
+
+        public MusicGenres Genres { get; set; } // Multiple flag-type genres of the track
+
         public MetaTagString Title { get; set; } // Title of the track
         public MetaTagString Album { get; set; } // Album title of the track
         public MetaTagString Copyright { get; set; } // Copyright information about the track
         public MetaTagCollection AlbumArtists { get; set; } // All of the artist names, who contributed to the album
         public MetaTagCollection AlbumArtistsSort { get; set; } // All of the artist names in sort form, who contributed to the album
-        public MusicGenres Genres { get; set; } // Multiple flag-type genres of the track
         public MetaTagNumber BeatsPerMinute { get; set; } // BPM
         public MetaTagNumber Year { get; set; } // Release year of the track (or album) TODO: further polish
         public MetaTagNumber Track { get; set; } // Number of track on the corresponding album (if any)

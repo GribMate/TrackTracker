@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
-
-using TrackTracker.BLL; //TODO Remove
 
 
 
@@ -12,7 +11,7 @@ namespace TrackTracker.Services.Interfaces
     */
     public interface IMetadataService
     {       
-        Task<AudioMetaData> GetRecordingByMBID(string MBID); // Returns exactly one recording by it's ID
-        Task<List<AudioMetaData>> GetRecordingsByMetaData(string title, string artist = null, string album = null, int? limit = null); // Returns all the recordings which correspond to the parameters
+        Task<Dictionary<string, object>> GetRecordingByMBID(Guid MBID); // Returns exactly one recording's metadata by it's ID
+        Task<List<Dictionary<string, object>>> GetRecordingsByMetaData(string title, string artist = null, string album = null, int? limit = null); // Returns all the recordings' metadata which correspond to the parameters
     }
 }

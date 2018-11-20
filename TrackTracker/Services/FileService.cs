@@ -38,7 +38,7 @@ namespace TrackTracker.Services
 
             return true; //none of the criteria returned false
         }
-        public bool FileExists(string path) //determines wether a given file path is valid and the file does exist
+        public bool FileExists(string path) //determines whether a given file path is valid and the file does exist
         {
             FileInfo file = new FileInfo(path);
 

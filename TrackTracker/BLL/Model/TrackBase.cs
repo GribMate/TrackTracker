@@ -13,6 +13,14 @@ namespace TrackTracker.BLL.Model
     */
     public class TrackBase
     {
+        public TrackBase(MetaData metaData = null)
+        {
+            if (metaData != null)
+                MetaData = metaData;
+            else
+                MetaData = new MetaData();
+        }
+
         public MetaData MetaData { get; set; } // Basic set of metadata, that all tracks share
 
         public bool PlayableOnline { get; set; } // Is this track playable by some online service or not?

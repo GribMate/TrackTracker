@@ -10,11 +10,11 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaTagGUID : MetaTagBase
     {
-        public new Guid? Value { get; set; }
-
         public MetaTagGUID(string key, Guid? value = null) : base(key, value)
         {
             Value = value;
         }
+
+        public new Guid? Value { get; set; }
     }
 }

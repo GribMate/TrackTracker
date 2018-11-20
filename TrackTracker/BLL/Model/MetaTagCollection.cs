@@ -10,6 +10,22 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaTagCollection : MetaTagBase
     {
+        static MetaTagCollection()
+        {
+            Delimiter = ';'; // TODO: Consider "/" (Windows uses ";" by default)
+        }
+
+        // We must introduce a separate "key-only" ctor, since string[] = null and string = null will be ambiguous calls
+        public MetaTagCollection(string key) : base(key, null) { }
+        public MetaTagCollection(string key, string[] value) : base(key, value)
+        {
+            Value = value;
+        }
+        public MetaTagCollection(string key, string joinedValue) : base(key, joinedValue)
+        {
+            JoinedValue = joinedValue;
+        }
+
         public static char Delimiter { get; } // Cannot be changed per instance
 
         // Value and JoinedValue properties are always synchronized and consistent with each other
@@ -39,19 +55,6 @@ namespace TrackTracker.BLL.Model
                     _value = Value = GetArrayFromJoined(value);
                 }
             }
-        }
-
-        static MetaTagCollection()
-        {
-            Delimiter = ';'; // TODO: Consider "/" (Windows uses ";" by default)
-        }
-        public MetaTagCollection(string key, string[] value = null) : base(key, value)
-        {
-            Value = value;         
-        }
-        public MetaTagCollection(string key, string joinedValue = null) : base (key, joinedValue)
-        {
-            JoinedValue = joinedValue;
         }
 
         public new string ToString() // Joined string printing service by ToString() redefinement - ease of use

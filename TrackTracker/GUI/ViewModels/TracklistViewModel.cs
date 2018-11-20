@@ -262,20 +262,21 @@ namespace TrackTracker.GUI.ViewModels
         }
         private async Task<Track> GetMatchByMBID(string MBID)
         {
-            AudioMetaData result = await metadataService.GetRecordingByMBID(MBID);
+            Dictionary<string, object> result = await metadataService.GetRecordingByMBID(new Guid(MBID));
 
-            return new Track(result);
+            //return new Track(result);
+            return new Track(new AudioMetaData("TODO"));
         }
         private async Task<List<Track>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
-            List<AudioMetaData> results = await metadataService.GetRecordingsByMetaData(title, artist, album);
+            List<Dictionary<string, object>> results = await metadataService.GetRecordingsByMetaData(title, artist, album);
 
             List<Track> toReturn = new List<Track>();
 
-            foreach (AudioMetaData result in results)
-            {
-                toReturn.Add(new Track(result));
-            }
+            //foreach (Dictionary<string, object> result in results)
+            //{
+            //    toReturn.Add(new Track(result));
+            //}
 
             return toReturn;
         }

@@ -10,11 +10,11 @@ namespace TrackTracker.BLL.Model
     */
     public class MetaTagString : MetaTagBase
     {
-        public new string Value { get; set; }
-
         public MetaTagString(string key, string value = null) : base(key, value)
         {
             Value = value;
         }
+
+        public new string Value { get; set; }
     }
 }
