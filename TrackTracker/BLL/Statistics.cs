@@ -12,36 +12,34 @@ namespace TrackTracker.BLL
     */
     public class Statistics
     {
-        private uint totalCount;
-        private uint properlyTaggedCount;
         private Dictionary<string, uint> countsByArtist;
         private Dictionary<string, uint> countsByAlbum;
         private Dictionary<string, uint> countsByGenre;
         private Dictionary<MusicEra, uint> countsByDecade;
 
-        public uint TotalCount { get => totalCount; }
-        public uint ProperlyTaggedCount { get => properlyTaggedCount; }
-        public Dictionary<string, uint> CountsByArtist { get => new Dictionary<string, uint>(countsByArtist); } //copying to avoid modifications from outside
-        public Dictionary<string, uint> CountsByAlbum { get => new Dictionary<string, uint>(countsByAlbum); } //copying to avoid modifications from outside
-        public Dictionary<string, uint> CountsByGenre { get => new Dictionary<string, uint>(countsByGenre); } //copying to avoid modifications from outside
-        public Dictionary<MusicEra, uint> CountsByDecade { get => new Dictionary<MusicEra, uint>(countsByDecade); } //copying to avoid modifications from outside
-
         public Statistics()
         {
-            this.totalCount = 0;
-            this.properlyTaggedCount = 0;
+            this.TotalCount = 0;
+            this.ProperlyTaggedCount = 0;
             this.countsByArtist = new Dictionary<string, uint>();
             this.countsByAlbum = new Dictionary<string, uint>();
             this.countsByGenre = new Dictionary<string, uint>();
             this.countsByDecade = new Dictionary<MusicEra, uint>();
         }
 
+        public uint TotalCount { get; private set; }
+        public uint ProperlyTaggedCount { get; private set; }
+        public Dictionary<string, uint> CountsByArtist { get => new Dictionary<string, uint>(countsByArtist); } //copying to avoid modifications from outside
+        public Dictionary<string, uint> CountsByAlbum { get => new Dictionary<string, uint>(countsByAlbum); } //copying to avoid modifications from outside
+        public Dictionary<string, uint> CountsByGenre { get => new Dictionary<string, uint>(countsByGenre); } //copying to avoid modifications from outside
+        public Dictionary<MusicEra, uint> CountsByDecade { get => new Dictionary<MusicEra, uint>(countsByDecade); } //copying to avoid modifications from outside
+
         public void GenerateStatistics(List<Track> tracks,
             bool totalCount, bool properlyTagged, bool countsByArtist,
             bool countsByAlbum, bool countsByGenre, bool countsByDecade)
         {
-            if (totalCount) this.totalCount = (uint)tracks.Count; //does not require own method
-            if (properlyTagged) this.properlyTaggedCount = (uint)CountProperlyTagged(tracks);
+            if (totalCount) this.TotalCount = (uint)tracks.Count; //does not require own method
+            if (properlyTagged) this.ProperlyTaggedCount = (uint)CountProperlyTagged(tracks);
             if (countsByArtist) this.countsByArtist = CalculateCountsByArtist(tracks);
             if (countsByAlbum) this.countsByAlbum = CalculateCountsByAlbum(tracks);
             if (countsByGenre) this.countsByGenre = CalculateCountsByGenre(tracks);

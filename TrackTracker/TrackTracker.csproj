@@ -186,7 +186,6 @@
     </Compile>
     <Compile Include="BLL\LocalMediaPack.cs" />
     <Compile Include="BLL\MetaTag.cs" />
-    <Compile Include="BLL\PlayTrack.cs" />
     <Compile Include="BLL\Track.cs" />
     <Compile Include="GUI\PieChart\BaseWPFHelpers.cs" />
     <Compile Include="GUI\PieChart\PieChartVisuals\ColourConverter.cs" />

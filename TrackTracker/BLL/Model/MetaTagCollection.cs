@@ -57,7 +57,7 @@ namespace TrackTracker.BLL.Model
             }
         }
 
-        public new string ToString() // Joined string printing service by ToString() redefinement - ease of use
+        public override string ToString() // Joined string printing service by ToString() redefinement - ease of use
         {
             return (String.IsNullOrWhiteSpace(JoinedValue)) ? null : JoinedValue;
         }

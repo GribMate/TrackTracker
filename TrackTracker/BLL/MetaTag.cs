@@ -7,14 +7,20 @@ namespace TrackTracker.BLL
 {
     public class MetaTag : INotifyPropertyChanged
     {
-        private string name;
         private string oldValue;
-        private string newValue;
         private Track ownerReference; //TODO: smells... rework
+
+        public MetaTag(string name, string oldValue, string newValue, Track ownerReference)
+        {
+            this.Name = name;
+            this.oldValue = oldValue;
+            this.NewValue = newValue;
+            this.ownerReference = ownerReference;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Name { get => name; } //name is the ID of the tag, cannot be changed later
+        public string Name { get; } //name is the ID of the tag, cannot be changed later
         public string OldValue
         {
             get => oldValue;
@@ -23,7 +29,7 @@ namespace TrackTracker.BLL
                 if (oldValue != value)
                 {
                     oldValue = value;
-                    switch (name)
+                    switch (Name)
                     {
                         case "Title":                           ownerReference.MetaData.Title = value;                          break;
                         case "Album":                           ownerReference.MetaData.Album = value;                          break;
@@ -50,14 +56,6 @@ namespace TrackTracker.BLL
                 }
             }
         }
-        public string NewValue { get => newValue; } //it is generated from MusicBrainz API call, should not be changed
-
-        public MetaTag(string name, string oldValue, string newValue, Track ownerReference)
-        {
-            this.name = name;
-            this.oldValue = oldValue;
-            this.newValue = newValue;
-            this.ownerReference = ownerReference;
-        }
+        public string NewValue { get; } //it is generated from MusicBrainz API call, should not be changed
     }
 }
