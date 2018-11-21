@@ -40,13 +40,5 @@ namespace TrackTracker.BLL.Model
 
         public List<TrackVirtual> MatchCandidates { get; set; } // All the candidate tracks, that MBAPI returned
         public MetaTagGUID ActiveCandidateMBTrackID { get; set; } // Currently selected match to sync metadata from, identified by its MB Track ID
-
-        public void SaveToDisk(ITaggingService tagger)
-        {
-            if (MusicFileProperties.PathIsValid == false)
-                throw new InvalidOperationException("Cannot save to file, because file path is not sufficient.");
-
-            tagger.Save(MusicFileProperties.Path, MetaData.GetAllMetaTagsNative()); // Using native object tags for save
-        }
     }
 }

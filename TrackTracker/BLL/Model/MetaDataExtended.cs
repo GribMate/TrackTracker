@@ -10,7 +10,7 @@ namespace TrackTracker.BLL.Model
      * Provides extended metadata information about a local music file.
      * These are more proprietary, TrackTracker related infos, then globally recognised.
     */
-    public class MetaDataExtended
+    public class MetaDataExtended : ModelObjectBase
     {
         public MetaDataExtended(MusicMoods? musicMoods = null, string lyrics = null, LyricsLanguages? lyricsLanguages = null, bool isSupported = false)
         {

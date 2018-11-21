@@ -11,7 +11,7 @@ namespace TrackTracker.BLL.Model
     /*
      * Describes a metadata set that corresponds to a physical, local, offline music file.
     */
-    public class MusicFileProperties
+    public class MusicFileProperties : ModelObjectBase
     {
         private IFileService fileService;
 

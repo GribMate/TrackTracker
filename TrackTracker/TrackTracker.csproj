@@ -129,6 +129,7 @@
     <Compile Include="BLL\LocalMediaPackContainer.cs" />
     <Compile Include="BLL\AudioMetaData.cs" />
     <Compile Include="BLL\GlobalContext.cs" />
+    <Compile Include="BLL\Model\Base\ModelObjectBase.cs" />
     <Compile Include="BLL\Model\MetaData.cs" />
     <Compile Include="BLL\Model\MetaDataExtended.cs" />
     <Compile Include="BLL\Model\MetaTagBase.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="BLL\Model\MetaTagNumber.cs" />
     <Compile Include="BLL\Model\MetaTagString.cs" />
     <Compile Include="BLL\Model\MusicFileProperties.cs" />
+    <Compile Include="BLL\Model\Base\SelectableObject.cs" />
     <Compile Include="BLL\Model\TrackBase.cs" />
     <Compile Include="BLL\Model\TrackLocal.cs" />
     <Compile Include="BLL\Model\TrackVirtual.cs" />
@@ -155,7 +157,7 @@
       <DependentUpon>TabData.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\ViewModels\DataViewModel.cs" />
-    <Compile Include="GUI\ViewModels\ViewModelBase.cs" />
+    <Compile Include="GUI\ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="GUI\Views\TabPlayzone.xaml.cs">
       <DependentUpon>TabPlayzone.xaml</DependentUpon>
     </Compile>

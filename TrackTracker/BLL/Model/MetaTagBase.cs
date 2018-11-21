@@ -8,7 +8,7 @@ namespace TrackTracker.BLL.Model
      * Represents one single key-value pair that is associated with a metadata element of a track (can be local file or remote data).
      * Child classes implement different supported value formats.
     */
-    public class MetaTagBase
+    public class MetaTagBase : ModelObjectBase
     {
         public MetaTagBase(string key, object value = null)
         {
