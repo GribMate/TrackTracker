@@ -1,34 +1,28 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using TrackTracker.BLL.Enums;
+using TrackTracker.BLL.Model;
 
 
 
-namespace TrackTracker.BLL
+namespace TrackTracker.BLL.GlobalContexts
 {
     /*
      * Provides a static single instance collection of app-wide data that cannot be tied to either one of the View tabs separately.
      * 
+     * Tracklists.
+     * 
      * TODO: rethink after MVVM
     */
-    public static class GlobalContext
+    public static class TracklistContext
     {
-        // Persistent settings through the whole application
-        public static AppConfig AppConfig { get; set; } = new AppConfig();
+        // Tracks that are on the local PC and displayed on Tracklist tab
+        public static ObservableCollection<TrackLocal> TracklistTracks { get; set; } = new ObservableCollection<TrackLocal>();
 
-        // LMP container
-        public static LocalMediaPackContainer LocalMediaPackContainer { get; set; } = new LocalMediaPackContainer();
-
-
-
-
-
-        public static ObservableCollection<Track> TracklistTracks { get; set; } = new ObservableCollection<Track>();
-        
-        public static ObservableCollection<Track> PlayzoneTracks { get; set; } = new ObservableCollection<Track>();
+        // Tracks that are on the local PC and can be mixed on Playzone tab
+        public static ObservableCollection<TrackLocal> PlayzoneTracks { get; set; } = new ObservableCollection<TrackLocal>();
 
 
 
@@ -54,32 +48,33 @@ namespace TrackTracker.BLL
                 }
 
                 // We need two different object copies to store
-                Track tT = new Track(audioFile);
-                Track tP = new Track(audioFile);
+                TrackLocal tT = new TrackLocal(new MusicFileProperties(path));
+                TrackLocal tP = new TrackLocal(new MusicFileProperties(path));
                 TracklistTracks.Add(tT);
                 PlayzoneTracks.Add(tP);
             }
             catch (Exception) //TODO: more polished exception handling
             {
-                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("File reading error",
+                ErrorHelper.ShowExceptionDialog(
+                    "File reading error",
                     "File reading error happened while trying to parse a music file from local directory. This file will be omitted from Tracklist!",
                     $"File location: {path}");
             }
         }
         public static void RemoveMusicFile(string path)
         {
-            Track itemToRemoveT = TracklistTracks.SingleOrDefault(t => t.FileHandle.Name == path);
+            TrackLocal itemToRemoveT = TracklistTracks.SingleOrDefault(t => t.MusicFileProperties.Path == path);
             if (itemToRemoveT != null)
             {
                 TracklistTracks.Remove(itemToRemoveT);
             }
-            Track itemToRemoveP = PlayzoneTracks.SingleOrDefault(t => t.FileHandle.Name == path);
+            TrackLocal itemToRemoveP = PlayzoneTracks.SingleOrDefault(t => t.MusicFileProperties.Path == path);
             if (itemToRemoveP != null)
             {
                 PlayzoneTracks.Remove(itemToRemoveP);
             }
         }
-        public static void Clear()
+        public static void ClearMusicFiles()
         {
             TracklistTracks.Clear();
             PlayzoneTracks.Clear();

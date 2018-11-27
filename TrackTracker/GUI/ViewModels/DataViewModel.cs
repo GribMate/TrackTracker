@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +10,8 @@ using WinForms = System.Windows.Forms;
 using TrackTracker.Services.Interfaces;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
+using TrackTracker.BLL.Model;
+using TrackTracker.BLL.GlobalContexts;
 
 
 
@@ -19,21 +22,14 @@ namespace TrackTracker.GUI.ViewModels
         private IEnvironmentService environmentService;
         private IFileService fileService;
         private ISpotifyService spotifyService;
-
-        public ObservableCollection<string> ExternalDriveNames { get; set; }
-        public ObservableCollection<string> SupportedFileFormats { get; set; }
-        public ObservableCollection<string> SpotifyPlaylists { get; set; }
-
-        public ICommand BrowseCommand { get; }
-        public ICommand AddFilesCommand { get; }
-        public ICommand LinkSpotifyCommand { get; }
-        public ICommand AddSpotifyListsCommand { get; }
+        private IDatabaseService databaseService;
 
         public DataViewModel() : base()
         {
             environmentService = DependencyInjector.GetService<IEnvironmentService>();
             fileService = DependencyInjector.GetService<IFileService>();
             spotifyService = DependencyInjector.GetService<ISpotifyService>();
+            databaseService = DependencyInjector.GetService<IDatabaseService>();
 
             ExternalDriveNames = new ObservableCollection<string>(environmentService.GetExternalDriveNames());
             SupportedFileFormats = GetSupportedFileFormats();
@@ -47,6 +43,15 @@ namespace TrackTracker.GUI.ViewModels
             OfflineFolderPath = "Please select your offline music folder...";
             FolderIsChecked = true;
         }
+
+        public ObservableCollection<string> ExternalDriveNames { get; set; }
+        public ObservableCollection<string> SupportedFileFormats { get; set; }
+        public ObservableCollection<string> SpotifyPlaylists { get; set; }
+
+        public ICommand BrowseCommand { get; }
+        public ICommand AddFilesCommand { get; }
+        public ICommand LinkSpotifyCommand { get; }
+        public ICommand AddSpotifyListsCommand { get; }
 
 
 
@@ -203,7 +208,20 @@ namespace TrackTracker.GUI.ViewModels
                 LoadFilesFromDrive(lmp, SelectedExternalDriveName, SelectedSupportedFileExtension); // Loading up LMP object with file paths
             }
 
-            GlobalContext.LocalMediaPackContainer.AddLMP(lmp, true); // TODO: REFACTOR
+            // TODO: rework whole concept of non-redundant LMPs (eg. different pendrives with same drive letter might be a problem...)
+            if (DoesLMPAlreadyExist(lmp))
+            {
+                ErrorHelper.ShowExceptionDialog(
+                    "Cannot add files",
+                    "Cannot add the selected group of files, since the root drive / folder was already added",
+                    null);
+            }
+
+            else
+            {
+                LMPContext.StoredLocalMediaPacks.Add(lmp);
+                WriteLMPToDatabase(lmp); // Persisting new LMP object
+            }
         }
 
         public bool CanExecuteLinkSpotify
@@ -283,6 +301,48 @@ namespace TrackTracker.GUI.ViewModels
                     lmp.AddFilePath(currPath, ext); //loading up the LMP object
                 }
             }
+        }
+        private bool DoesLMPAlreadyExist(LocalMediaPack pack)
+        {
+            bool result = false;
+
+            // Checking in stored, but inactive packs
+            foreach (LocalMediaPack candidate in LMPContext.StoredLocalMediaPacks)
+            {
+                if (pack.RootPath == candidate.RootPath)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            // Checking in active packs
+            foreach (LocalMediaPack candidate in LMPContext.ActiveLocalMediaPacks)
+            {
+                if (pack.RootPath == candidate.RootPath)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+        private void WriteLMPToDatabase(LocalMediaPack pack)
+        {
+            string[] values = new string[4];
+            values[0] = pack.RootPath;
+            values[1] = pack.BaseExtension.ToString();
+            values[2] = Convert.ToInt32(pack.IsResultOfDriveSearch).ToString(); //0 or 1
+            StringBuilder sb = new StringBuilder();
+            foreach (string path in pack.GetAllFilePaths().Keys)
+            {
+                sb.Append(path);
+                sb.Append("|");
+            }
+            sb.Remove(sb.Length - 1, 1); //removing unnecessary closing "|"
+            values[3] = sb.ToString();
+            databaseService.InsertInto("LocalMediaPacks", values);
         }
     }
 }

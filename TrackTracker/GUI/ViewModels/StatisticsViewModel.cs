@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-using WinForms = System.Windows.Forms;
-
-using TrackTracker.Services.Interfaces;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
-
-
+using TrackTracker.BLL.Model;
+using TrackTracker.BLL.GlobalContexts;
 
 namespace TrackTracker.GUI.ViewModels
 {
     public class StatisticsViewModel : ViewModelBase
     {
-        public ICommand RefreshCommand { get; }
-
-        private Statistics statistics;
-
         public StatisticsViewModel() : base()
         {
-            RefreshCommand = new RelayCommand(exe => ExecuteRefresh(), can => CanExecuteRefresh);
+            TotalCount = 0;
+            ProperlyTaggedCount = 0;
+            CountsByArtist = new Dictionary<string, uint>();
+            CountsByAlbum = new Dictionary<string, uint>();
+            CountsByGenre = new Dictionary<string, uint>();
+            CountsByDecade = new Dictionary<MusicEra, uint>();
 
-            statistics = new Statistics();
+            RefreshCommand = new RelayCommand(exe => ExecuteRefresh(), can => CanExecuteRefresh);
         }
+
+        public ICommand RefreshCommand { get; }
+
+        public Dictionary<string, uint> CountsByArtist { get; private set; }
+        public Dictionary<string, uint> CountsByAlbum { get; private set; }
+        public Dictionary<string, uint> CountsByGenre { get; private set; }
+        public Dictionary<MusicEra, uint> CountsByDecade { get; private set; }
 
 
 
@@ -36,7 +40,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref artistName, value);
-                NotifyPropertyChanged(nameof(ArtistName));
             }
         }
 
@@ -47,7 +50,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref artistCount, value);
-                NotifyPropertyChanged(nameof(ArtistCount));
             }
         }
 
@@ -58,7 +60,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref albumName, value);
-                NotifyPropertyChanged(nameof(AlbumName));
             }
         }
 
@@ -69,7 +70,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref albumCount, value);
-                NotifyPropertyChanged(nameof(AlbumCount));
             }
         }
 
@@ -80,7 +80,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref genreName, value);
-                NotifyPropertyChanged(nameof(GenreName));
             }
         }
 
@@ -91,7 +90,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref genreCount, value);
-                NotifyPropertyChanged(nameof(GenreCount));
             }
         }
 
@@ -102,7 +100,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref decadeName, value);
-                NotifyPropertyChanged(nameof(DecadeName));
             }
         }
 
@@ -113,7 +110,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref decadeCount, value);
-                NotifyPropertyChanged(nameof(DecadeCount));
             }
         }
 
@@ -124,7 +120,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref totalCount, value);
-                NotifyPropertyChanged(nameof(TotalCount));
             }
         }
 
@@ -135,7 +130,6 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref properlyTaggedCount, value);
-                NotifyPropertyChanged(nameof(ProperlyTaggedCount));
             }
         }
 
@@ -146,26 +140,25 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref recommendedGenre, value);
-                NotifyPropertyChanged(nameof(RecommendedGenre));
             }
         }
 
-
+        // TODO: CleanCode
 
         private bool CanExecuteRefresh
         {
-            get => GlobalContext.TracklistTracks.Count > 0;
+            get => TracklistContext.TracklistTracks.Count > 0;
         }
         private void ExecuteRefresh()
         {
-            statistics.GenerateStatistics(GlobalContext.TracklistTracks.ToList<Track>(), true, true, true, true, true, true);
+            TotalCount = (uint)TracklistContext.TracklistTracks.Count; // Does not require own method
+            ProperlyTaggedCount = (uint)CountProperlyTagged();
+            CountsByArtist = CalculateCountsByArtist();
+            CountsByAlbum = CalculateCountsByAlbum();
+            CountsByGenre = CalculateCountsByGenre();
+            CountsByDecade = CalculateCountsByDecade();
 
-            var TODO = new Dictionary<string, uint>(statistics.GetCountsByArtist()); // TODO: TODO
-
-            TotalCount = statistics.TotalCount;
-            ProperlyTaggedCount = statistics.ProperlyTaggedCount;
-
-            if (statistics.GetMostFrequentArtist(out string artistName, out uint artistCount))
+            if (GetMostFrequentArtist(out string artistName, out uint artistCount))
             {
                 ArtistName = artistName;
                 ArtistCount = artistCount;
@@ -173,7 +166,7 @@ namespace TrackTracker.GUI.ViewModels
             else
                 ArtistName = "-";
 
-            if (statistics.GetMostFrequentAlbum(out string albumName, out uint albumCount))
+            if (GetMostFrequentAlbum(out string albumName, out uint albumCount))
             {
                 AlbumName = albumName;
                 AlbumCount = albumCount;
@@ -181,7 +174,7 @@ namespace TrackTracker.GUI.ViewModels
             else
                 AlbumName = "-";
 
-            if (statistics.GetMostFrequentGenre(out string genreName, out uint genreCount))
+            if (GetMostFrequentGenre(out string genreName, out uint genreCount))
             {
                 GenreName = genreName;
                 GenreCount = genreCount;
@@ -189,7 +182,7 @@ namespace TrackTracker.GUI.ViewModels
             else
                 GenreName = "-";
 
-            if (statistics.GetMostFrequentDecade(out MusicEra decadeName, out uint decadeCount))
+            if (GetMostFrequentDecade(out MusicEra decadeName, out uint decadeCount))
             {
                 DecadeName = decadeName.ToString(); // TODO: convert properly
                 DecadeCount = decadeCount;
@@ -197,7 +190,7 @@ namespace TrackTracker.GUI.ViewModels
             else
                 DecadeName = "-";
 
-            if (statistics.TotalCount != 0)
+            if (TotalCount != 0)
             {
                 string recommendedBand = "";
                 if (GenreName == "Rock") recommendedBand = "Hollywood Undead";
@@ -205,6 +198,264 @@ namespace TrackTracker.GUI.ViewModels
 
                 RecommendedGenre = "Hmm... it seems you rather like " + GenreName + "! You might want to check out " + recommendedBand + " for a change!";
             }
+        }
+
+
+
+        private int CountProperlyTagged()
+        {
+            int count = 0;
+            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                //we assume that if MBID for the track / release was properly set, then every other metadata were too
+                //it's rather safe to do and avoids exhausting metadata check (furthermore doesn't raise the question: when do we recognize a set of metadata as complete)
+                if (!String.IsNullOrEmpty(track.MetaData.MusicBrainzReleaseId.ToString()) || !String.IsNullOrEmpty(track.MetaData.MusicBrainzTrackId.ToString())) count++;
+            }
+            return count;
+        }
+
+        private bool GetMostFrequentArtist(out string artist, out uint count)
+        {
+            if (CountsByArtist.Count > 0)
+            {
+                uint maxCount = 0;
+                string maxArtist = "";
+                foreach (KeyValuePair<string, uint> entry in CountsByArtist)
+                {
+                    if (entry.Value > maxCount)
+                    {
+                        maxCount = entry.Value;
+                        maxArtist = entry.Key;
+                    }
+                }
+                artist = maxArtist;
+                count = maxCount;
+                return true;
+            }
+            else
+            {
+                artist = null;
+                count = 0;
+                return false;
+            }
+        }
+        private bool GetMostFrequentAlbum(out string album, out uint count)
+        {
+            if (CountsByAlbum.Count > 0)
+            {
+                uint maxCount = 0;
+                string maxAlbum = "";
+                foreach (KeyValuePair<string, uint> entry in CountsByAlbum)
+                {
+                    if (entry.Value > maxCount)
+                    {
+                        maxCount = entry.Value;
+                        maxAlbum = entry.Key;
+                    }
+                }
+                album = maxAlbum;
+                count = maxCount;
+                return true;
+            }
+            else
+            {
+                album = null;
+                count = 0;
+                return false;
+            }
+        }
+        private bool GetMostFrequentGenre(out string genre, out uint count)
+        {
+            if (CountsByGenre.Count > 0)
+            {
+                uint maxCount = 0;
+                string maxGenre = "";
+                foreach (KeyValuePair<string, uint> entry in CountsByGenre)
+                {
+                    if (entry.Value > maxCount)
+                    {
+                        maxCount = entry.Value;
+                        maxGenre = entry.Key;
+                    }
+                }
+                genre = maxGenre;
+                count = maxCount;
+                return true;
+            }
+            else
+            {
+                genre = null;
+                count = 0;
+                return false;
+            }
+        }
+        private bool GetMostFrequentDecade(out MusicEra decade, out uint count)
+        {
+            if (CountsByDecade.Count > 0)
+            {
+                uint maxCount = 0;
+                MusicEra maxDecade = MusicEra.Unknown;
+                foreach (KeyValuePair<MusicEra, uint> entry in CountsByDecade)
+                {
+                    if (entry.Value > maxCount)
+                    {
+                        maxCount = entry.Value;
+                        maxDecade = entry.Key;
+                    }
+                }
+                decade = maxDecade;
+                count = maxCount;
+                return true;
+            }
+            else
+            {
+                decade = MusicEra.Unknown;
+                count = 0;
+                return false;
+            }
+        }
+
+
+        private Dictionary<string, uint> CalculateCountsByArtist()
+        {
+            Dictionary<string, uint> counts = new Dictionary<string, uint>();
+            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                if (!String.IsNullOrEmpty(track.MetaData.AlbumArtists.JoinedValue)) //we can determine artist from metadata
+                {
+                    if (!counts.ContainsKey(track.MetaData.AlbumArtists.JoinedValue)) //it is the first time we encounter this particular artist
+                    {
+                        counts.Add(track.MetaData.AlbumArtists.JoinedValue, 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we have a pre-existing count about this particular artist
+                    {
+                        uint originalCount;
+                        counts.TryGetValue(track.MetaData.AlbumArtists.JoinedValue, out originalCount); //getting the original counter
+                        counts.Remove(track.MetaData.AlbumArtists.JoinedValue); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add(track.MetaData.AlbumArtists.JoinedValue, newCount); //inserting artist with new value
+                    }
+                }
+                else //we cannot determine artist, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined artist
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined artists
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown artists with new value
+                    }
+                }
+            }
+            return counts;
+        }
+        private Dictionary<string, uint> CalculateCountsByAlbum()
+        {
+            Dictionary<string, uint> counts = new Dictionary<string, uint>();
+            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            {
+                if (!String.IsNullOrEmpty(track.MetaData.Album.ToString())) //we can determine album from metadata
+                {
+                    if (!counts.ContainsKey(track.MetaData.Album.ToString())) //it is the first time we encounter this particular album
+                    {
+                        counts.Add(track.MetaData.Album.ToString(), 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we have a pre-existing count about this particular album
+                    {
+                        uint originalCount;
+                        counts.TryGetValue(track.MetaData.Album.ToString(), out originalCount); //getting the original counter
+                        counts.Remove(track.MetaData.Album.ToString()); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add(track.MetaData.Album.ToString(), newCount); //inserting album with new value
+                    }
+                }
+                else //we cannot determine album, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined album
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined albums
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown albums with new value
+                    }
+                }
+            }
+            return counts;
+        }
+        private Dictionary<string, uint> CalculateCountsByGenre()
+        {
+            Dictionary<string, uint> counts = new Dictionary<string, uint>();
+            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            {
+                //TODO: rework to increment each genre count if multiple flags given
+
+                //if (!String.IsNullOrEmpty(track.MetaData.JoinedGenres)) //we can determine genre from metadata
+                //{
+                //    if (!counts.ContainsKey(track.MetaData.JoinedGenres)) //it is the first time we encounter this particular genre
+                //    {
+                //        counts.Add(track.MetaData.JoinedGenres, 1); //adding occurence of 1, since it's the first
+                //    }
+                //    else //we have a pre-existing count about this particular genre
+                //    {
+                //        uint originalCount;
+                //        counts.TryGetValue(track.MetaData.JoinedGenres, out originalCount); //getting the original counter
+                //        counts.Remove(track.MetaData.JoinedGenres); //we will increment the counter's value so we remove
+                //        uint newCount = originalCount + 1; //incrementing by 1
+                //        counts.Add(track.MetaData.JoinedGenres, newCount); //inserting genre with new value
+                //    }
+                //}
+                //else //we cannot determine genre, so we list it under "Unknown"
+                //{
+                //    if (!counts.ContainsKey("Unknown")) //it is the first undetermined genre
+                //    {
+                //        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                //    }
+                //    else //we already have undetermined genres
+                //    {
+                //        uint originalCount;
+                //        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                //        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                //        uint newCount = originalCount + 1; //incrementing by 1
+                //        counts.Add("Unknown", newCount); //inserting unkown genres with new value
+                //    }
+                //}
+            }
+            return counts;
+        }
+        private Dictionary<MusicEra, uint> CalculateCountsByDecade()
+        {
+            Dictionary<MusicEra, uint> counts = new Dictionary<MusicEra, uint>();
+            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            {
+                MusicEra decade = MusicEra.Unknown;
+
+                if (track.MetaData.Year.Value.HasValue)
+                    decade = MusicErasConverter.ConvertFromYear(track.MetaData.Year.Value.Value); //we do not have to worry about value check, since it will "unknown" if not recognized
+
+                if (!counts.ContainsKey(decade)) //it is the first time we encounter this particular decade
+                {
+                    counts.Add(decade, 1); //adding occurence of 1, since it's the first
+                }
+                else //we have a pre-existing count about this particular decade
+                {
+                    uint originalCount;
+                    counts.TryGetValue(decade, out originalCount); //getting the original counter
+                    counts.Remove(decade); //we will increment the counter's value so we remove
+                    uint newCount = originalCount + 1; //incrementing by 1
+                    counts.Add(decade, newCount); //inserting decade with new value
+                }
+            }
+            return counts;
         }
     }
 }

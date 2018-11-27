@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-using WinForms = System.Windows.Forms;
-
 using TrackTracker.Services.Interfaces;
 using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
+using TrackTracker.BLL.Model;
+using TrackTracker.BLL.GlobalContexts;
 
 
 
@@ -55,7 +55,7 @@ namespace TrackTracker.GUI.ViewModels
                         string path = environmentService.TryFindFoobar();
                         if (path.Length > 2)
                         {
-                            GlobalContext.AppConfig.AddMediaPlayerPath(value, path);
+                            SettingsContext.AddMediaPlayerPath(value, path);
                             PlayerLocation = path + " | PLAYER LINKED!";
                         }
                         break;
@@ -80,27 +80,27 @@ namespace TrackTracker.GUI.ViewModels
 
         private bool CanExecuteSelectAll
         {
-            get => GlobalContext.PlayzoneTracks.Count > 0;
+            get => TracklistContext.PlayzoneTracks.Count > 0;
         }
         private void ExecuteSelectAll()
         {
-            foreach (Track track in GlobalContext.PlayzoneTracks)
+            foreach (TrackLocal track in TracklistContext.PlayzoneTracks)
             {
-                track.IsSelectedInGUI = true;
+                track.IsSelected = true;
             }
             NotifyPropertyChanged(nameof(CanExecuteAddToMix));
         }
 
         public bool CanExecuteSelectReverse
         {
-            get => GlobalContext.PlayzoneTracks.Count > 0;
+            get => TracklistContext.PlayzoneTracks.Count > 0;
         }
         public void ExecuteSelectReverse()
         {
-            foreach (Track track in GlobalContext.PlayzoneTracks)
+            foreach (TrackLocal track in TracklistContext.PlayzoneTracks)
             {
-                if (track.IsSelectedInGUI) track.IsSelectedInGUI = false;
-                else track.IsSelectedInGUI = true;
+                if (track.IsSelected) track.IsSelected = false;
+                else track.IsSelected = true;
             }
             NotifyPropertyChanged(nameof(CanExecuteAddToMix));
         }
@@ -111,9 +111,9 @@ namespace TrackTracker.GUI.ViewModels
             {
                 if (SelectedSupportedMediaPlayer == SupportedMediaPlayers.Foobar2000)
                 {
-                    foreach (Track track in GlobalContext.PlayzoneTracks)
+                    foreach (TrackLocal track in TracklistContext.PlayzoneTracks)
                     {
-                        if (track.IsSelectedInGUI)
+                        if (track.IsSelected)
                             return true; // Foobar2000 is selected as target and we have selected track(s) to add
                     }
                 }
@@ -124,9 +124,9 @@ namespace TrackTracker.GUI.ViewModels
         public void ExecuteAddToMix()
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\testplaylist.m3u");
-            foreach (Track track in GlobalContext.PlayzoneTracks)
+            foreach (TrackLocal track in TracklistContext.PlayzoneTracks)
             {
-                if (track.IsSelectedInGUI) sw.WriteLine(track.FileHandle.Name);
+                if (track.IsSelected) sw.WriteLine(track.MusicFileProperties.Path);
             }
             sw.Flush();
             sw.Close();

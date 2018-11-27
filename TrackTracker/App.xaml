@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TrackTracker"
              xmlns:vm="clr-namespace:TrackTracker.GUI.ViewModels"
+             xmlns:vmd="clr-namespace:TrackTracker.GUI.ViewModels.Dialogs"
              StartupUri="GUI/Views/MainWindow.xaml">
     <Application.Resources>
         <vm:DataViewModel x:Key="DataViewModel"/>
@@ -10,5 +11,6 @@
         <vm:StatisticsViewModel x:Key="StatisticsViewModel"/>
         <vm:TracklistViewModel x:Key="TracklistViewModel"/>
         <vm:CommonControlsViewModel x:Key="CommonControlsViewModel"/>
+        <vmd:ManageTracklistSourcesViewModel x:Key="ManageTracklistSourcesViewModel"/>
     </Application.Resources>
 </Application>

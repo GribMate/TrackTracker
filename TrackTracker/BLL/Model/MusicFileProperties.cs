@@ -25,7 +25,7 @@ namespace TrackTracker.BLL.Model
             FileName = fileService.GetFileNameFromFilePath(path);
             FileExtension = SupportedFileExtensionConverter.ParseExtensionString(fileService.GetExtensionFromFilePath(path));
 
-            Fingerprinted = false;
+            IsFingerprinted = false;
             Duration = -1;
             Fingerprint = null;
             BitDepth = -1;
@@ -41,7 +41,7 @@ namespace TrackTracker.BLL.Model
         public string FileName { get; set; } // The file name, without the fully qualified path or the extension
         public SupportedFileExtension FileExtension { get; set; } // The file extension, typed
 
-        public bool Fingerprinted { get; private set; } // Is the file fingerprinted already?
+        public bool IsFingerprinted { get; private set; } // Is the file fingerprinted already?
 
         // Data only available after fingerprinting was run
         public int Duration { get; set; } // Duration of the music file in seconds
@@ -49,7 +49,7 @@ namespace TrackTracker.BLL.Model
 
         // Additional information (only after fingerprinting)
         public int BitDepth { get; set; } // 16 bit is the only currently fully supported bit depth
-        public int Channels { get; set; } // 1 (mono), 2 (stereo) or more (5.1, 7.1)
+        public int Channels { get; set; } // 1 (mono), 2 (stereo) or more (5.1 => 6, 7.1 => 8)
         public int SampleRate { get; set; } // Sample rate in Hz
 
         public void RegisterFingerprintData(string fingerprint, int duration, int bitDepth, int channels, int sampleRate)
@@ -63,7 +63,7 @@ namespace TrackTracker.BLL.Model
             Channels = channels;
             SampleRate = sampleRate;
 
-            Fingerprinted = true;
+            IsFingerprinted = true;
         }
 
         private bool ValidatePath(string path)

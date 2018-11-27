@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
-             xmlns:BLL="clr-namespace:TrackTracker.BLL"
+             xmlns:contexts="clr-namespace:TrackTracker.BLL.GlobalContexts"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1200"
              DataContext="{StaticResource TracklistViewModel}">
@@ -30,21 +30,21 @@
                     <ColumnDefinition Width="600" />
                     <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-                <DataGrid ItemsSource="{Binding Source={x:Static BLL:GlobalContext.TracklistTracks}}" SelectedValue="{Binding SelectedTrack}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:TracklistContext.TracklistTracks}}" SelectedValue="{Binding SelectedTrack}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.JoinedAlbumArtists, Mode=TwoWay}" />
-                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album, Mode=TwoWay}"/>
+                        <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.AlbumArtists.JoinedValue}" />
+                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title.Value}"/>
+                        <DataGridTextColumn Header="Album" Width="*" Binding="{Binding MetaData.Album.Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <DataGrid ItemsSource="{Binding MatchList}" SelectedValue="{Binding SelectedMatch}" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" IsReadOnly="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding Artist}" />
-                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding Title}"/>
-                        <DataGridTextColumn Header="MBID" Width="*" Binding="{Binding MBID}"/>
+                        <DataGridTextColumn Header="Artists" Width="*" Binding="{Binding MetaData.AlbumArtists.JoinedValue}" />
+                        <DataGridTextColumn Header="Title" Width="*" Binding="{Binding MetaData.Title.Value}"/>
+                        <DataGridTextColumn Header="MBID" Width="*" Binding="{Binding MetaData.MusicBrainzTrackId.Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

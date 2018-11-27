@@ -73,16 +73,18 @@ namespace TrackTracker.Services
             LookupService service = new LookupService();
             LookupResponse response = await service.GetAsync(fingerprint, duration, new string[] { "recordings", "compress" });
 
-            if (!string.IsNullOrEmpty(response.ErrorMessage))
-            {
-                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error", "Error in AcoustID WebAPI.");
-                en.ShowDialog();
-            }
-            else if (response.Results.Count == 0)
-            {
-                Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Empty", "No results for given fingerprint.");
-                en.ShowDialog();
-            }
+            // TODO: not here
+
+            //if (!string.IsNullOrEmpty(response.ErrorMessage))
+            //{
+            //    Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Error", "Error in AcoustID WebAPI.");
+            //    en.ShowDialog();
+            //}
+            //else if (response.Results.Count == 0)
+            //{
+            //    Dialogs.ExceptionNotification en = new Dialogs.ExceptionNotification("Empty", "No results for given fingerprint.");
+            //    en.ShowDialog();
+            //}
 
             string resultID = "";
             double maxScore = 0;

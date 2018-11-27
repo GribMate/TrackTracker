@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
-             xmlns:BLL="clr-namespace:TrackTracker.BLL"
+             xmlns:contexts="clr-namespace:TrackTracker.BLL.GlobalContexts"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1200"
              DataContext="{StaticResource PlayzoneViewModel}">
@@ -20,13 +20,13 @@
                     <ColumnDefinition Width="950" />
                     <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
-                <DataGrid ItemsSource="{Binding Source={x:Static BLL:GlobalContext.PlayzoneTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:TracklistContext.PlayzoneTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelectedInGUI, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.JoinedAlbumArtists}" />
-                        <DataGridTextColumn Header="Title" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Title}"/>
-                        <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album}"/>
+                        <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}" />
+                        <DataGridTextColumn Header="Title" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Title.Value}"/>
+                        <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album.Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid Grid.Column="1">

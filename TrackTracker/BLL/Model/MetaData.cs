@@ -16,7 +16,7 @@ namespace TrackTracker.BLL.Model
         // Setting of each MetaTag's value is handled directly
         public MetaData()
         {
-            Genres = MusicGenres.Unknown;
+            Genres = new MetaTagCollection(nameof(Genres), MusicGenres.Unknown.ToString());
 
             Title = new MetaTagString(nameof(Title));
             Album = new MetaTagString(nameof(Album));
@@ -45,8 +45,9 @@ namespace TrackTracker.BLL.Model
         // Currently Supported ID3 tags
         // TODO: Review ID3 tags and finalize support
         #region MetaTagProperties
-
-        public MusicGenres Genres { get; set; } // Multiple flag-type genres of the track
+        
+        public MetaTagCollection Genres { get; set; } // Multiple flag-type genres of the track
+        // TODO: Maybe add custom attribute to mark which enum it supports
 
         public MetaTagString Title { get; set; } // Title of the track
         public MetaTagString Album { get; set; } // Album title of the track
@@ -73,7 +74,35 @@ namespace TrackTracker.BLL.Model
 
         #endregion
 
-        public Dictionary<string, string> GetAllMetaTagsFormatted() // Returns all metadata of the track in a formatted, displayable manner
+        public List<MetaTagBase> GetAllMetaTags()
+        {
+            List<MetaTagBase> allTags = new List<MetaTagBase>();
+
+            allTags.Add(Title);
+            allTags.Add(Album);
+            allTags.Add(Copyright);
+            allTags.Add(AlbumArtists);
+            allTags.Add(AlbumArtistsSort);
+            allTags.Add(Genres);
+            allTags.Add(BeatsPerMinute);
+            allTags.Add(Year);
+            allTags.Add(Track);
+            allTags.Add(TrackCount);
+            allTags.Add(Disc);
+            allTags.Add(DiscCount);
+            allTags.Add(MusicBrainzReleaseArtistId);
+            allTags.Add(MusicBrainzTrackId);
+            allTags.Add(MusicBrainzDiscId);
+            allTags.Add(MusicBrainzReleaseStatus);
+            allTags.Add(MusicBrainzReleaseType);
+            allTags.Add(MusicBrainzReleaseCountry);
+            allTags.Add(MusicBrainzReleaseId);
+            allTags.Add(MusicBrainzArtistId);
+
+            return allTags;
+        }
+
+        public Dictionary<string, string> GetAllMetaTagsDataFormatted() // Returns all metadata of the track in a formatted, displayable manner
         {
             Dictionary<string, string> allTags = new Dictionary<string, string>();
 
@@ -100,7 +129,7 @@ namespace TrackTracker.BLL.Model
 
             return allTags;
         }
-        public Dictionary<string, object> GetAllMetaTagsNative() // Returns all metadata of the track in a rough, native, saveable manner
+        public Dictionary<string, object> GetAllMetaTagsDataNative() // Returns all metadata of the track in a rough, native, saveable manner
         {
             Dictionary<string, object> allTags = new Dictionary<string, object>();
 
@@ -127,9 +156,9 @@ namespace TrackTracker.BLL.Model
 
             return allTags;
         }
-        public Dictionary<string, string> GetAllMetaTagsFormattedNonEmpty() // Returns non-empty metadata of the track (formatted for display)
+        public Dictionary<string, string> GetAllMetaTagsDataFormattedNonEmpty() // Returns non-empty metadata of the track (formatted for display)
         {
-            Dictionary<string, string> allTags = GetAllMetaTagsFormatted();
+            Dictionary<string, string> allTags = GetAllMetaTagsDataFormatted();
 
             // Filtering out null or empty tag values from all collection
             foreach (string key in allTags.Keys)
@@ -144,9 +173,9 @@ namespace TrackTracker.BLL.Model
 
             return allTags;
         }
-        public Dictionary<string, object> GetAllMetaTagsNativeNonEmpty() // Returns non-empty metadata of the track (native for save)
+        public Dictionary<string, object> GetAllMetaTagsDataNativeNonEmpty() // Returns non-empty metadata of the track (native for save)
         {
-            Dictionary<string, object> allTags = GetAllMetaTagsNative();
+            Dictionary<string, object> allTags = GetAllMetaTagsDataNative();
 
             // Filtering out null or empty tag values from all collection
             foreach (string key in allTags.Keys)
