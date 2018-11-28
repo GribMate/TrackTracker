@@ -123,7 +123,9 @@ namespace TrackTracker.GUI.ViewModels
         }
         public void ExecuteAddToMix()
         {
-            System.IO.StreamWriter sw = new System.IO.StreamWriter("D:\\testplaylist.m3u");
+            string playlistPath = AppDomain.CurrentDomain.BaseDirectory + "_playzone_mix.m3u";
+
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(playlistPath);
             foreach (TrackLocal track in TracklistContext.PlayzoneTracks)
             {
                 if (track.IsSelected) sw.WriteLine(track.MusicFileProperties.Path);
@@ -131,7 +133,7 @@ namespace TrackTracker.GUI.ViewModels
             sw.Flush();
             sw.Close();
             sw.Dispose();
-            System.Diagnostics.Process.Start("D:\\testplaylist.m3u");
+            System.Diagnostics.Process.Start(playlistPath);
         }
 
         public bool CanExecuteSpotifyPlayPause
