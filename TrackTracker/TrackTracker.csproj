@@ -183,6 +183,8 @@
     <Compile Include="GUI\Views\TabTracklist.xaml.cs">
       <DependentUpon>TabTracklist.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\FoobarService.cs" />
+    <Compile Include="Services\Interfaces\IFoobarService.cs" />
     <Compile Include="Services\Interfaces\ITaggingService.cs" />
     <Compile Include="Services\Interfaces\ISpotifyService.cs" />
     <Compile Include="Services\SpotifyService.cs" />

@@ -29,6 +29,7 @@ namespace TrackTracker
             DependencyInjector.AddService<IMetadataService, MusicBrainzService>();
             DependencyInjector.AddService<IFingerprintService, AcoustIDService>();
             DependencyInjector.AddService<ISpotifyService, SpotifyService>();
+            DependencyInjector.AddService<IFoobarService, FoobarService>();
         }
     }
 }
