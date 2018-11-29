@@ -96,7 +96,7 @@ namespace PieChart
             }
 
             // handle the selection change events
-            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(this.DataContext);
+            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(TrackTracker.GUI.ViewModels.StatisticsViewModel.View);
             collectionView.CurrentChanged += new EventHandler(CollectionViewCurrentChanged);
             collectionView.CurrentChanging += new CurrentChangingEventHandler(CollectionViewCurrentChanging);
 

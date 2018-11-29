@@ -2,7 +2,7 @@
 
 
 
-namespace TrackTracker.BLL.Model
+namespace TrackTracker.BLL.Model.Base
 {
     /*
      * A base class, that represents a selectable model entity.

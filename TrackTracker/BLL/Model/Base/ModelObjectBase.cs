@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 
 
-namespace TrackTracker.BLL.Model
+namespace TrackTracker.BLL.Model.Base
 {
     /*
      * Provides a base for model classes, encapsulating INPC interface, so that on some (hopefully rare)

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 
 using TrackTracker.BLL.GlobalContexts;
 using TrackTracker.BLL.Model;
-using TrackTracker.GUI.Interfaces;
+using TrackTracker.GUI.ViewModels.Base;
 
 
 

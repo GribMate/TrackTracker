@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 using TrackTracker.BLL.Model;
 using TrackTracker.BLL.GlobalContexts;
+using TrackTracker.GUI.ViewModels.Base;
+
+
 
 namespace TrackTracker.GUI.ViewModels
 {
     public class StatisticsViewModel : ViewModelBase
     {
+        public ObservableCollection<StatisticsChartableData> PieChartData { get; set; }
+
+        public static System.Windows.Controls.UserControl View { get; set; }
+
+
         public StatisticsViewModel() : base()
         {
             TotalCount = 0;

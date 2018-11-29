@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-using TrackTracker.GUI.Interfaces;
+using TrackTracker.GUI.ViewModels.Base;
 
 
 

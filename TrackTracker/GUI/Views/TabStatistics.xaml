@@ -4,10 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
+             xmlns:c="clr-namespace:PieChart"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1200"
              DataContext="{StaticResource StatisticsViewModel}">
-    
+
+    <UserControl.Resources>
+        <x:ArrayExtension Type="{x:Type Brush}" x:Key="PieChartColorBrushes">
+            <SolidColorBrush Color="#9F15C3"/>
+            <SolidColorBrush Color="#FF8E01"/>
+            <SolidColorBrush Color="#339933"/>
+            <SolidColorBrush Color="#00AAFF"/>
+            <SolidColorBrush Color="#818183"/>
+            <SolidColorBrush Color="#000033"/>
+        </x:ArrayExtension>
+    </UserControl.Resources>
+
     <StackPanel Background="#FF323232">
         <Grid>
             <Grid.RowDefinitions>
@@ -24,24 +36,11 @@
 
                 <Button Command="{Binding RefreshCommand}" Grid.ColumnSpan="2" Height="50" Width="100" VerticalAlignment="Top" Margin="10" Content="Refresh" />
 
-                <!--
-                            <c:PieChartLayout HorizontalAlignment="Center" Grid.Column="0" Height="250" Width="500" Margin="5,40,100,10"
-                              x:Name="piePlotter" PlottedProperty="Count">
-                                <c:PieChartLayout.ColorSelector>
-                                    <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
-                                </c:PieChartLayout.ColorSelector>
-                            </c:PieChartLayout>
-                            
-                            
-                            
-                            THIS SECTION NEEDS THE MVVM PATTERN IMPLEMENTED (OR FIDDLING WITH DATACONTEXTS AND BINDIG)
-                            TO WORK PROPERLY.
-                            WILL FIX IN A LATER PHASE.
-                            
-                            -->
-
-
-
+                <!--<c:PieChartLayout x:Name="piePlotter" PlottedProperty="Count" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="500" Margin="5,40,100,10">
+                    <c:PieChartLayout.ColorSelector>
+                        <c:IndexedColourSelector Brushes="{StaticResource PieChartColorBrushes}"/>
+                    </c:PieChartLayout.ColorSelector>
+                </c:PieChartLayout>-->
 
                 <Label Grid.Column="0" Content="Tracks by artist" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
                 <Label Grid.Column="0" Content="Most frequent artist:" HorizontalAlignment="Left" Margin="430,64,0,0" VerticalAlignment="Top" Foreground="White"/>

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using TrackTracker.BLL.Enums;
+using TrackTracker.BLL.Model.Base;
 using TrackTracker.Services.Interfaces;
 
 

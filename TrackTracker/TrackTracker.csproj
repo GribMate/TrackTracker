@@ -15,6 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -160,6 +161,7 @@
     <Compile Include="BLL\Model\MetaTagString.cs" />
     <Compile Include="BLL\Model\MusicFileProperties.cs" />
     <Compile Include="BLL\Model\Base\SelectableObject.cs" />
+    <Compile Include="BLL\Model\StatisticsChartableData.cs" />
     <Compile Include="BLL\Model\TrackBase.cs" />
     <Compile Include="BLL\Model\TrackLocal.cs" />
     <Compile Include="BLL\Model\TrackVirtual.cs" />
@@ -170,7 +172,7 @@
     <Compile Include="GUI\ViewModels\Dialogs\ExceptionNotificationViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ManageTracklistSourcesViewModel.cs" />
     <Compile Include="GUI\ViewModels\PlayzoneViewModel.cs" />
-    <Compile Include="GUI\ViewModels\RelayCommand.cs" />
+    <Compile Include="GUI\ViewModels\Base\RelayCommand.cs" />
     <Compile Include="GUI\ViewModels\StatisticsViewModel.cs" />
     <Compile Include="GUI\ViewModels\TracklistViewModel.cs" />
     <Compile Include="GUI\Views\CommonControls.xaml.cs">
@@ -225,7 +227,6 @@
       <DependentUpon>PiePlotter.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\PieChart\PiePiece.cs" />
-    <Compile Include="GUI\PieChart\TESTCLASS.cs" />
     <Compile Include="GUI\PieChart\FormattingConverter.cs" />
     <Compile Include="Startup.cs" />
     <Page Include="GUI\Views\Dialogs\ExceptionNotification.xaml">
@@ -310,7 +311,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="appicon.ico" />

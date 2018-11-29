@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TrackTracker.GUI.ViewModels
+
+
+namespace TrackTracker.GUI.ViewModels.Base
 {
     public class RelayCommand : ICommand
     {

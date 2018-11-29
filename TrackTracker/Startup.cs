@@ -25,6 +25,7 @@ namespace TrackTracker
             DependencyInjector.AddService<IDatabaseService, SQLiteService>();
             DependencyInjector.AddService<IFileService, FileService>();
             DependencyInjector.AddService<IEnvironmentService, WindowsEnvironmentService>();
+            DependencyInjector.AddService<ITaggingService, TagLibSharpService>();
             DependencyInjector.AddService<IMetadataService, MusicBrainzService>();
             DependencyInjector.AddService<IFingerprintService, AcoustIDService>();
             DependencyInjector.AddService<ISpotifyService, SpotifyService>();

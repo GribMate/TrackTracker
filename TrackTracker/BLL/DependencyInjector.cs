@@ -32,10 +32,9 @@ namespace TrackTracker.BLL
             if (dependencies.ContainsKey(TInterface) == false)
                 throw new InvalidOperationException($"Cannot instantiate dependency, since {nameof(TInterface)} does not have a registered value.");
 
-            Type TService = null;
-            dependencies.TryGetValue(TInterface, out TService);
+            dependencies.TryGetValue(TInterface, out Type TService);
 
-            return (Interface)Activator.CreateInstance(TService);
+            return (Interface)Activator.CreateInstance(TService); // Creating a new service instance
         }
         public static void RemoveService<Interface>() // Removes a previously registered service
         {

@@ -12,6 +12,7 @@ using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 using TrackTracker.BLL.Model;
 using TrackTracker.BLL.GlobalContexts;
+using TrackTracker.GUI.ViewModels.Base;
 
 
 

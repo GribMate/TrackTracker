@@ -1,6 +1,7 @@
 ﻿using System;
 
 using TrackTracker.BLL.Enums;
+using TrackTracker.BLL.Model.Base;
 
 
 
