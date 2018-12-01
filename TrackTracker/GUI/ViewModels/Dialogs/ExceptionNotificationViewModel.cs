@@ -12,29 +12,26 @@ namespace TrackTracker.GUI.ViewModels.Dialogs
     {
         public ExceptionNotificationViewModel(string title, string description, string details = null)
         {
-            try
-            {
-                // Setting anything "important" first to try and minimize chance of failure in error handling behaviour
-                CloseCommand = new RelayCommand<IClosable>(exe => ExecuteClose(exe), can => CanExecuteClose);
+            CloseCommand = new RelayCommand<IClosable>(exe => ExecuteClose(exe), can => CanExecuteClose);
 
 
-                if (String.IsNullOrWhiteSpace(title))
-                    Title = "Unknown error";
-                else
-                    Title = title;
+            if (String.IsNullOrWhiteSpace(title))
+                Title = "Unknown error";
+            else
+                Title = title;
 
-                if (String.IsNullOrWhiteSpace(description))
-                    Description = "We don't know what went wrong. Please restart the application!"; 
-                else
-                    Description = description;
+            if (String.IsNullOrWhiteSpace(description))
+                Description = "We don't know what went wrong. Please restart the application!";
+            else
+                Description = description;
 
-                if (String.IsNullOrWhiteSpace(details))
-                    Details = "";
-                else
-                    Details = details;   
-            }
-            catch (Exception) { } // Do not throw exceptions from this window, since it's job is to show them
+            if (String.IsNullOrWhiteSpace(details))
+                Details = "";
+            else
+                Details = details;
         }
+
+
 
         public ICommand CloseCommand { get; }
 
