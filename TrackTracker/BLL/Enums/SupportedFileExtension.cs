@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 
@@ -33,6 +35,34 @@ namespace TrackTracker.BLL.Enums
             {
                 return SupportedFileExtension.Unknown;
             }
+        }
+        public static List<SupportedFileExtension> GetAll()
+        {
+            List<SupportedFileExtension> enumList = new List<SupportedFileExtension>();
+
+            foreach (SupportedFileExtension enumVal in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>())
+            {
+                if (enumVal == SupportedFileExtension.All || enumVal == SupportedFileExtension.Unknown)
+                    continue; // We want to retrieve only the exact file format values
+
+                enumList.Add(enumVal);
+            }
+
+            return enumList;
+        }
+        public static List<string> GetAllString()
+        {
+            List<string> enumList = new List<string>();
+
+            foreach (SupportedFileExtension enumVal in Enum.GetValues(typeof(SupportedFileExtension)).Cast<SupportedFileExtension>())
+            {
+                if (enumVal == SupportedFileExtension.All || enumVal == SupportedFileExtension.Unknown)
+                    continue; // We want to retrieve only the exact file format values
+
+                enumList.Add(enumVal.ToString());
+            }
+
+            return enumList;
         }
     }
 }

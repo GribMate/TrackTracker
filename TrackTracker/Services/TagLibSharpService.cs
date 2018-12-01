@@ -16,7 +16,7 @@ namespace TrackTracker.Services
         public Dictionary<string, object> Read(string path, List<string> allowedExtensions) // Collects metadata into a general collection about a file
         {
             if (String.IsNullOrWhiteSpace(path) || path.Length < 8) // "C:\x.abc" is 8 characters long
-                throw new ArgumentNullException(nameof(path), "Music file path is empty, null, or too short.");
+                throw new ArgumentException("Music file path is empty, null, or too short.", nameof(path));
             if (allowedExtensions == null || allowedExtensions.Count < 1)
                 throw new ArgumentNullException(nameof(allowedExtensions), "Allowed extension list is null or empty.");
             if (File.Exists(path) == false)
@@ -110,8 +110,7 @@ namespace TrackTracker.Services
             foreach (KeyValuePair<string, object> tag in metaTags)
             {
                 PropertyInfo property = tagType.GetProperty(tag.Key); // Getting the property by its name from reflection
-                Type propertyType = property.GetType(); // Getting the type of the property so we can cast to it
-                property.SetValue(audioFile.Tag, Convert.ChangeType(tag.Value, propertyType)); // Setting given property with matching value
+                property.SetValue(audioFile.Tag, Convert.ChangeType(tag.Value, property.PropertyType)); // Setting given property with matching value
             }
 
             audioFile.Save(); // Persisting to disk

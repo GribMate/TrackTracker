@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
+using System.Reflection;
 using TrackTracker.BLL.Enums;
 using TrackTracker.BLL.Model;
+using TrackTracker.Services.Interfaces;
 
 
 
@@ -26,34 +28,26 @@ namespace TrackTracker.BLL.GlobalContexts
 
 
 
-        public static void AddMusicFile(SupportedFileExtension type, string path)
+        public static void AddMusicFile(SupportedFileExtension ext, string path)
         {
-            if (path == null) throw new ArgumentNullException();
-            if (path.Length < 3) throw new ArgumentException();
+            if (path == null)
+                throw new ArgumentNullException(nameof(path), $"Cannot add new music file, since path is null.");
+            if (path.Length < 8) // "C:\x.abc" is 8 characters long
+                throw new ArgumentException("Cannot add new music file, path is too short.", nameof(path));
 
             try
             {
-                TagLib.File audioFile = null;
-                switch (type)
-                {
-                    case SupportedFileExtension.MP3:
-                        audioFile = new TagLib.Mpeg.AudioFile(path);
-                        break;
-                    case SupportedFileExtension.FLAC:
-                        audioFile = new TagLib.Flac.File(path);
-                        break;
-                    default:
-                        audioFile = TagLib.File.Create(path);
-                        break;
-                }
+                ITaggingService taggingService = DependencyInjector.GetService<ITaggingService>();
+                Dictionary<string, object> tagData = taggingService.Read(path, new List<string>() { ext.ToString() });
+                MetaData trackData = FormatMetaData(tagData);
 
                 // We need two different object copies to store
-                TrackLocal tT = new TrackLocal(new MusicFileProperties(path));
-                TrackLocal tP = new TrackLocal(new MusicFileProperties(path));
+                TrackLocal tT = new TrackLocal(new MusicFileProperties(path), trackData);
+                TrackLocal tP = new TrackLocal(new MusicFileProperties(path), trackData);
                 TracklistTracks.Add(tT);
                 PlayzoneTracks.Add(tP);
             }
-            catch (Exception) //TODO: more polished exception handling
+            catch (Exception e) // TODO: more polished exception handling
             {
                 ErrorHelper.ShowExceptionDialog(
                     "File reading error",
@@ -78,6 +72,66 @@ namespace TrackTracker.BLL.GlobalContexts
         {
             TracklistTracks.Clear();
             PlayzoneTracks.Clear();
+        }
+
+
+
+        private static MetaData FormatMetaData(Dictionary<string, object> source)
+        {
+            MetaData md = new MetaData();
+
+            md.Genres.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("Genres")).First().Value;
+
+            md.Title.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Title")).First().Value;
+            md.Album.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Album")).First().Value;
+            md.Copyright.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Copyright")).First().Value;
+            md.AlbumArtists.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtists")).First().Value;
+            md.AlbumArtistsSort.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtistsSort")).First().Value;
+            md.BeatsPerMinute.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("BeatsPerMinute")).First().Value;
+            md.Year.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Year")).First().Value;
+            md.Track.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Track")).First().Value;
+            md.TrackCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("TrackCount")).First().Value;
+            md.Disc.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Disc")).First().Value;
+            md.DiscCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("DiscCount")).First().Value;
+
+            md.AcoustID.Value = null; // TODO: Currently not obtained through tagging service, but can be added as a custom tag later
+
+            // We have to null check each GUID
+            string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseArtistId")).First().Value;
+            if (String.IsNullOrWhiteSpace(guid))
+                md.MusicBrainzReleaseArtistId.Value = null;
+            else
+                md.MusicBrainzReleaseArtistId.Value = new Guid(guid);
+
+            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzTrackId")).First().Value;
+            if (String.IsNullOrWhiteSpace(guid))
+                md.MusicBrainzTrackId.Value = null;
+            else
+                md.MusicBrainzTrackId.Value = new Guid(guid);
+
+            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzDiscId")).First().Value;
+            if (String.IsNullOrWhiteSpace(guid))
+                md.MusicBrainzDiscId.Value = null;
+            else
+                md.MusicBrainzDiscId.Value = new Guid(guid);
+
+            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseId")).First().Value;
+            if (String.IsNullOrWhiteSpace(guid))
+                md.MusicBrainzReleaseId.Value = null;
+            else
+                md.MusicBrainzReleaseId.Value = new Guid(guid);
+
+            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzArtistId")).First().Value;
+            if (String.IsNullOrWhiteSpace(guid))
+                md.MusicBrainzArtistId.Value = null;
+            else
+                md.MusicBrainzArtistId.Value = new Guid(guid);
+
+            md.MusicBrainzReleaseStatus.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseStatus")).First().Value;
+            md.MusicBrainzReleaseType.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseType")).First().Value;
+            md.MusicBrainzReleaseCountry.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseCountry")).First().Value;
+
+            return md;
         }
     }
 }
