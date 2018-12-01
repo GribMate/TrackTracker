@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 using TrackTracker.BLL.GlobalContexts;
 using TrackTracker.BLL.Model;
+using TrackTracker.GUI.Interfaces;
 using TrackTracker.GUI.ViewModels.Base;
 
 
@@ -17,9 +18,9 @@ namespace TrackTracker.GUI.ViewModels.Dialogs
             //SelectActiveReverseCommand = new RelayCommand(exe => ExecuteSelectActiveReverse(), can => CanExecuteSelectActiveReverse);
             //SelectStoredAllCommand = new RelayCommand(exe => ExecuteSelectStoredAll(), can => CanExecuteSelectStoredAll);
             //SelectStoredReverseCommand = new RelayCommand(exe => ExecuteSelectStoredReverse(), can => CanExecuteSelectStoredReverse);
-            ActivateCommand = new RelayCommand(exe => ExecuteActivate(), can => CanExecuteActivate);
-            DeactivateCommand = new RelayCommand(exe => ExecuteDeactivate(), can => CanExecuteDeactivate);
-            CloseCommand = new RelayCommand(exe => ExecuteClose(), can => CanExecuteClose);
+            ActivateCommand = new RelayCommand<object>(exe => ExecuteActivate(), can => CanExecuteActivate);
+            DeactivateCommand = new RelayCommand<object>(exe => ExecuteDeactivate(), can => CanExecuteDeactivate);
+            CloseCommand = new RelayCommand<IClosable>(exe => ExecuteClose(exe), can => CanExecuteClose);
         }
 
         //public ICommand SelectActiveAllCommand { get; }
@@ -150,10 +151,10 @@ namespace TrackTracker.GUI.ViewModels.Dialogs
         {
             get => true;
         }
-        private void ExecuteClose(/* TODO IClosable window */)
+        private void ExecuteClose(IClosable window)
         {
-            //if (window != null)
-            //    window.Close();
+            if (window != null)
+                window.Close();
         }
     }
 }

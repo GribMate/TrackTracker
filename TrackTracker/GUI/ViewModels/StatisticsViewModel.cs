@@ -29,7 +29,7 @@ namespace TrackTracker.GUI.ViewModels
             CountsByGenre = new Dictionary<string, uint>();
             CountsByDecade = new Dictionary<MusicEra, uint>();
 
-            RefreshCommand = new RelayCommand(exe => ExecuteRefresh(), can => CanExecuteRefresh);
+            RefreshCommand = new RelayCommand<object>(exe => ExecuteRefresh(), can => CanExecuteRefresh);
         }
 
         public ICommand RefreshCommand { get; }

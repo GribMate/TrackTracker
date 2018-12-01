@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
+using TrackTracker.GUI.Interfaces;
 using TrackTracker.GUI.ViewModels.Base;
 
 
@@ -14,7 +15,7 @@ namespace TrackTracker.GUI.ViewModels.Dialogs
             try
             {
                 // Setting anything "important" first to try and minimize chance of failure in error handling behaviour
-                CloseCommand = new RelayCommand(exe => ExecuteClose(), can => CanExecuteClose);
+                CloseCommand = new RelayCommand<IClosable>(exe => ExecuteClose(exe), can => CanExecuteClose);
 
 
                 if (String.IsNullOrWhiteSpace(title))
@@ -66,10 +67,10 @@ namespace TrackTracker.GUI.ViewModels.Dialogs
         {
             get => true;
         }
-        private void ExecuteClose(/* TODO IClosable window*/)
+        private void ExecuteClose(IClosable window)
         {
-            //if (window != null)
-            //    window.Close();
+            if (window != null)
+                window.Close();
         }
     }
 }

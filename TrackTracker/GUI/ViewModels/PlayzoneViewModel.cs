@@ -34,10 +34,10 @@ namespace TrackTracker.GUI.ViewModels
 
             SupportedPlayers = GetSupportedMediaPlayers();
 
-            SelectAllCommand = new RelayCommand(exe => ExecuteSelectAll(), can => CanExecuteSelectAll);
-            SelectReverseCommand = new RelayCommand(exe => ExecuteSelectReverse(), can => CanExecuteSelectReverse);
-            AddToMixCommand = new RelayCommand(exe => ExecuteAddToMix(), can => CanExecuteAddToMix);
-            SpotifyPlayPauseCommand = new RelayCommand(exe => ExecuteSpotifyPlayPause(), can => CanExecuteSpotifyPlayPause);
+            SelectAllCommand = new RelayCommand<object>(exe => ExecuteSelectAll(), can => CanExecuteSelectAll);
+            SelectReverseCommand = new RelayCommand<object>(exe => ExecuteSelectReverse(), can => CanExecuteSelectReverse);
+            AddToMixCommand = new RelayCommand<object>(exe => ExecuteAddToMix(), can => CanExecuteAddToMix);
+            SpotifyPlayPauseCommand = new RelayCommand<object>(exe => ExecuteSpotifyPlayPause(), can => CanExecuteSpotifyPlayPause);
         }
 
 

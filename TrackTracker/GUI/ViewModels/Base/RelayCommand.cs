@@ -6,39 +6,35 @@ using System.Windows.Input;
 
 namespace TrackTracker.GUI.ViewModels.Base
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
     {
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
+        readonly Action<T> _execute = null;
+        readonly Predicate<T> _canExecute = null;
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
             if (execute == null)
-                throw new ArgumentNullException($"Command execute action {execute} cannot be null!");
+                throw new ArgumentNullException(nameof(execute), "Cannot instantiate new RelayCommand since method to execute is null.");
 
             _execute = execute;
             _canExecute = canExecute;
         }
 
-        [DebuggerStepThrough]
-        public bool CanExecute(object parameters)
+
+        public bool CanExecute(object parameter)
         {
-            return _canExecute != null ? _canExecute(parameters) : true;
+            return _canExecute == null ? true : _canExecute((T)parameter);
         }
+
         public event EventHandler CanExecuteChanged
         {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
-        public void Execute(object parameters)
+
+        public void Execute(object parameter)
         {
-            _execute(parameters);
+            _execute((T)parameter);
         }
     }
 }

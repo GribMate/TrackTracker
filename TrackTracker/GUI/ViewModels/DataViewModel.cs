@@ -36,10 +36,10 @@ namespace TrackTracker.GUI.ViewModels
             SupportedFileFormats = GetSupportedFileFormats();
             SpotifyPlaylists = new ObservableCollection<string>();
 
-            BrowseCommand = new RelayCommand(exe => ExecuteBrowse(), can => CanExecuteBrowse);
-            AddFilesCommand = new RelayCommand(exe => ExecuteAddFiles(), can => CanExecuteAddFiles);
-            LinkSpotifyCommand = new RelayCommand(exe => ExecuteLinkSpotify(), can => CanExecuteLinkSpotify);
-            AddSpotifyListsCommand = new RelayCommand(exe => ExecuteAddSpotifyLists(), can => CanExecuteAddSpotifyLists);
+            BrowseCommand = new RelayCommand<object>(exe => ExecuteBrowse(), can => CanExecuteBrowse);
+            AddFilesCommand = new RelayCommand<object>(exe => ExecuteAddFiles(), can => CanExecuteAddFiles);
+            LinkSpotifyCommand = new RelayCommand<object>(exe => ExecuteLinkSpotify(), can => CanExecuteLinkSpotify);
+            AddSpotifyListsCommand = new RelayCommand<object>(exe => ExecuteAddSpotifyLists(), can => CanExecuteAddSpotifyLists);
 
             OfflineFolderPath = "Please select your offline music folder...";
             FolderIsChecked = true;

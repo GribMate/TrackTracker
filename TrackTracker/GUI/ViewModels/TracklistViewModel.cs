@@ -40,12 +40,12 @@ namespace TrackTracker.GUI.ViewModels
             TagList = new ObservableCollection<MetaTagBase>();
             MatchList = new ObservableCollection<TrackVirtual>();
 
-            SelectAllCommand = new RelayCommand(exe => ExecuteSelectAll(), can => CanExecuteSelectAll);
-            SelectReverseCommand = new RelayCommand(exe => ExecuteSelectReverse(), can => CanExecuteSelectReverse);
-            ManageSourcesCommand = new RelayCommand(exe => ExecuteManageSources(), can => CanExecuteManageSources);
-            UpdateTagsCommand = new RelayCommand(exe => ExecuteUpdateTags(), can => CanExecuteUpdateTags);
-            GetFingerprintCommand = new RelayCommand(exe => ExecuteGetFingerprint(), can => CanExecuteGetFingerprint);
-            SearchMusicBrainzCommand = new RelayCommand(exe => ExecuteSearchMusicBrainz(), can => CanExecuteSearchMusicBrainz);
+            SelectAllCommand = new RelayCommand<object>(exe => ExecuteSelectAll(), can => CanExecuteSelectAll);
+            SelectReverseCommand = new RelayCommand<object>(exe => ExecuteSelectReverse(), can => CanExecuteSelectReverse);
+            ManageSourcesCommand = new RelayCommand<object>(exe => ExecuteManageSources(), can => CanExecuteManageSources);
+            UpdateTagsCommand = new RelayCommand<object>(exe => ExecuteUpdateTags(), can => CanExecuteUpdateTags);
+            GetFingerprintCommand = new RelayCommand<object>(exe => ExecuteGetFingerprint(), can => CanExecuteGetFingerprint);
+            SearchMusicBrainzCommand = new RelayCommand<object>(exe => ExecuteSearchMusicBrainz(), can => CanExecuteSearchMusicBrainz);
         }
 
 
