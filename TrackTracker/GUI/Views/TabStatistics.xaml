@@ -5,9 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
              xmlns:c="clr-namespace:PieChart"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1200"
              DataContext="{StaticResource StatisticsViewModel}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="GotFocus">
+            <i:InvokeCommandAction Command="{Binding RefreshCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <UserControl.Resources>
         <x:ArrayExtension Type="{x:Type Brush}" x:Key="PieChartColorBrushes">
@@ -33,8 +41,6 @@
                     <ColumnDefinition Width="600" />
                     <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-
-                <Button Command="{Binding RefreshCommand}" Grid.ColumnSpan="2" Height="50" Width="100" VerticalAlignment="Top" Margin="10" Content="Refresh" />
 
                 <!--<c:PieChartLayout x:Name="piePlotter" PlottedProperty="Count" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="500" Margin="5,40,100,10">
                     <c:PieChartLayout.ColorSelector>
