@@ -74,13 +74,6 @@ namespace TrackTracker.GUI.ViewModels
                 {
                     SelectedTrack.MatchCandidates.Add(value);
                     SelectedTrack.ActiveCandidateMBTrackID = value.MetaData.MusicBrainzTrackId;
-
-                    //FOR DEBUG ONLY
-                    ErrorHelper.ShowExceptionDialog(
-                        "For debug",
-                        "Active candidate selected!",
-                        null,
-                        null); // this); // TODO
                 }
             }
         }
@@ -89,10 +82,7 @@ namespace TrackTracker.GUI.ViewModels
         public bool AutoSelect
         {
             get => autoSelect;
-            set
-            {
-                SetProperty(ref autoSelect, value);
-            }
+            set { SetProperty(ref autoSelect, value); }
         }
 
 
@@ -288,7 +278,7 @@ namespace TrackTracker.GUI.ViewModels
             }
             else
             {
-                ErrorHelper.ShowExceptionDialog(
+                UtilityHelper.ShowExceptionDialog(
                    "Track matching error",
                     "Cannot query this track against MusicBrainz, since it has no relevant metadata.",
                     "Try to use fingerprinting!");

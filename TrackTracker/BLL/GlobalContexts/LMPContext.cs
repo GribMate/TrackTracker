@@ -41,7 +41,9 @@ namespace TrackTracker.BLL.GlobalContexts
 
                 foreach (var path in lmp.GetAllFilePaths())
                 {
-                    TracklistContext.AddMusicFile(path.Value, path.Key); // TODO: review
+                    TracklistContext.AddMusicFile(path.Value, path.Key);
+                    PlayzoneContext.AddMusicFileLocal(path.Value, path.Key);
+                    // TODO: review
                 }
             }
         }
@@ -57,7 +59,9 @@ namespace TrackTracker.BLL.GlobalContexts
                
                 foreach (var path in lmp.GetAllFilePaths())
                 {
-                    TracklistContext.RemoveMusicFile(path.Key); // TODO: review
+                    TracklistContext.RemoveMusicFile(path.Key);
+                    PlayzoneContext.RemoveMusicFileLocal(path.Key);
+                    // TODO: review
                 }
             }
         }

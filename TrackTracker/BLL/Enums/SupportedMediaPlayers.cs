@@ -12,21 +12,21 @@ namespace TrackTracker.BLL.Enums
     public enum SupportedMediaPlayers
     {
         // Offline
-        Foobar2000 = 0, // Default offline
+        Foobar2000 = 1 << 0, // Default offline
 
         // Online
-        Spotify = 1 // Default online
+        Spotify = 1 << 1 // Default online
     }
 
     public static class SupportedMediaPlayersConverter // Provides static methods to manipulate SupportedMediaPlayers
     {
         public static SupportedMediaPlayers GetAllOfflinePlayers()
         {
-            return SupportedMediaPlayers.Foobar2000;
+            return SupportedMediaPlayers.Foobar2000; // Currently...
         }
         public static SupportedMediaPlayers GetAllOnlinePlayers()
         {
-            return SupportedMediaPlayers.Spotify;
+            return SupportedMediaPlayers.Spotify; // Currently...
         }
         public static SupportedMediaPlayers GetOfflinePlayersWhichSupportFormat(SupportedFileExtension ext)
         {

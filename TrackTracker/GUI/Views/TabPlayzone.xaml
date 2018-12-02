@@ -12,46 +12,86 @@
     <StackPanel Background="#FF323232">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="620" />
-                <RowDefinition Height="60" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="281"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="950" />
-                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="600" />
+                    <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-                <DataGrid ItemsSource="{Binding Source={x:Static contexts:TracklistContext.PlayzoneTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <Label Grid.Column="0" Content="Local (filtered) music files" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
+                <Label Grid.Column="1" Content="Online (filtered) music files" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="600"/>
+                    <ColumnDefinition Width="600"/>
+                </Grid.ColumnDefinitions>
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.LocalTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}" />
+                        <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}"/>
                         <DataGridTextColumn Header="Title" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Title.Value}"/>
                         <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album.Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="100" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="Select music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14" />
-                    <ComboBox ItemsSource="{Binding SupportedPlayers}" SelectedValue="{Binding SelectedSupportedMediaPlayer}" Grid.Row="1" Width="200" Height="30" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="14" />
-                    <Label Grid.Row="2" Content="Player detected @" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" />
-                    <TextBlock Text="{Binding PlayerLocation}" Grid.Row="3" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="70" Width="215" Foreground="#FF00C800"/>
-                    <Button Command="{Binding SpotifyPlayPauseCommand}" Grid.Row="4" Content="Spotify Play/Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
-                </Grid>
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.SpotifyTracks}}" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}"/>
+                        <DataGridTextColumn Header="Title" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Title.Value}"/>
+                        <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album.Value}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="950" />
-                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="600" />
+                    <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-                <Button Command="{Binding SelectAllCommand}" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
-                <Button Command="{Binding SelectReverseCommand}" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" />
-                <Button Command="{Binding AddToMixCommand}" Grid.Column="0" Content="Add to mix..." Width="200" Height="50" Margin="550,0,0,0" FontSize="14" />
+                <Button Command="{Binding LocalSelectAllCommand}" Grid.Column="0" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
+                <Button Command="{Binding LocalSelectReverseCommand}" Grid.Column="0" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" />
+                <Button Command="{Binding LocalManageFiltersCommand}" Grid.Column="0" Content="Manage filters..." Width="150" Height="50" FontSize="14" Margin="190,0,260,0" />
+                <Button Command="{Binding LocalAddToMixCommand}" Grid.Column="0" Content="Add selected to mix" Width="150" Height="50" Margin="380,0,70,0" FontSize="14" />
+
+                <Button Command="{Binding OnlineSelectAllCommand}" Grid.Column="1" Content="Select all" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="125" Margin="1,0,0,0" FontSize="14" />
+                <Button Command="{Binding OnlineSelectReverseCommand}" Grid.Column="1" Content="Reverse selection" Height="30" Width="125" Margin="1,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="14" />
+                <Button Command="{Binding OnlineManageFiltersCommand}" Grid.Column="1" Content="Manage filters..." Width="150" Height="50" FontSize="14" Margin="190,0,260,0" />
+                <Button Command="{Binding OnlineAddToMixCommand}" Grid.Column="1" Content="Add selected to mix" Width="150" Height="50" Margin="380,0,70,0" FontSize="14" />
+            </Grid>
+            <DataGrid ItemsSource="{Binding MixList}" Grid.Row="3" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
+                    <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}"/>
+                    <DataGridTextColumn Header="Title" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Title.Value}"/>
+                    <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album.Value}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="600" />
+                        <ColumnDefinition Width="600" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Select offline music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,424,30" FontSize="14" />
+                    <ComboBox Grid.Column="0" ItemsSource="{Binding LocalSupportedPlayers}" SelectedValue="{Binding SelectedLocalPlayer}" Width="200" Height="30" VerticalAlignment="Top" Margin="184,0,216,0" FontSize="14" />
+                    <TextBlock Grid.Column="0" Text="{Binding LocalPlayerInfo}" HorizontalAlignment="Left" Margin="392,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="23" Width="200" Foreground="#FF00C800"/>
+
+                    <Label Grid.Column="1" Content="Select online music player:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,424,30" FontSize="14" />
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding OnlineSupportedPlayers}" SelectedValue="{Binding SelectedOnlinePlayer}" Width="200" Height="30" VerticalAlignment="Top" Margin="184,0,216,0" FontSize="14" />
+
+                    <Button Command="{Binding PlayCommand}" Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="50" Margin="547,27,3,3" FontSize="14" />
+                    <Button Command="{Binding PauseCommand}" Content="Pause" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="50" Margin="1,27,549,3" FontSize="14" Grid.Column="1" />
+
+                    <Button Command="{Binding RemoveCommand}" Content="Remove selected from mix" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="175" Margin="380,27,4,3" FontSize="14" Grid.Column="1" />
+                </Grid>
             </Grid>
         </Grid>
     </StackPanel>

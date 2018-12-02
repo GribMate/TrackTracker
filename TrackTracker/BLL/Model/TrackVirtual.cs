@@ -23,5 +23,7 @@ namespace TrackTracker.BLL.Model
         }
 
         public bool IsOnlyMetaData { get; set; } // Is this track only a virtual set of metadata (like a MusicBrainz match)?
+        public string SpotifyID { get; set; } // If it is playable online, it is identified by its Spotify ID
+        public string SpotifyURI { get; set; } // If it is playable online, it is done trough its URI
     }
 }

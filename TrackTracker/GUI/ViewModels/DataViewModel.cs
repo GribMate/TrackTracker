@@ -25,12 +25,16 @@ namespace TrackTracker.GUI.ViewModels
         private ISpotifyService spotifyService;
         private IDatabaseService databaseService;
 
+        private Dictionary<string, string> spotifyPlaylists;
+
         public DataViewModel() : base()
         {
             environmentService = DependencyInjector.GetService<IEnvironmentService>();
             fileService = DependencyInjector.GetService<IFileService>();
             spotifyService = DependencyInjector.GetService<ISpotifyService>();
             databaseService = DependencyInjector.GetService<IDatabaseService>();
+
+            spotifyPlaylists = new Dictionary<string, string>();
 
             ExternalDriveNames = new ObservableCollection<string>(environmentService.GetExternalDriveNames());
             SupportedFileFormats = GetSupportedFileFormats();
@@ -39,7 +43,7 @@ namespace TrackTracker.GUI.ViewModels
             BrowseCommand = new RelayCommand<object>(exe => ExecuteBrowse(), can => CanExecuteBrowse);
             AddFilesCommand = new RelayCommand<object>(exe => ExecuteAddFiles(), can => CanExecuteAddFiles);
             LinkSpotifyCommand = new RelayCommand<object>(exe => ExecuteLinkSpotify(), can => CanExecuteLinkSpotify);
-            AddSpotifyListsCommand = new RelayCommand<object>(exe => ExecuteAddSpotifyLists(), can => CanExecuteAddSpotifyLists);
+            AddSpotifyListCommand = new RelayCommand<object>(exe => ExecuteAddSpotifyList(), can => CanExecuteAddSpotifyList);
 
             OfflineFolderPath = "Please select your offline music folder...";
             FolderIsChecked = true;
@@ -52,7 +56,7 @@ namespace TrackTracker.GUI.ViewModels
         public ICommand BrowseCommand { get; }
         public ICommand AddFilesCommand { get; }
         public ICommand LinkSpotifyCommand { get; }
-        public ICommand AddSpotifyListsCommand { get; }
+        public ICommand AddSpotifyListCommand { get; }
 
 
 
@@ -212,7 +216,7 @@ namespace TrackTracker.GUI.ViewModels
             // TODO: rework whole concept of non-redundant LMPs (eg. different pendrives with same drive letter might be a problem...)
             if (DoesLMPAlreadyExist(lmp))
             {
-                ErrorHelper.ShowExceptionDialog(
+                UtilityHelper.ShowExceptionDialog(
                     "Cannot add files",
                     "Cannot add the selected group of files, since the root drive / folder was already added",
                     null);
@@ -227,44 +231,48 @@ namespace TrackTracker.GUI.ViewModels
 
         public bool CanExecuteLinkSpotify
         {
-            get => true;
+            get => SpotifyPlaylists.Count == 0; // If the list is empty, the user didn't link account yet
         }
-        public void ExecuteLinkSpotify()
+        public async void ExecuteLinkSpotify()
         {
-            spotifyService.TEST_LOGIN_PLAYLIST(new Services.SpotifyService.LoginCallback(callback_login));
-        }
+            await spotifyService.Login();
 
-        private void callback_login(string name, List<string> playlistNames) // TODO: pls...
-        {
-            SpotifyAccName = name;
-            SpotifyListCount = playlistNames.Count.ToString();
+            Dictionary<string, object> data = await spotifyService.GetAccountInformation();
+            SpotifyAccName = (string)data.Select(pair => pair).Where(pair => pair.Key.Equals("ProfileName")).First().Value;
 
-            SpotifyPlaylists.Clear();
-
-            foreach (string playlistName in playlistNames)
+            spotifyPlaylists = await spotifyService.GetAllPlaylists();
+            SpotifyListCount = spotifyPlaylists.Count.ToString();
+            foreach (KeyValuePair<string, string> playlist in spotifyPlaylists)
             {
-                SpotifyPlaylists.Add(playlistName);
+                SpotifyPlaylists.Add(playlist.Value);
             }
         }
 
-        public bool CanExecuteAddSpotifyLists
+        public bool CanExecuteAddSpotifyList
         {
             get => !String.IsNullOrWhiteSpace(SelectedSpotifyPlaylist);
         }
-        public void ExecuteAddSpotifyLists()
+        public async void ExecuteAddSpotifyList()
         {
-            spotifyService.TEST_PLAYLISTDATA(SelectedSpotifyPlaylist, new Services.SpotifyService.PlaylistCallback(callback_playlists));
-        }
+            string playlistID = null;
 
-        private void callback_playlists(List<string> tracks) // TODO: pls...
-        {
-            string s = null;
-            foreach (string track in tracks)
+            foreach (KeyValuePair<string, string> playlist in spotifyPlaylists)
             {
-                s += track;
-                s += "\n";
+                if (playlist.Value == SelectedSpotifyPlaylist)
+                {
+                    playlistID = playlist.Key;
+                    break;
+                }
             }
-            WinForms.MessageBox.Show(s, "Tracks on list are:");
+
+            List<string> playlistTrackIDs = await spotifyService.GetPlaylistTrackIDs(playlistID);
+
+            foreach (string trackID in playlistTrackIDs)
+            {
+                PlayzoneContext.AddMusicFileSpotify(trackID);
+            }
+
+            SpotifyPlaylists.Remove(SelectedSpotifyPlaylist);
         }
 
 

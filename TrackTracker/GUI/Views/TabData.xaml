@@ -29,23 +29,27 @@
                     <ComboBox ItemsSource="{Binding SupportedFileFormats}" IsEnabled="{Binding IsEnabledSelectFileExtension}" SelectedValue="{Binding SelectedSupportedFileExtension}" Grid.Row="2" Width="100" Height="30" Margin="-400,0,0,0" IsReadOnly="True" />
                     <ComboBox ItemsSource="{Binding ExternalDriveNames}" IsEnabled="{Binding IsEnabledSelectDriveName}" SelectedValue="{Binding SelectedExternalDriveName}" Grid.Row="2" Width="50" Height="30" Margin="-160,0,0,0" IsReadOnly="True" />
                     <Button Command="{Binding BrowseCommand}"  Grid.Row="1" Content="Browse" Width="75" Height="25" Margin="100,0,0,0" />
-                    <Button Command="{Binding AddFilesCommand}" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="600,0,0,0" />
+                    <Button Command="{Binding AddFilesCommand}" Grid.Row="1" Content="Add files" Width="200" Height="40" Margin="750,0,0,0" />
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="1" Header="Spotify account" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="1160" FontSize="14" Height="189" Grid.RowSpan="2">
                 <Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="1150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="41*"/>
+                        <ColumnDefinition Width="1109*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="You can add playlists from Spotify to TrackTracker. Note that these can be used for playback (on Spotify) and statistics only." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,-10,0,0" FontSize="14"/>
-                    <Button Command="{Binding LinkSpotifyCommand}" Content="Link Spotify account" Width="200" Height="40" Margin="775,40,177,40" Grid.RowSpan="2" />
-                    <ListBox ItemsSource="{Binding SpotifyPlaylists}" SelectedValue="{Binding SelectedSpotifyPlaylist}" Grid.Row="0" HorizontalAlignment="Left" Height="100" Margin="190,59,0,-25" VerticalAlignment="Top" Width="322" SelectionMode="Single" Grid.RowSpan="2"/>
-                    <Button Command="{Binding AddSpotifyListsCommand}" Grid.Row="1" Content="Add lists" Width="200" Height="40" Margin="543,20,407,0" />
-                    <Label Content="Profil name:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,46,0,45" FontSize="14" Grid.RowSpan="2"/>
-                    <Label Content="{Binding SpotifyAccName}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,10,0,21" FontSize="14" Grid.Row="1" Width="175"/>
-                    <Label Content="Playlists found:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,36,0,-5" FontSize="14" Grid.Row="1"/>
-                    <Label Content="{Binding SpotifyListCount}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,60,0,-29" FontSize="14" Grid.Row="1" Width="175"/>
+                    <Label Grid.Row="0" Content="You can add playlists from Spotify to TrackTracker. Note that these can be used for playback (on Spotify) and statistics only." HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="0,10,0,20" FontSize="14" Grid.ColumnSpan="2"/>
+                    <Button Command="{Binding LinkSpotifyCommand}" Content="Link Spotify account" Width="200" Height="40" Margin="808.667,0,100,20" Grid.Column="1" Grid.Row="1" />
+                    <ListBox ItemsSource="{Binding SpotifyPlaylists}" SelectedValue="{Binding SelectedSpotifyPlaylist}" Grid.Row="0" HorizontalAlignment="Left" Height="100" Margin="148.667,59,0,-39" VerticalAlignment="Top" Width="322" SelectionMode="Single" Grid.RowSpan="2" Grid.Column="1"/>
+                    <Button Command="{Binding AddSpotifyListCommand}" Grid.Row="1" Content="Add list" Width="200" Height="40" Margin="501.667,20,407,0" Grid.Column="1" />
+                    <Label Content="Profil name:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,46,0,45" FontSize="14" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+                    <Label Content="{Binding SpotifyAccName}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,10,0,21" FontSize="14" Grid.Row="1" Width="175" Grid.ColumnSpan="2"/>
+                    <Label Content="Playlists found:" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,36,0,-5" FontSize="14" Grid.Row="1" Grid.ColumnSpan="2"/>
+                    <Label Content="{Binding SpotifyListCount}" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" Margin="10,60,0,-29" FontSize="14" Grid.Row="1" Width="175" Grid.ColumnSpan="2"/>
                 </Grid>
             </GroupBox>
         </Grid>

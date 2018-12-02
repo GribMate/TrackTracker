@@ -140,8 +140,8 @@
     <Compile Include="BLL\Enums\MusicMoods.cs" />
     <Compile Include="BLL\Enums\SupportedFileExtension.cs" />
     <Compile Include="BLL\Enums\SupportedMediaPlayers.cs" />
-    <Compile Include="BLL\ErrorHelper.cs" />
     <Compile Include="BLL\GlobalContexts\LMPContext.cs" />
+    <Compile Include="BLL\GlobalContexts\PlayzoneContext.cs" />
     <Compile Include="BLL\GlobalContexts\SettingsContext.cs" />
     <Compile Include="BLL\GlobalContexts\TracklistContext.cs" />
     <Compile Include="BLL\Model\Base\ModelObjectBase.cs" />
@@ -160,6 +160,7 @@
     <Compile Include="BLL\Model\TrackVirtual.cs" />
     <Compile Include="BLL\DependencyInjector.cs" />
     <Compile Include="BLL\PersistenceHelper.cs" />
+    <Compile Include="BLL\UtilityHelper.cs" />
     <Compile Include="GUI\Interfaces\IClosable.cs" />
     <Compile Include="GUI\ViewModels\CommonControlsViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ExceptionNotificationViewModel.cs" />

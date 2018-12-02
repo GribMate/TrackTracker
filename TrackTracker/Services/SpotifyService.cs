@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using SpotifyAPI.Web;
@@ -14,19 +17,14 @@ namespace TrackTracker.Services
 {
     public class SpotifyService : ISpotifyService
     {
-        public delegate void LoginCallback(string name, System.Collections.Generic.List<string> playlistNames);
-        public delegate void PlaylistCallback(System.Collections.Generic.List<string> tracks);
-        //TODO: event
-
-        private LoginCallback callback = null;
-
-
         private static string _clientId = "dda143ae78d64b43a8e390d5fdbc8cce";
         private static string _secretId = "045ea52fa6d440718c900bacbd3dd4f5";
-
         private static SpotifyWebAPI api = null;
+        private static AutoResetEvent loginWait = null;
 
-        public void TEST_LOGIN_PLAYLIST(LoginCallback callback)
+
+
+        public async Task Login()
         {
             AuthorizationCodeAuth auth = new AuthorizationCodeAuth(_clientId, _secretId, "http://localhost:4002", "http://localhost:4002",
                 Scope.PlaylistModifyPrivate | Scope.PlaylistModifyPublic | Scope.PlaylistReadCollaborative |
@@ -35,39 +33,104 @@ namespace TrackTracker.Services
                 Scope.UserReadBirthdate | Scope.UserReadCurrentlyPlaying | Scope.UserReadEmail |
                 Scope.UserReadPlaybackState | Scope.UserReadPrivate | Scope.UserReadRecentlyPlayed |
                 Scope.UserTopRead);
-            auth.AuthReceived += AuthOnAuthReceived;
-            auth.Start();
-            auth.OpenBrowser();
 
-            this.callback = callback;
+            loginWait = new AutoResetEvent(false);
+
+            auth.AuthReceived += async (sender, payload) =>
+            {
+                AuthorizationCodeAuth authSender = (AuthorizationCodeAuth)sender;
+                auth.Stop();
+
+                Token token = await authSender.ExchangeCode(payload.Code);
+                api = new SpotifyWebAPI
+                {
+                    AccessToken = token.AccessToken,
+                    TokenType = token.TokenType
+                };
+
+                loginWait.Set();
+            };
+
+            await Task.Factory.StartNew(() =>
+             {
+                 auth.Start();
+                 auth.OpenBrowser();
+             });
+
+            loginWait.WaitOne();
         }
-        public async void TEST_PLAYLISTDATA(string selectedPlaylistName, PlaylistCallback callback)
+
+        public async Task<Dictionary<string, object>> GetAccountInformation()
         {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+
             PrivateProfile profile = await api.GetPrivateProfileAsync();
-            System.Collections.Generic.List<string> trackNames = new System.Collections.Generic.List<string>();
+            string profileName = (String.IsNullOrWhiteSpace(profile.DisplayName)) ? profile.Id : profile.DisplayName;
+            data.Add("ProfileName", profileName);
+            // TODO: Maybe support more information display
+
+            return data;
+        }
+
+        public async Task<Dictionary<string, string>> GetAllPlaylists()
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+
+            PrivateProfile profile = await api.GetPrivateProfileAsync();
             Paging<SimplePlaylist> playlists = await api.GetUserPlaylistsAsync(profile.Id);
             do
             {
                 playlists.Items.ForEach(playlist =>
                 {
-                    if (playlist.Name.Equals(selectedPlaylistName))
+                    data.Add(playlist.Id, playlist.Name);
+                });
+            } while (playlists.HasNextPage());
+
+            return data;
+        }
+
+        public async Task<List<string>> GetPlaylistTrackIDs(string playListID)
+        {
+            List<string> data = new List<string>();
+
+            PrivateProfile profile = await api.GetPrivateProfileAsync();
+            Paging<SimplePlaylist> playlists = await api.GetUserPlaylistsAsync(profile.Id);
+            do
+            {
+                playlists.Items.ForEach(playlist =>
+                {
+                    if (playlist.Id.Equals(playListID))
                     {
                         FullPlaylist playlistData = api.GetPlaylist(profile.Id, playlist.Id);
                         do
                         {
                             playlistData.Tracks.Items.ForEach(track =>
                             {
-                                trackNames.Add(track.Track.Name + " (ID: " + track.Track.Id + ")");
+                                data.Add(track.Track.Id);
                             });
                         } while (playlistData.Tracks.HasNextPage());
                     }
                 });
             } while (playlists.HasNextPage());
 
-            callback(trackNames);
+            return data;
         }
 
-        public async Task<string> TEST_PLAYING()
+        public async Task<Dictionary<string, string>> GetTrackData(string trackID)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+
+            FullTrack track = await api.GetTrackAsync(trackID);
+
+            data.Add("TrackURI", track.Uri);
+            data.Add("TrackName", track.Name);
+            data.Add("FirstArtistName", track.Artists.First().Name);
+            data.Add("AlbumName", track.Album.Name);
+
+            return data;
+        }
+
+        public async Task<string> GetCurrentlyPlaying()
         {
             PlaybackContext context = await api.GetPlaybackAsync();
             if (context.Item != null)
@@ -76,45 +139,31 @@ namespace TrackTracker.Services
             }
             else
             {
-                return "No playing track found / error.";
+                return "No currently playing track found.";
             }
         }
 
-        public void TEST_PLAY_PAUSE()
+        public async Task PausePlayback()
         {
-            PlaybackContext context = api.GetPlayback();
+            PlaybackContext context = await api.GetPlaybackAsync();
 
             if (context.IsPlaying)
-                api.PausePlayback();
-            else
-                api.ResumePlayback("", "", null, "", 0);
+                await api.PausePlaybackAsync();
         }
 
-        private async void AuthOnAuthReceived(object sender, AuthorizationCode payload)
+        public async Task ResumePlayback()
         {
-            AuthorizationCodeAuth auth = (AuthorizationCodeAuth)sender;
-            auth.Stop();
+            PlaybackContext context = await api.GetPlaybackAsync();
 
-            Token token = await auth.ExchangeCode(payload.Code);
-            api = new SpotifyWebAPI
-            {
-                AccessToken = token.AccessToken,
-                TokenType = token.TokenType
-            };
+            if (context.IsPlaying == false)
+                await api.ResumePlaybackAsync("", "", null, "", 0);
+        }
 
+        public async Task ChangePlaybackMusic(string trackURI)
+        {
+            PlaybackContext context = await api.GetPlaybackAsync();
 
-            PrivateProfile profile = await api.GetPrivateProfileAsync();
-            System.Collections.Generic.List<string> playlistNames = new System.Collections.Generic.List<string>();
-            Paging<SimplePlaylist> playlists = await api.GetUserPlaylistsAsync(profile.Id);
-            do
-            {
-                playlists.Items.ForEach(playlist =>
-                {
-                    playlistNames.Add(playlist.Name);
-                });
-            } while (playlists.HasNextPage());
-
-            callback(String.IsNullOrEmpty(profile.DisplayName) ? profile.Id : profile.DisplayName, playlistNames);
+            await api.ResumePlaybackAsync("", trackURI, null, "", 0);
         }
     }
 }
