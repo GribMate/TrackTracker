@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 using TrackTracker.Services.Interfaces;
@@ -20,6 +21,8 @@ namespace TrackTracker.GUI.ViewModels
         private IEnvironmentService environmentService;
         private ISpotifyService spotifyService;
         private IFoobarService foobarService;
+
+        private PlayzoneBackgroundWorker player;
 
         public ObservableCollection<string> LocalSupportedPlayers { get; set; }
         public ObservableCollection<string> OnlineSupportedPlayers { get; set; }
@@ -44,6 +47,8 @@ namespace TrackTracker.GUI.ViewModels
             environmentService = DependencyInjector.GetService<IEnvironmentService>();
             spotifyService = DependencyInjector.GetService<ISpotifyService>();
             foobarService = DependencyInjector.GetService<IFoobarService>();
+
+            player = new PlayzoneBackgroundWorker();
 
             LocalSupportedPlayers = GetLocalSupportedPlayers();
             OnlineSupportedPlayers = GetOnlineSupportedPlayers();
@@ -187,6 +192,7 @@ namespace TrackTracker.GUI.ViewModels
                     TrackBase newTrack = UtilityHelper.CopyTrack(track);
                     newTrack.IsSelected = true;
                     MixList.Add(newTrack);
+                    player.AddPlayableTrack(newTrack);
                 }
             }
 
@@ -258,6 +264,7 @@ namespace TrackTracker.GUI.ViewModels
                     TrackBase newTrack = UtilityHelper.CopyTrack(track);
                     newTrack.IsSelected = true;
                     MixList.Add(newTrack);
+                    player.AddPlayableTrack(newTrack);
                 }
             }
 
@@ -272,17 +279,7 @@ namespace TrackTracker.GUI.ViewModels
         }
         public void ExecutePlay()
         {
-            //string playlistPath = AppDomain.CurrentDomain.BaseDirectory + "_playzone_mix.m3u";
-
-            //System.IO.StreamWriter sw = new System.IO.StreamWriter(playlistPath);
-            //foreach (TrackLocal track in PlayzoneContext.LocalTracks)
-            //{
-            //    if (track.IsSelected) sw.WriteLine(track.MusicFileProperties.Path);
-            //}
-            //sw.Flush();
-            //sw.Close();
-            //sw.Dispose();
-            //System.Diagnostics.Process.Start(playlistPath);
+            player.Start();
         }
 
         public bool CanExecutePause
@@ -291,7 +288,7 @@ namespace TrackTracker.GUI.ViewModels
         }
         public void ExecutePause()
         {
-            //
+            player.Pause();
         }
 
         public bool CanExecuteRemove

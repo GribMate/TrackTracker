@@ -163,7 +163,7 @@ namespace TrackTracker.Services
         {
             PlaybackContext context = await api.GetPlaybackAsync();
 
-            await api.ResumePlaybackAsync("", trackURI, null, "", 0);
+            await api.ResumePlaybackAsync("", "", new List<string>() { trackURI }, "", 0);
         }
     }
 }

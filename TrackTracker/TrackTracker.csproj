@@ -154,12 +154,14 @@
     <Compile Include="BLL\Model\MetaTagString.cs" />
     <Compile Include="BLL\Model\MusicFileProperties.cs" />
     <Compile Include="BLL\Model\Base\SelectableObject.cs" />
+    <Compile Include="BLL\Model\PlayableTrackInfo.cs" />
     <Compile Include="BLL\Model\StatisticsChartableData.cs" />
     <Compile Include="BLL\Model\TrackBase.cs" />
     <Compile Include="BLL\Model\TrackLocal.cs" />
     <Compile Include="BLL\Model\TrackVirtual.cs" />
     <Compile Include="BLL\DependencyInjector.cs" />
     <Compile Include="BLL\PersistenceHelper.cs" />
+    <Compile Include="BLL\PlayzoneBackgroundWorker.cs" />
     <Compile Include="BLL\UtilityHelper.cs" />
     <Compile Include="GUI\Interfaces\IClosable.cs" />
     <Compile Include="GUI\ViewModels\CommonControlsViewModel.cs" />
