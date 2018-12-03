@@ -111,13 +111,19 @@ namespace TrackTracker.BLL
                 {
                     if (tracks.Count > 0)
                     {
+                        if (currentlyPlaying != null)
+                        {
+                            if (currentlyPlaying.IsPlayableOffline)
+                                await foobarService.Pause();
+                            else if (currentlyPlaying.IsPlayableOnline)
+                                await spotifyService.PausePlayback();
+                        }
+
                         currentlyPlaying = tracks.First();
                         tracks.Remove(currentlyPlaying);
 
                         if (currentlyPlaying.IsPlayableOffline)
                         {
-                            await spotifyService.PausePlayback();
-
                             switch (currentlyPlaying.OfflinePlayer)
                             {
                                 case SupportedMediaPlayers.Foobar2000: // TODO: not this way
@@ -130,13 +136,11 @@ namespace TrackTracker.BLL
                                     System.Diagnostics.Process.Start(playlistPath);
                                     break;
                             }
-                            //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000); // TODO: not this way
-                            Thread.Sleep(10000);
+                            //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
+                            Thread.Sleep(7000);
                         }
                         else if (currentlyPlaying.IsPlayableOnline)
                         {
-                            await foobarService.Pause();
-
                             switch (currentlyPlaying.OnlinePlayer)
                             {
                                 case SupportedMediaPlayers.Spotify:
@@ -144,7 +148,7 @@ namespace TrackTracker.BLL
                                     break;
                             }
                             //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
-                            Thread.Sleep(12000);
+                            Thread.Sleep(7000);
                         }
                     }
                 }

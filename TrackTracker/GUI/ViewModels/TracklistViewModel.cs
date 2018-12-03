@@ -122,7 +122,7 @@ namespace TrackTracker.GUI.ViewModels
         public void ExecuteManageSources()
         {
             Views.Dialogs.ManageTracklistSources mts = new Views.Dialogs.ManageTracklistSources();
-            //mts.Owner = this; //enables center-screen display  //TODO
+            mts.Owner = System.Windows.Application.Current.MainWindow;
             mts.ShowDialog();
         }
 
