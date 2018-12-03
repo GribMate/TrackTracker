@@ -11,7 +11,8 @@ namespace TrackTracker.Services.Interfaces
         // TODO
         bool IsFoobarInstalled();
         string DetectFoobarPath();
-        void TogglePlayPause();
+        Task Pause();
+        Task Play();
         void MakePlaylist(string location);
         void StartPlaylist(string location);
     }

@@ -33,9 +33,20 @@ namespace TrackTracker.Services
             throw new NotImplementedException();
         }
 
-        public void TogglePlayPause()
+        public async Task Play()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task Pause()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                string foobarPath = "C:\\Program Files (x86)\\foobar2000\\foobar2000.exe";
+                string pauseSwitch = "/pause";
+
+                System.Diagnostics.Process.Start(foobarPath, pauseSwitch);
+            });
         }
     }
 }

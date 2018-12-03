@@ -105,7 +105,7 @@ namespace TrackTracker.BLL
                     {
 
                     }
-                    //break;
+                    break;
                 }
                 else
                 {
@@ -135,6 +135,8 @@ namespace TrackTracker.BLL
                         }
                         else if (currentlyPlaying.IsPlayableOnline)
                         {
+                            await foobarService.Pause();
+
                             switch (currentlyPlaying.OnlinePlayer)
                             {
                                 case SupportedMediaPlayers.Spotify:
