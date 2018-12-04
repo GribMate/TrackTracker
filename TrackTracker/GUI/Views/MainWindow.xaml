@@ -9,17 +9,6 @@
         mc:Ignorable="d"
         Title="TrackTracker" Height="800" Width="1200" Foreground="White" FontSize="16" MinWidth="1200" MinHeight="797" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Background="#FF323232">
 
-    <Window.Resources>
-        <x:ArrayExtension Type="{x:Type Brush}" x:Key="brushes">
-            <SolidColorBrush Color="#9F15C3"/>
-            <SolidColorBrush Color="#FF8E01"/>
-            <SolidColorBrush Color="#339933"/>
-            <SolidColorBrush Color="#00AAFF"/>
-            <SolidColorBrush Color="#818183"/>
-            <SolidColorBrush Color="#000033"/>
-        </x:ArrayExtension>
-    </Window.Resources>
-
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20" Background="#FF323232" Foreground="White">
             <MenuItem Header="Application" Foreground="White">

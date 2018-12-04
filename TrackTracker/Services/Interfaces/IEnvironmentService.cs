@@ -12,7 +12,7 @@ namespace TrackTracker.Services.Interfaces
     public interface IEnvironmentService
     {
         bool InternetConnectionIsAlive(); //returns true if the application can connect to the internet
-        string TryFindFoobar(); //tries to locate foobar2000 installation through various methods, returns null for no success
+        string DetectFoobarPath(); //tries to locate foobar2000 installation through various methods, returns null for no success
         List<string> GetExternalDriveNames(); //returns all attached external drive names
     }
 }

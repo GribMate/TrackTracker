@@ -72,7 +72,7 @@ namespace TrackTracker.Services
             return data;
         }
 
-        public async Task<Dictionary<string, string>> GetAllPlaylists()
+        public async Task<Dictionary<string, string>> GetAllPlaylists() // Gets a collection of ID - Name pairs, representing a user's playlists
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
 
@@ -80,11 +80,11 @@ namespace TrackTracker.Services
             Paging<SimplePlaylist> playlists = await api.GetUserPlaylistsAsync(profile.Id);
             do
             {
-                playlists.Items.ForEach(playlist =>
+                playlists.Items.ForEach(playlist => // Adds all currently paged data to collection
                 {
                     data.Add(playlist.Id, playlist.Name);
                 });
-            } while (playlists.HasNextPage());
+            } while (playlists.HasNextPage()); // Gets the next paged data
 
             return data;
         }

@@ -34,7 +34,7 @@ namespace TrackTracker.Services
                 return false;
             }
         }
-        public string TryFindFoobar() //tries to locate foobar2000 installation through various methods, returns null for no success
+        public string DetectFoobarPath() //tries to locate foobar2000 installation through various methods, returns null for no success
         {
             string toReturn = null;
 

@@ -35,7 +35,7 @@ namespace TrackTracker.Services
             throw new NotImplementedException();
         }
 
-        public void GetFingerprint(string filePath, FingerPrintCallback callback)
+        public void GetFingerprintData(string filePath, FingerPrintCallback callback)
         {
             if (filePath == null) throw new ArgumentNullException();
             if (filePath.Length < 8) throw new ArgumentException(); //"C:\x.mp3" is 8 chars long

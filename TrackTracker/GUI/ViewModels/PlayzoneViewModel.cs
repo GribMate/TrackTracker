@@ -82,7 +82,7 @@ namespace TrackTracker.GUI.ViewModels
                 switch (value)
                 {
                     case SupportedMediaPlayers.Foobar2000:
-                        string path = environmentService.TryFindFoobar();
+                        string path = environmentService.DetectFoobarPath();
                         if (path.Length >= 8) // "C:\x.exe" is 8 characters long
                         {
                             SettingsContext.AddMediaPlayerPath(value.Value, path); // "value" is not null

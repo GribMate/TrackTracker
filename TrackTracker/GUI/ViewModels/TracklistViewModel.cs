@@ -189,7 +189,7 @@ namespace TrackTracker.GUI.ViewModels
             {
                 if (track.IsSelected)
                 {
-                    fingerprintService.GetFingerprint(track.MusicFileProperties.Path, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
+                    fingerprintService.GetFingerprintData(track.MusicFileProperties.Path, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
                 }
             }
         }
@@ -253,9 +253,14 @@ namespace TrackTracker.GUI.ViewModels
                 TrackVirtual result = await GetMatchByMBID(track.MetaData.MusicBrainzTrackId.Value.Value);
                 matches.Add(result);
             }
+            else if (track.MusicFileProperties.IsFingerprinted) // Track is fingerprinted already, we can get an MBID
+            {
+                //TrackVirtual result = await GetMatchByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
+                //matches.Add(result);
+            }
             else if (!String.IsNullOrEmpty(track.MetaData.Title.Value)) //we don't have MBID, we need a search by some metadata
             {
-                matches = await GetMatchesByMetaData(track.MetaData.Title.Value,
+                matches = await GetMatchesByMetaData(track.MetaData.Title.Value, // We require at least a title for accurate-enough queries
                     track.MetaData.AlbumArtists.JoinedValue.Split(';').First(), // Can be null
                     track.MetaData.Album.Value); // Can be null
             }

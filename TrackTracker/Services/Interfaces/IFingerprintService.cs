@@ -13,7 +13,7 @@ namespace TrackTracker.Services.Interfaces
         bool DetectDecompressToolAvailabilty(); //returns true if the external converter tool (EXE) is installed
         bool DecompressFile(string sourceLocation, string targetLocation); //decompresses a FLAC file from sourceLocation to a WAV file at targetLocation
 
-        void GetFingerprint(string filePath, AcoustIDService.FingerPrintCallback callback); //TODO: event
+        void GetFingerprintData(string filePath, AcoustIDService.FingerPrintCallback callback); //TODO: event
         Task<string> GetIDByFingerprint(string fingerprint, int duration);
     }
 }
