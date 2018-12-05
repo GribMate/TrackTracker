@@ -24,7 +24,7 @@ namespace TrackTracker.Services
     {
         public async Task<Dictionary<string, object>> GetRecordingByMBID(Guid MBID) // Returns exactly one recording's metadata by it's ID
         {
-            Query query = new Query("TrackTracker", "0.1Alpha", "GMate375@gmail.com"); //TODO: not this mail / version
+            Query query = new Query("TrackTracker", "0.1Alpha", "GMate375@gmail.com"); // TODO: not this mail / version
             IRecording recording = await query.LookupRecordingAsync(MBID,
                 Include.Releases & Include.Tags & Include.Artists & Include.DiscIds & Include.Labels & Include.Media & Include.UserTags,
                 ReleaseType.Album, ReleaseStatus.Official);
@@ -37,7 +37,7 @@ namespace TrackTracker.Services
             if (recording.Releases != null && recording.Releases.Count > 0)
             {
                 if (recording.Releases[0].Title != null)
-                    result.Add("Album", recording.Releases[0].Title); //TODO: accepting the first release might be improved
+                    result.Add("Album", recording.Releases[0].Title); // TODO: accepting the first release might be improved
             }
 
             // Checking album artists

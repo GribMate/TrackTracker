@@ -29,7 +29,7 @@ namespace TrackTracker.BLL.Enums
 
             try
             {
-                return (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), ext);
+                return (SupportedFileExtension)Enum.Parse(typeof(SupportedFileExtension), ext.ToUpper());
             }
             catch (Exception) // ArgumentException or OverflowException -> don't need to differentiate
             {
