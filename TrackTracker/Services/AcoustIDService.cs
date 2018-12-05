@@ -9,8 +9,8 @@ using AcoustID.Audio;
 using NAudio.Wave;
 
 using TrackTracker.Services.Interfaces;
-
-
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TrackTracker.Services
 {
@@ -66,7 +66,7 @@ namespace TrackTracker.Services
             });
         }
 
-        public async Task<string> GetIDByFingerprint(string fingerprint, int duration)
+        public async Task<Dictionary<string, Guid>> GetIDsByFingerprint(string fingerprint, int duration)
         {
             Configuration.ClientKey = "JRfomg6Xqm";
 
@@ -86,17 +86,24 @@ namespace TrackTracker.Services
             //    en.ShowDialog();
             //}
 
-            string resultID = "";
+            Guid resultAcoustID = Guid.Empty;
+            Guid resultMBID = Guid.Empty;
             double maxScore = 0;
             foreach (var result in response.Results)
             {
                 if (result.Score > maxScore)
                 {
                     maxScore = result.Score;
-                    resultID = result.Id;
+                    resultAcoustID = new Guid(result.Id);
+                    resultMBID = new Guid(result.Recordings.First().Id);
                 }
             }
-            return resultID;
+
+            Dictionary<string, Guid> toReturn = new Dictionary<string, Guid>();
+            toReturn.Add("AcoustID", resultAcoustID);
+            toReturn.Add("MusicBrainzTrackId", resultMBID);
+
+            return toReturn;
         }
     }
 

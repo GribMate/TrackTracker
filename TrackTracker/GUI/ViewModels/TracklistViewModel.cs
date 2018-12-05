@@ -18,6 +18,7 @@ namespace TrackTracker.GUI.ViewModels
     public class TracklistViewModel : ViewModelBase
     {
         private IFileService fileService;
+        private ITaggingService taggingService;
         private IMetadataService metadataService;
         private IFingerprintService fingerprintService;
 
@@ -34,6 +35,7 @@ namespace TrackTracker.GUI.ViewModels
         public TracklistViewModel() : base()
         {
             fileService = DependencyInjector.GetService<IFileService>();
+            taggingService = DependencyInjector.GetService<ITaggingService>();
             metadataService = DependencyInjector.GetService<IMetadataService>();
             fingerprintService = DependencyInjector.GetService<IFingerprintService>();
 
@@ -57,8 +59,12 @@ namespace TrackTracker.GUI.ViewModels
             set
             {
                 SetProperty(ref selectedTrack, value);
+
                 TagList = new ObservableCollection<MetaTagBase>(value.MetaData.GetAllMetaTags());
+                MatchList = new ObservableCollection<TrackVirtual>(selectedTrack.MatchCandidates);
+
                 NotifyPropertyChanged(nameof(TagList));
+                NotifyPropertyChanged(nameof(MatchList));
             }
         }
 
@@ -70,9 +76,8 @@ namespace TrackTracker.GUI.ViewModels
             {
                 SetProperty(ref selectedMatch, value);
 
-                if (SelectedTrack != null)
+                if (SelectedTrack != null && AutoSelect == false)
                 {
-                    SelectedTrack.MatchCandidates.Add(value);
                     SelectedTrack.ActiveCandidateMBTrackID = value.MetaData.MusicBrainzTrackId;
                 }
             }
@@ -117,7 +122,7 @@ namespace TrackTracker.GUI.ViewModels
 
         public bool CanExecuteManageSources
         {
-            get => true;
+            get => LMPContext.StoredLocalMediaPacks.Count > 0 || LMPContext.ActiveLocalMediaPacks.Count > 0;
         }
         public void ExecuteManageSources()
         {
@@ -128,59 +133,66 @@ namespace TrackTracker.GUI.ViewModels
 
         public bool CanExecuteUpdateTags
         {
-            get => true;
+            get => TracklistContext.TracklistTracks.Count > 0;
         }
-        public async void ExecuteUpdateTags()
+        public void ExecuteUpdateTags()
         {
             foreach (TrackLocal track in TracklistContext.TracklistTracks)
             {
                 if (track.IsSelected)
                 {
-                    if (track.MatchCandidates.Count < 1 || track.ActiveCandidateMBTrackID.Value.HasValue == false)
-                        throw new InvalidOperationException($"Cannot set new metatag data for file {track.MusicFileProperties.FileName}, because of an internal error.");
-
-                    TrackVirtual sourceTrack = null;
-                    foreach (TrackVirtual trackCandidate in track.MatchCandidates)
+                    if (track.MatchCandidates.Count > 0 && track.ActiveCandidateMBTrackID.Value.HasValue)
                     {
-                        if (trackCandidate.MetaData.MusicBrainzTrackId.Value.Value == track.ActiveCandidateMBTrackID.Value.Value)
+
+                        TrackVirtual sourceTrack = null;
+                        foreach (TrackVirtual trackCandidate in track.MatchCandidates)
                         {
-                            sourceTrack = trackCandidate;
-                            break;
+                            if (trackCandidate.MetaData.MusicBrainzTrackId.Value.Value == track.ActiveCandidateMBTrackID.Value.Value)
+                            {
+                                sourceTrack = trackCandidate;
+                                break;
+                            }
                         }
+
+                        track.MetaData.Title = sourceTrack.MetaData.Title;
+                        track.MetaData.Album = sourceTrack.MetaData.Album;
+                        track.MetaData.AlbumArtists = sourceTrack.MetaData.AlbumArtists;
+                        track.MetaData.AlbumArtistsSort = sourceTrack.MetaData.AlbumArtistsSort;
+                        track.MetaData.Genres = sourceTrack.MetaData.Genres;
+                        track.MetaData.BeatsPerMinute = sourceTrack.MetaData.BeatsPerMinute;
+                        track.MetaData.Copyright = sourceTrack.MetaData.Copyright;
+                        track.MetaData.Year = sourceTrack.MetaData.Year;
+                        track.MetaData.Track = sourceTrack.MetaData.Track;
+                        track.MetaData.TrackCount = sourceTrack.MetaData.TrackCount;
+                        track.MetaData.Disc = sourceTrack.MetaData.Disc;
+                        track.MetaData.DiscCount = sourceTrack.MetaData.DiscCount;
+                        track.MetaData.AcoustID = sourceTrack.MetaData.AcoustID;
+                        track.MetaData.MusicBrainzReleaseArtistId = sourceTrack.MetaData.MusicBrainzReleaseArtistId;
+                        track.MetaData.MusicBrainzTrackId = sourceTrack.MetaData.MusicBrainzTrackId;
+                        track.MetaData.MusicBrainzDiscId = sourceTrack.MetaData.MusicBrainzDiscId;
+                        track.MetaData.MusicBrainzReleaseStatus = sourceTrack.MetaData.MusicBrainzReleaseStatus;
+                        track.MetaData.MusicBrainzReleaseType = sourceTrack.MetaData.MusicBrainzReleaseType;
+                        track.MetaData.MusicBrainzReleaseCountry = sourceTrack.MetaData.MusicBrainzReleaseCountry;
+                        track.MetaData.MusicBrainzReleaseId = sourceTrack.MetaData.MusicBrainzReleaseId;
+                        track.MetaData.MusicBrainzArtistId = sourceTrack.MetaData.MusicBrainzArtistId;
+
+                        taggingService.Save(track.MusicFileProperties.Path, track.MetaData.GetAllMetaTagsDataNative()); // Persisting to local file metadata
                     }
-
-                    track.MetaData.Title = sourceTrack.MetaData.Title;
-                    track.MetaData.Album = sourceTrack.MetaData.Album;
-                    track.MetaData.AlbumArtists = sourceTrack.MetaData.AlbumArtists;
-                    track.MetaData.AlbumArtistsSort = sourceTrack.MetaData.AlbumArtistsSort;
-                    track.MetaData.Genres = sourceTrack.MetaData.Genres;
-                    track.MetaData.BeatsPerMinute = sourceTrack.MetaData.BeatsPerMinute;
-                    track.MetaData.Copyright = sourceTrack.MetaData.Copyright;
-                    track.MetaData.Year = sourceTrack.MetaData.Year;
-                    track.MetaData.Track = sourceTrack.MetaData.Track;
-                    track.MetaData.TrackCount = sourceTrack.MetaData.TrackCount;
-                    track.MetaData.Disc = sourceTrack.MetaData.Disc;
-                    track.MetaData.DiscCount = sourceTrack.MetaData.DiscCount;
-                    track.MetaData.AcoustID = sourceTrack.MetaData.AcoustID;
-                    track.MetaData.MusicBrainzReleaseArtistId = sourceTrack.MetaData.MusicBrainzReleaseArtistId;
-                    track.MetaData.MusicBrainzTrackId = sourceTrack.MetaData.MusicBrainzTrackId;
-                    track.MetaData.MusicBrainzDiscId = sourceTrack.MetaData.MusicBrainzDiscId;
-                    track.MetaData.MusicBrainzReleaseStatus = sourceTrack.MetaData.MusicBrainzReleaseStatus;
-                    track.MetaData.MusicBrainzReleaseType = sourceTrack.MetaData.MusicBrainzReleaseType;
-                    track.MetaData.MusicBrainzReleaseCountry = sourceTrack.MetaData.MusicBrainzReleaseCountry;
-                    track.MetaData.MusicBrainzReleaseId = sourceTrack.MetaData.MusicBrainzReleaseId;
-                    track.MetaData.MusicBrainzArtistId = sourceTrack.MetaData.MusicBrainzArtistId;
-
-                    // TODO: TODO
-                    string trial_ID = await fingerprintService.GetIDByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
-                    track.MetaData.AcoustID.Value = new Guid(trial_ID);
+                    else
+                    {
+                        UtilityHelper.ShowExceptionDialog(
+                            "No matches for selected track",
+                            $"There are no possible matches for selected track (path: {track.MusicFileProperties.Path}).",
+                            "Please unselect this track or perform another search on it!",
+                            System.Windows.Application.Current.MainWindow);
+                    }
                 }
             }
         }
 
         public bool CanExecuteGetFingerprint
         {
-            get => true;
+            get => TracklistContext.TracklistTracks.Count > 0;
         }
         public void ExecuteGetFingerprint()
         {
@@ -214,7 +226,7 @@ namespace TrackTracker.GUI.ViewModels
 
         public bool CanExecuteSearchMusicBrainz
         {
-            get => true;
+            get => TracklistContext.TracklistTracks.Count > 0;
         }
         public async void ExecuteSearchMusicBrainz()
         {
@@ -225,20 +237,16 @@ namespace TrackTracker.GUI.ViewModels
                     List<TrackVirtual> results = new List<TrackVirtual>();
                     //SetProgressBarValue(25, "Querying MusicBrainz API for " + GlobalContext.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
                     results = await GetMatchesForTrack(track);
-                    MatchList = new ObservableCollection<TrackVirtual>(results);
-                    //SetProgressBarValue(75, "Querying MusicBrainz API " + GlobalContext.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
-                    System.Threading.Thread.Sleep(100);
+                    track.MatchCandidates.AddRange(results);
+                    //SetProgressBarValue(75, "Querying MusicBrainz API for " + GlobalContext.FileService.GetFileNameFromFilePath(track.FileHandle.Name));  //TODO
+                    //System.Threading.Thread.Sleep(100);
                     //SetProgressBarValue(0, " ");  //TODO
 
                     if (AutoSelect && results.Count > 0)
                     {
-                        //TODO: implement magic
-                        //_id = GlobalContext.AcoustIDProvider.GetIDByFingerprint(_fingerprint, _duration).Result;
-                        //track.AddCandidateTrack(results[0]);
-                        //track.SelectActiveCandidate(results[0].MetaData.MusicBrainzTrackId);
+                        //TODO: implement autoselect magic
                     }
                 }
-                NotifyPropertyChanged(nameof(MatchList));
             }
         }
 
@@ -255,21 +263,20 @@ namespace TrackTracker.GUI.ViewModels
             }
             else if (track.MusicFileProperties.IsFingerprinted) // Track is fingerprinted already, we can get an MBID
             {
-                //TrackVirtual result = await GetMatchByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
-                //matches.Add(result);
+                TrackVirtual result = await GetMatchByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
+                matches.Add(result);
             }
-            else if (!String.IsNullOrEmpty(track.MetaData.Title.Value)) //we don't have MBID, we need a search by some metadata
+            else if (!String.IsNullOrEmpty(track.MetaData.Title.Value)) // We don't have MBID, we need a search by some metadata
             {
                 matches = await GetMatchesByMetaData(track.MetaData.Title.Value, // We require at least a title for accurate-enough queries
-                    track.MetaData.AlbumArtists.JoinedValue.Split(';').First(), // Can be null
+                    track.MetaData.AlbumArtists.Value.FirstOrDefault(), // Can be null
                     track.MetaData.Album.Value); // Can be null
             }
             else if (!String.IsNullOrEmpty(track.MusicFileProperties.FileName)) // We don't have MBID, nor a title, but we can try some magic from the file name
             {
-                string trackName = fileService.GetFileNameFromFilePath(track.MusicFileProperties.FileName);
-                if (trackName.Contains("-"))
+                if (track.MusicFileProperties.FileName.Contains("-"))
                 {
-                    string[] splitted = trackName.Split('-');
+                    string[] splitted = track.MusicFileProperties.FileName.Split('-');
                     if (splitted.Length == 2)
                     {
                         if (splitted[0].Length > 0 && splitted[1].Length > 0)
@@ -295,8 +302,22 @@ namespace TrackTracker.GUI.ViewModels
         {
             Dictionary<string, object> result = await metadataService.GetRecordingByMBID(MBID);
 
-            //return new Track(result);
-            return new TrackVirtual(new MetaData(), true);
+            MetaData tags = UtilityHelper.FormatMetaData(result);
+
+            return new TrackVirtual(tags, true);
+        }
+        private async Task<TrackVirtual> GetMatchByFingerprint(string fingerprint, int duration)
+        {
+            Dictionary<string, Guid> IDs = await fingerprintService.GetIDsByFingerprint(fingerprint, duration);
+
+            Guid musicBrainzTrackId = IDs.Select(id => id).Where(id => id.Key.Equals("MusicBrainzTrackId")).First().Value;
+            Guid acoustID = IDs.Select(id => id).Where(id => id.Key.Equals("AcoustID")).First().Value;
+
+            TrackVirtual result = await GetMatchByMBID(musicBrainzTrackId);
+
+            result.MetaData.AcoustID.Value = acoustID; // Adding manually
+
+            return result;
         }
         private async Task<List<TrackVirtual>> GetMatchesByMetaData(string title, string artist = null, string album = null)
         {
@@ -304,10 +325,11 @@ namespace TrackTracker.GUI.ViewModels
 
             List<TrackVirtual> toReturn = new List<TrackVirtual>();
 
-            //foreach (Dictionary<string, object> result in results)
-            //{
-            //    toReturn.Add(new TrackLocal(result));
-            //}
+            foreach (Dictionary<string, object> result in results)
+            {
+                MetaData resultTags = UtilityHelper.FormatMetaData(result);
+                toReturn.Add(new TrackVirtual(resultTags, true));
+            }
 
             return toReturn;
         }

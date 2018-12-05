@@ -50,56 +50,96 @@ namespace TrackTracker.BLL
         {
             MetaData md = new MetaData();
 
-            md.Genres.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("Genres")).First().Value;
+            if (source.Keys.Contains("Genres"))
+                md.Genres.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("Genres")).First().Value;
 
-            md.Title.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Title")).First().Value;
-            md.Album.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Album")).First().Value;
-            md.Copyright.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Copyright")).First().Value;
-            md.AlbumArtists.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtists")).First().Value;
-            md.AlbumArtistsSort.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtistsSort")).First().Value;
-            md.BeatsPerMinute.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("BeatsPerMinute")).First().Value;
-            md.Year.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Year")).First().Value;
-            md.Track.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Track")).First().Value;
-            md.TrackCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("TrackCount")).First().Value;
-            md.Disc.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Disc")).First().Value;
-            md.DiscCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("DiscCount")).First().Value;
+            if (source.Keys.Contains("Title"))
+                md.Title.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Title")).First().Value;
 
-            md.AcoustID.Value = null; // TODO: Currently not obtained through tagging service, but can be added as a custom tag later
+            if (source.Keys.Contains("Album"))
+                md.Album.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Album")).First().Value;
+
+            if (source.Keys.Contains("Copyright"))
+                md.Copyright.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Copyright")).First().Value;
+
+            if (source.Keys.Contains("AlbumArtists"))
+                md.AlbumArtists.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtists")).First().Value;
+
+            if (source.Keys.Contains("AlbumArtistsSort"))
+                md.AlbumArtistsSort.Value = (string[])source.Select(pair => pair).Where(pair => pair.Key.Equals("AlbumArtistsSort")).First().Value;
+
+            if (source.Keys.Contains("BeatsPerMinute"))
+                md.BeatsPerMinute.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("BeatsPerMinute")).First().Value;
+
+            if (source.Keys.Contains("Year"))
+                md.Year.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Year")).First().Value;
+
+            if (source.Keys.Contains("Track"))
+                md.Track.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Track")).First().Value;
+
+            if (source.Keys.Contains("TrackCount"))
+                md.TrackCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("TrackCount")).First().Value;
+
+            if (source.Keys.Contains("Disc"))
+                md.Disc.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("Disc")).First().Value;
+
+            if (source.Keys.Contains("DiscCount"))
+                md.DiscCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("DiscCount")).First().Value;
+
+            if (source.Keys.Contains("DiscCount"))
+                md.DiscCount.Value = (int?)(uint)source.Select(pair => pair).Where(pair => pair.Key.Equals("DiscCount")).First().Value;
 
             // We have to null check each GUID
-            string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseArtistId")).First().Value;
-            if (String.IsNullOrWhiteSpace(guid))
-                md.MusicBrainzReleaseArtistId.Value = null;
-            else
-                md.MusicBrainzReleaseArtistId.Value = new Guid(guid);
+            if (source.Keys.Contains("AcoustID"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("AcoustID")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.AcoustID.Value = new Guid(guid);
+            }
 
-            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzTrackId")).First().Value;
-            if (String.IsNullOrWhiteSpace(guid))
-                md.MusicBrainzTrackId.Value = null;
-            else
-                md.MusicBrainzTrackId.Value = new Guid(guid);
+            if (source.Keys.Contains("MusicBrainzReleaseArtistId"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseArtistId")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.MusicBrainzReleaseArtistId.Value = new Guid(guid);
+            }
 
-            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzDiscId")).First().Value;
-            if (String.IsNullOrWhiteSpace(guid))
-                md.MusicBrainzDiscId.Value = null;
-            else
-                md.MusicBrainzDiscId.Value = new Guid(guid);
+            if (source.Keys.Contains("MusicBrainzTrackId"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzTrackId")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.MusicBrainzTrackId.Value = new Guid(guid);
+            }
 
-            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseId")).First().Value;
-            if (String.IsNullOrWhiteSpace(guid))
-                md.MusicBrainzReleaseId.Value = null;
-            else
-                md.MusicBrainzReleaseId.Value = new Guid(guid);
+            if (source.Keys.Contains("MusicBrainzDiscId"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzDiscId")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.MusicBrainzDiscId.Value = new Guid(guid);
+            }
 
-            guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzArtistId")).First().Value;
-            if (String.IsNullOrWhiteSpace(guid))
-                md.MusicBrainzArtistId.Value = null;
-            else
-                md.MusicBrainzArtistId.Value = new Guid(guid);
+            if (source.Keys.Contains("MusicBrainzReleaseId"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseId")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.MusicBrainzReleaseId.Value = new Guid(guid);
+            }
 
-            md.MusicBrainzReleaseStatus.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseStatus")).First().Value;
-            md.MusicBrainzReleaseType.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseType")).First().Value;
-            md.MusicBrainzReleaseCountry.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseCountry")).First().Value;
+            if (source.Keys.Contains("MusicBrainzArtistId"))
+            {
+                string guid = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzArtistId")).First().Value;
+                if (String.IsNullOrWhiteSpace(guid) == false)
+                    md.MusicBrainzArtistId.Value = new Guid(guid);
+            }
+
+            if (source.Keys.Contains("MusicBrainzReleaseStatus"))
+                md.MusicBrainzReleaseStatus.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseStatus")).First().Value;
+
+            if (source.Keys.Contains("MusicBrainzReleaseType"))
+                md.MusicBrainzReleaseType.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseType")).First().Value;
+
+            if (source.Keys.Contains("MusicBrainzReleaseCountry"))
+                md.MusicBrainzReleaseCountry.Value = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("MusicBrainzReleaseCountry")).First().Value;
 
             return md;
         }

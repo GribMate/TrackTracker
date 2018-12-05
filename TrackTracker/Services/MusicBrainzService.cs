@@ -26,8 +26,7 @@ namespace TrackTracker.Services
         {
             Query query = new Query("TrackTracker", "0.1Alpha", "GMate375@gmail.com"); // TODO: not this mail / version
             IRecording recording = await query.LookupRecordingAsync(MBID,
-                Include.Releases & Include.Tags & Include.Artists & Include.DiscIds & Include.Labels & Include.Media & Include.UserTags,
-                ReleaseType.Album, ReleaseStatus.Official);
+                Include.Releases & Include.Tags & Include.Artists & Include.DiscIds & Include.Labels & Include.Media & Include.UserTags);
 
             Dictionary<string, object> result = new Dictionary<string, object>();
 
@@ -43,40 +42,54 @@ namespace TrackTracker.Services
             // Checking album artists
             if (recording.ArtistCredit != null && recording.ArtistCredit.Count > 0)
             {
-                StringBuilder sbArt = new StringBuilder();
-                StringBuilder sbArtSort = new StringBuilder();
+                List<string> sbArt = new List<string>();
+                List<string> sbArtSort = new List<string>();
 
                 foreach (INameCredit artistCredit in recording.ArtistCredit)
                 {
                     if (artistCredit.Artist != null)
                     {
                         if (artistCredit.Artist.Name != null)
-                        {
-                            sbArt.Append(artistCredit.Artist.Name);
-                            sbArt.Append(";");
-                        }
+                            sbArt.Add(artistCredit.Artist.Name);
                         if (artistCredit.Artist.SortName != null)
-                        {
-                            sbArtSort.Append(artistCredit.Artist.Name);
-                            sbArtSort.Append(";");
-                        }
+                            sbArtSort.Add(artistCredit.Artist.Name);
                     }
                 }
-                result.Add("JoinedAlbumArtists", sbArt.ToString().Substring(0, sbArt.Length - 1)); // Remove closing ';'
-                result.Add("JoinedAlbumArtistsSort", sbArtSort.ToString().Substring(0, sbArtSort.Length - 1)); // Remove closing ';'
+                result.Add("AlbumArtists", sbArt.ToArray());
+                result.Add("AlbumArtistsSort", sbArtSort.ToArray());
+
+                if (recording.ArtistCredit.Count == 1) // If we only have exactly 1 artist, we accept its MBID
+                {
+                    // TODO: improve later
+                    result.Add("MusicBrainzArtistId", recording.ArtistCredit[0].Artist.MbId.ToString());
+                }
             }
 
+            // Checking track MBID
+            if (recording.MbId != null)
+                result.Add("MusicBrainzTrackId", recording.MbId.ToString());
+
             // Checking other data
-            else if (recording.Releases != null && recording.Releases.Count > 0) //TODO: accepting the first release might be improved
+            if (recording.Releases != null && recording.Releases.Count > 0) // TODO: accepting the first release might be improved
             {
                 if (recording.Releases[0].Date != null)
                     result.Add("Year", (uint)recording.Releases[0].Date.Year);
                 if (recording.Releases[0].MbId != null)
-                    result.Add("MusicBrainzReleaseId", recording.Releases[0].MbId);
+                    result.Add("MusicBrainzReleaseId", recording.Releases[0].MbId.ToString());
+                if (recording.Releases[0].Status != null)
+                    result.Add("MusicBrainzReleaseStatus", recording.Releases[0].Status);
+                if (recording.Releases[0].Country != null)
+                    result.Add("MusicBrainzReleaseCountry", recording.Releases[0].Country);
                 if (recording.Releases[0].ArtistCredit != null && recording.Releases[0].ArtistCredit.Count > 0)
                 {
                     if (recording.Releases[0].ArtistCredit[0].Artist.MbId != null)
-                        result.Add("MusicBrainzArtistId", recording.Releases[0].ArtistCredit[0].Artist.MbId);
+                        result.Add("MusicBrainzReleaseArtistId", recording.Releases[0].ArtistCredit[0].Artist.MbId.ToString());
+                }
+                if (recording.Releases[0].Media != null && recording.Releases[0].Media.Count > 0)
+                {
+                    result.Add("Track", (uint)recording.Releases[0].Media[0].TrackOffset);
+                    result.Add("TrackCount", (uint)recording.Releases[0].Media[0].TrackCount);
+                    result.Add("MusicBrainzReleaseType", recording.Releases[0].Media[0].Format);
                 }
             }
 
@@ -85,7 +98,7 @@ namespace TrackTracker.Services
 
         public async Task<List<Dictionary<string, object>>> GetRecordingsByMetaData(string title, string artist = null, string album = null, int? limit = null) // Returns all the recordings' metadata which correspond to the parameters
         {
-            Query query = new Query("TrackTracker", "0.1Alpha", "GMate375@gmail.com"); //TODO: not this mail / version
+            Query query = new Query("TrackTracker", "0.1Alpha", "GMate375@gmail.com"); // TODO: not this mail / version
 
             ISearchResults<IFoundRecording> retrieved = await query.FindRecordingsAsync(GetQueryStringFromMetaData(title, artist, album), limit);
 
@@ -107,53 +120,59 @@ namespace TrackTracker.Services
                     else if (recording.Releases != null && recording.Releases.Count > 0)
                     {
                         if (recording.Releases[0].Title != null)
-                            result.Add("Album", recording.Releases[0].Title); //TODO: accepting the first release might be improved
+                            result.Add("Album", recording.Releases[0].Title); // TODO: accepting the first release might be improved
                     }
 
                     // Checking album artists
                     if (recording.ArtistCredit != null && recording.ArtistCredit.Count > 0)
                     {
-                        StringBuilder sbArt = new StringBuilder();
-                        StringBuilder sbArtSort = new StringBuilder();
+                        List<string> sbArt = new List<string>();
+                        List<string> sbArtSort = new List<string>();
 
                         foreach (INameCredit artistCredit in recording.ArtistCredit)
                         {
                             if (artistCredit.Artist != null)
                             {
                                 if (artistCredit.Artist.Name != null)
-                                {
-                                    sbArt.Append(artistCredit.Artist.Name);
-                                    sbArt.Append(";");
-                                }
+                                    sbArt.Add(artistCredit.Artist.Name);
                                 if (artistCredit.Artist.SortName != null)
-                                {
-                                    sbArtSort.Append(artistCredit.Artist.Name);
-                                    sbArtSort.Append(";");
-                                }
+                                    sbArtSort.Add(artistCredit.Artist.Name);
                             }
                         }
-                        result.Add("JoinedAlbumArtists", sbArt.ToString().Substring(0, sbArt.Length - 1)); // Remove closing ';'
-                        result.Add("JoinedAlbumArtistsSort", sbArtSort.ToString().Substring(0, sbArtSort.Length - 1)); // Remove closing ';'
-                    }
-                    if (artist != null) // Checking after parsing results, since "JoinedAlbumArtistsSort" might be new info even if "artist" is known
-                    {
-                        if (result.ContainsKey("JoinedAlbumArtists"))
-                            result.Remove("JoinedAlbumArtists");
+                        result.Add("AlbumArtists", sbArt.ToArray());
+                        result.Add("AlbumArtistsSort", sbArtSort.ToArray());
 
-                        result.Add("JoinedAlbumArtists", artist);
+                        if (recording.ArtistCredit.Count == 1)
+                        {
+                            result.Add("MusicBrainzArtistId", recording.ArtistCredit[0].Artist.MbId.ToString());
+                        }
                     }
+
+                    // Checking track MBID
+                    if (recording.MbId != null)
+                        result.Add("MusicBrainzTrackId", recording.MbId.ToString());
 
                     // Checking other data
-                    else if (recording.Releases != null && recording.Releases.Count > 0) //TODO: accepting the first release might be improved
+                    if (recording.Releases != null && recording.Releases.Count > 0) // TODO: accepting the first release might be improved
                     {
                         if (recording.Releases[0].Date != null)
                             result.Add("Year", (uint)recording.Releases[0].Date.Year);
                         if (recording.Releases[0].MbId != null)
-                            result.Add("MusicBrainzReleaseId", recording.Releases[0].MbId);
+                            result.Add("MusicBrainzReleaseId", recording.Releases[0].MbId.ToString());
+                        if (recording.Releases[0].Status != null)
+                            result.Add("MusicBrainzReleaseStatus", recording.Releases[0].Status);
+                        if (recording.Releases[0].Country != null)
+                            result.Add("MusicBrainzReleaseCountry", recording.Releases[0].Country);
                         if (recording.Releases[0].ArtistCredit != null && recording.Releases[0].ArtistCredit.Count > 0)
                         {
                             if (recording.Releases[0].ArtistCredit[0].Artist.MbId != null)
-                                result.Add("MusicBrainzArtistId", recording.Releases[0].ArtistCredit[0].Artist.MbId);
+                                result.Add("MusicBrainzReleaseArtistId", recording.Releases[0].ArtistCredit[0].Artist.MbId.ToString());
+                        }
+                        if (recording.Releases[0].Media != null && recording.Releases[0].Media.Count > 0)
+                        {
+                            result.Add("Track", (uint)recording.Releases[0].Media[0].TrackOffset);
+                            result.Add("TrackCount", (uint)recording.Releases[0].Media[0].TrackCount);
+                            result.Add("MusicBrainzReleaseType", recording.Releases[0].Media[0].Format);
                         }
                     }
 

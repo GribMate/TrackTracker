@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
@@ -14,6 +15,6 @@ namespace TrackTracker.Services.Interfaces
         bool DecompressFile(string sourceLocation, string targetLocation); //decompresses a FLAC file from sourceLocation to a WAV file at targetLocation
 
         void GetFingerprintData(string filePath, AcoustIDService.FingerPrintCallback callback); //TODO: event
-        Task<string> GetIDByFingerprint(string fingerprint, int duration);
+        Task<Dictionary<string, Guid>> GetIDsByFingerprint(string fingerprint, int duration);
     }
 }
