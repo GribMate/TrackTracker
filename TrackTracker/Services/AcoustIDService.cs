@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using AcoustID;
@@ -9,61 +11,80 @@ using AcoustID.Audio;
 using NAudio.Wave;
 
 using TrackTracker.Services.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
+
+
 
 namespace TrackTracker.Services
 {
     /*
-    Class: AcoustIDService
-    Description:
-        Implements IFingerprintProvider, currently using AcoustID fingerprinting service, NAudio and ChromaPrint libraries.
+     * Implements IFingerprintProvider, currently using AcoustID fingerprinting service, NAudio and ChromaPrint libraries.
     */
     public class AcoustIDService : IFingerprintService
-        //TODO: add proper async-await functions
     {
-        public delegate void FingerPrintCallback(string path, string fingerprint, int duration, NAudioDecoder decoder);
-        //TODO: event
+        private static readonly int BUFFER_SIZE = 2 * 192000;
+        private WaveStream reader;
 
-        public bool DetectDecompressToolAvailabilty()
+        private string fingerprint;
+        private int duration; // The duration of the audio source (in seconds)
+        private int bitDepth; // The sample rate of the audio source (must be 16 bits per sample)
+        private int channels; // The number of channels
+        private int sampleRate; // The sample rate of the audio source
+
+        private bool dataReady;
+
+        public AcoustIDService()
         {
-            throw new NotImplementedException();
+            reader = null;
+            fingerprint = null;
+            duration = -1;
+            bitDepth = -1;
+            channels = -1;
+            sampleRate = -1;
+
+            dataReady = false;
         }
 
-        public bool DecompressFile(string sourceLocation, string targetLocation)
+        public async Task RunFingerprinting(string filePath)
         {
-            throw new NotImplementedException();
-        }
+            if (filePath == null)
+                throw new ArgumentNullException(nameof(filePath), $"Cannot fingerprint audio file, since its path is null.");
+            if (filePath.Length < 8) // "C:\x.abc" is 8 characters long
+                throw new ArgumentException($"Cannot fingerprint audio file, since its path is too short.", nameof(filePath));
+            if (File.Exists(filePath) == false)
+                throw new FileNotFoundException($"Cannot fingerprint audio file, since it does not exist on the given path of {filePath}.", nameof(filePath));
 
-        public void GetFingerprintData(string filePath, FingerPrintCallback callback)
-        {
-            if (filePath == null) throw new ArgumentNullException();
-            if (filePath.Length < 8) throw new ArgumentException(); //"C:\x.mp3" is 8 chars long
-            if (!File.Exists(filePath)) throw new FileNotFoundException();
+            dataReady = false;
 
-            NAudioDecoder decoder = new NAudioDecoder(filePath);
-
-            /*
-             * Various audio data for example. Might be implemented later onto GUI.
-             * 
-            int bits = decoder.Format.BitDepth;
-            int channels = decoder.Format.Channels;
-            int sampleRate = decoder.Format.SampleRate;
-
-            string audioData = String.Format("{0}Hz, {1}bit{2}, {3}",
-                decoder.Format.SampleRate, bits, bits != 16 ? " (not supported)" : "",
-                channels == 2 ? "stereo" : (channels == 1 ? "mono" : "multi-channel"));
-            */
-
-            Task.Factory.StartNew(() =>
+            await Task.Factory.StartNew(() =>
             {
+                InitReader(filePath);
+
                 ChromaContext context = new ChromaContext();
-                context.Start(decoder.SampleRate, decoder.Channels);
-                decoder.Decode(context.Consumer, 120);
+                context.Start(sampleRate, channels);
+                Decode(context.Consumer, 120);
                 context.Finish();
 
-                callback(filePath, context.GetFingerprint(), decoder.Duration, decoder); //returning results
+                fingerprint = context.GetFingerprint();
+
+                DisposeReader();
+
+                dataReady = true;
             });
+        }
+
+        public Dictionary<string, object> GetDataOfLastRun()
+        {
+            if (dataReady == false)
+                throw new InvalidOperationException($"Cannot get results, since the last fingerprinting was corrupted or did not finish yet.");
+
+            Dictionary<string, object> results = new Dictionary<string, object>();
+            results.Add("Fingerprint", fingerprint);
+            results.Add("Duration", duration);
+            results.Add("BitDepth", bitDepth);
+            results.Add("Channels", channels);
+            results.Add("SampleRate", sampleRate);
+
+            return results;
         }
 
         public async Task<Dictionary<string, Guid>> GetIDsByFingerprint(string fingerprint, int duration)
@@ -105,61 +126,53 @@ namespace TrackTracker.Services
 
             return toReturn;
         }
-    }
 
-
-    public class NAudioDecoder : IDecoder, IDisposable //TODO: not here?
-    {
-        private static readonly int BUFFER_SIZE = 2 * 192000;
-        private WaveStream reader;
-        private string file;
-
-        public int Duration { get; private set; } //Gets the duration of the audio source (in seconds).
-        public int SampleRate { get; private set; } //Gets the sample rate of the audio source.
-        public int Channels { get; private set; } //Gets the number of channels.
-        public int BitDepth { get; private set; } //Gets the sample rate of the audio source (must be 16 bits per sample).  
-
-        public NAudioDecoder(string file)
+        public bool DetectDecompressToolAvailabilty()
         {
-            this.file = file;
+            throw new NotImplementedException();
+        }
 
-            // Initialization.
-            // Open the WaveStream and keep it open until Dispose() is called. This might lock
-            // the file. A better approach would be to open the stream only when needed.
-            var extension = Path.GetExtension(file).ToLowerInvariant();
+        public bool DecompressFile(string sourceLocation, string targetLocation)
+        {
+            throw new NotImplementedException();
+        }
 
-            if (extension.Equals(".wav"))
-            {
-                reader = new WaveFileReader(file);
-            }
-            else
-            {
-                reader = new Mp3FileReader(file);
-            }
+
+
+        private void InitReader(string filePath)
+        {
+            // Open the WaveStream and keep it open until Dispose() is called, this might lock the file
+            // A better approach would be to open the stream only when needed
+            string extension = Path.GetExtension(filePath).ToUpper().Substring(1);
+
+            if (extension.Equals("WAV"))
+                reader = new WaveFileReader(filePath);
+
+            else if (extension.Equals("MP3"))
+                reader = new Mp3FileReader(filePath);
 
             WaveFormat format = reader.WaveFormat;
 
-            Duration = (int)reader.TotalTime.TotalSeconds;
-            SampleRate = format.SampleRate;
-            Channels = format.Channels;
-            BitDepth = format.BitsPerSample;
+            duration = (int)reader.TotalTime.TotalSeconds;
+            sampleRate = format.SampleRate;
+            channels = format.Channels;
+            bitDepth = format.BitsPerSample;
 
             if (format.BitsPerSample != 16)
             {
-                Dispose(true);
+                DisposeReader();
+                throw new NotSupportedException($"Cannot fingerprint given file. The file must be 16 bits per sample!");
             }
         }
 
-        public bool Decode(IAudioConsumer consumer, int maxLength)
+        private void Decode(IAudioConsumer consumer, int maxLength)
         {
-            if (reader == null) return false;
-
             int remaining, length, size;
             byte[] buffer = new byte[2 * BUFFER_SIZE];
             short[] data = new short[BUFFER_SIZE];
 
             // Samples to read to get maxLength seconds of audio
-            remaining = maxLength * Channels * SampleRate;
+            remaining = maxLength * channels * sampleRate;
 
             // Bytes to read
             length = 2 * Math.Min(remaining, BUFFER_SIZE);
@@ -178,41 +191,16 @@ namespace TrackTracker.Services
 
                 length = 2 * Math.Min(remaining, BUFFER_SIZE);
             }
-
-            return true;
         }
 
-
-        #region IDisposable implementation
-
-        private bool hasDisposed = false;
-
-        public void Dispose()
+        private void DisposeReader()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void Dispose(bool disposing)
-        {
-            if (!hasDisposed)
+            if (reader != null)
             {
-                if (reader != null)
-                {
-                    reader.Close();
-                    reader.Dispose();
-                    reader = null;
-                }
+                reader.Close();
+                reader.Dispose();
+                reader = null;
             }
-
-            hasDisposed = disposing;
         }
-
-        ~NAudioDecoder()
-        {
-            Dispose(true);
-        }
-
-        #endregion
     }
 }

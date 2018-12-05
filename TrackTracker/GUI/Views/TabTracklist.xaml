@@ -66,9 +66,9 @@
                 <DataGrid ItemsSource="{Binding TagList}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" HorizontalAlignment="Left" AlternatingRowBackground="#FFC8C8C8" AreRowDetailsFrozen="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Tag" Width="300" Binding="{Binding Name, Mode=OneTime}" />
-                        <DataGridTextColumn Header="Old value" Width="*" Binding="{Binding OldValue, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="New value" Width="*" Binding="{Binding NewValue, Mode=OneWay}"/>
+                        <DataGridTextColumn Header="Tag" Width="300" Binding="{Binding Key, Mode=OneTime}" />
+                        <DataGridTextColumn Header="Old value" Width="*" Binding="{Binding Value, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="New value" Width="*" Binding="{Binding Value, Mode=OneWay}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

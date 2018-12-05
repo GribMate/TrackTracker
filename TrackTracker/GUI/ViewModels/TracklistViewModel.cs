@@ -194,34 +194,31 @@ namespace TrackTracker.GUI.ViewModels
         {
             get => TracklistContext.TracklistTracks.Count > 0;
         }
-        public void ExecuteGetFingerprint()
+        public async void ExecuteGetFingerprint()
         {
             //SetProgressBarValue(25, "Generating fingerprints...");  //TODO
             foreach (TrackLocal track in TracklistContext.TracklistTracks)
             {
                 if (track.IsSelected)
                 {
-                    fingerprintService.GetFingerprintData(track.MusicFileProperties.Path, new Services.AcoustIDService.FingerPrintCallback(callback_fv));
-                }
-            }
-        }
+                    await fingerprintService.RunFingerprinting(track.MusicFileProperties.Path);
 
-        private void callback_fv(string path, string fingerprint, int duration, Services.NAudioDecoder decoder)
-        {
-            //SetProgressBarValue(75, "Generating fingerprints for" + path); //TODO
-            foreach (TrackLocal track in TracklistContext.TracklistTracks)
-            {
-                if (track.MusicFileProperties.Path == path)
-                {
-                    track.MusicFileProperties.Fingerprint = fingerprint;
-                    track.MusicFileProperties.Duration = duration;
-                    //string trial_ID = GlobalContext.AcoustIDProvider.GetIDByFingerprint(fingerprint, duration);
-                    //TODO: other non-editable metadata
-                    break; //1 match
+                    Dictionary<string, object> results = fingerprintService.GetDataOfLastRun();
+                    UtilityHelper.RegisterFingerprintData(track, results);
+
+
+
+                    Dictionary<string, Guid> IDs = await fingerprintService.GetIDsByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
+
+                    Guid musicBrainzTrackId = IDs.Select(id => id).Where(id => id.Key.Equals("MusicBrainzTrackId")).First().Value;
+                    Guid acoustID = IDs.Select(id => id).Where(id => id.Key.Equals("AcoustID")).First().Value;
+
+                    track.MetaData.MusicBrainzTrackId.Value = musicBrainzTrackId;
+                    track.MetaData.AcoustID.Value = acoustID;
+
+                    taggingService.Save(track.MusicFileProperties.Path, track.MetaData.GetAllMetaTagsDataNative()); // Persisting to local file metadata
                 }
             }
-            //SetProgressBarValue(0, " ");  //TODO
-            decoder.Dispose();
         }
 
         public bool CanExecuteSearchMusicBrainz

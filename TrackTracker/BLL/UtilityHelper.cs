@@ -159,6 +159,32 @@ namespace TrackTracker.BLL
             return md;
         }
 
+        public static void RegisterFingerprintData(TrackLocal track, Dictionary<string, object> source)
+        {
+            string fingerprint = null;
+            int duration = -1;
+            int bitDepth = -1;
+            int channels = -1;
+            int sampleRate = -1;
+
+            if (source.Keys.Contains("Fingerprint"))
+                fingerprint = (string)source.Select(pair => pair).Where(pair => pair.Key.Equals("Fingerprint")).First().Value;
+
+            if (source.Keys.Contains("Duration"))
+                duration = (int)source.Select(pair => pair).Where(pair => pair.Key.Equals("Duration")).First().Value;
+
+            if (source.Keys.Contains("BitDepth"))
+                bitDepth = (int)source.Select(pair => pair).Where(pair => pair.Key.Equals("BitDepth")).First().Value;
+
+            if (source.Keys.Contains("Channels"))
+                channels = (int)source.Select(pair => pair).Where(pair => pair.Key.Equals("Channels")).First().Value;
+
+            if (source.Keys.Contains("SampleRate"))
+                sampleRate = (int)source.Select(pair => pair).Where(pair => pair.Key.Equals("SampleRate")).First().Value;
+
+            track.MusicFileProperties.RegisterFingerprintData(fingerprint, duration, bitDepth, channels, sampleRate);
+        }
+
         public static TrackBase CopyTrack(TrackBase source)
         {
             TrackBase target = null;

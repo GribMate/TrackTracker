@@ -83,21 +83,27 @@ namespace TrackTracker.BLL.Model
             allTags.Add(Copyright);
             allTags.Add(AlbumArtists);
             allTags.Add(AlbumArtistsSort);
+
             allTags.Add(Genres);
+
             allTags.Add(BeatsPerMinute);
             allTags.Add(Year);
             allTags.Add(Track);
             allTags.Add(TrackCount);
             allTags.Add(Disc);
             allTags.Add(DiscCount);
+
+            allTags.Add(AcoustID);
             allTags.Add(MusicBrainzReleaseArtistId);
             allTags.Add(MusicBrainzTrackId);
             allTags.Add(MusicBrainzDiscId);
+            allTags.Add(MusicBrainzReleaseId);
+            allTags.Add(MusicBrainzArtistId);
+
             allTags.Add(MusicBrainzReleaseStatus);
             allTags.Add(MusicBrainzReleaseType);
             allTags.Add(MusicBrainzReleaseCountry);
-            allTags.Add(MusicBrainzReleaseId);
-            allTags.Add(MusicBrainzArtistId);
+            
 
             return allTags;
         }
@@ -133,26 +139,29 @@ namespace TrackTracker.BLL.Model
         {
             Dictionary<string, object> allTags = new Dictionary<string, object>();
 
-            allTags.Add(nameof(Title), Title);
-            allTags.Add(nameof(Album), Album);
-            allTags.Add(nameof(Copyright), Copyright);
-            allTags.Add(nameof(AlbumArtists), AlbumArtists);
-            allTags.Add(nameof(AlbumArtistsSort), AlbumArtistsSort);
-            allTags.Add(nameof(Genres), Genres);
-            allTags.Add(nameof(BeatsPerMinute), BeatsPerMinute);
-            allTags.Add(nameof(Year), Year);
-            allTags.Add(nameof(Track), Track);
-            allTags.Add(nameof(TrackCount), TrackCount);
-            allTags.Add(nameof(Disc), Disc);
-            allTags.Add(nameof(DiscCount), DiscCount);
-            allTags.Add(nameof(MusicBrainzReleaseArtistId), MusicBrainzReleaseArtistId);
-            allTags.Add(nameof(MusicBrainzTrackId), MusicBrainzTrackId);
-            allTags.Add(nameof(MusicBrainzDiscId), MusicBrainzDiscId);
-            allTags.Add(nameof(MusicBrainzReleaseStatus), MusicBrainzReleaseStatus);
-            allTags.Add(nameof(MusicBrainzReleaseType), MusicBrainzReleaseType);
-            allTags.Add(nameof(MusicBrainzReleaseCountry), MusicBrainzReleaseCountry);
-            allTags.Add(nameof(MusicBrainzReleaseId), MusicBrainzReleaseId);
-            allTags.Add(nameof(MusicBrainzArtistId), MusicBrainzArtistId);
+            allTags.Add(nameof(Genres), Genres.Value);
+
+            allTags.Add(nameof(Title), Title.Value);
+            allTags.Add(nameof(Album), Album.Value);
+            allTags.Add(nameof(Copyright), Copyright.Value);
+            allTags.Add(nameof(AlbumArtists), AlbumArtists.Value);
+            allTags.Add(nameof(AlbumArtistsSort), AlbumArtistsSort.Value);
+            allTags.Add(nameof(BeatsPerMinute), BeatsPerMinute.Value);
+            allTags.Add(nameof(Year), Year.Value);
+            allTags.Add(nameof(Track), Track.Value);
+            allTags.Add(nameof(TrackCount), TrackCount.Value);
+            allTags.Add(nameof(Disc), Disc.Value);
+            allTags.Add(nameof(DiscCount), DiscCount.Value);
+
+            allTags.Add(nameof(MusicBrainzReleaseArtistId), MusicBrainzReleaseArtistId.Value.ToString());
+            allTags.Add(nameof(MusicBrainzTrackId), MusicBrainzTrackId.Value.ToString());
+            allTags.Add(nameof(MusicBrainzDiscId), MusicBrainzDiscId.Value.ToString());
+            allTags.Add(nameof(MusicBrainzReleaseId), MusicBrainzReleaseId.Value.ToString());
+            allTags.Add(nameof(MusicBrainzArtistId), MusicBrainzArtistId.Value.ToString());
+
+            allTags.Add(nameof(MusicBrainzReleaseStatus), MusicBrainzReleaseStatus.Value);
+            allTags.Add(nameof(MusicBrainzReleaseType), MusicBrainzReleaseType.Value);
+            allTags.Add(nameof(MusicBrainzReleaseCountry), MusicBrainzReleaseCountry.Value);
 
             return allTags;
         }
