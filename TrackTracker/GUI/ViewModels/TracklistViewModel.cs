@@ -59,11 +59,14 @@ namespace TrackTracker.GUI.ViewModels
             {
                 SetProperty(ref selectedTrack, value);
 
-                MatchList = new ObservableCollection<TrackVirtual>(selectedTrack.MatchCandidates);
+                if (SelectedTrack != null)
+                {
+                    MatchList = new ObservableCollection<TrackVirtual>(selectedTrack.MatchCandidates);
 
-                RefreshTagList(false);
+                    RefreshTagList(false);
 
-                NotifyPropertyChanged(nameof(MatchList));
+                    NotifyPropertyChanged(nameof(MatchList));
+                }
             }
         }
 
