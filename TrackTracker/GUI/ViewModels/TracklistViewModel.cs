@@ -259,10 +259,13 @@ namespace TrackTracker.GUI.ViewModels
 
             if (isFromMatchSelect) // We know that a track and a match are both selected and AutoSelect = false
             {
+                List<MetaTagBase> newTags = SelectedMatch.MetaData.GetAllMetaTags();
+
                 foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
                 {
                     MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
-                    object matchValue = SelectedMatch.MetaData.GetAllMetaTags().Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().Value;
+
+                    string matchValue = newTags.Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().ToString();
                     displayable.NewValue = (matchValue == null) ? oldTag.ToString() : matchValue.ToString();
 
                     tagList.Add(displayable);
@@ -282,21 +285,23 @@ namespace TrackTracker.GUI.ViewModels
                 }
                 else if (SelectedTrack.ActiveCandidateMBTrackID != null) // The selected track has some matches available and AutoSelect = true
                 {
+                    TrackVirtual activeMatch = null;
+                    foreach (TrackVirtual candidate in SelectedTrack.MatchCandidates)
+                    {
+                        if (candidate.MetaData.MusicBrainzTrackId.Value == SelectedTrack.ActiveCandidateMBTrackID.Value)
+                        {
+                            activeMatch = candidate;
+                            break;
+                        }
+                    }
+
+                    List<MetaTagBase> newTags = activeMatch.MetaData.GetAllMetaTags();
+
                     foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
                     {
                         MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
 
-                        TrackVirtual activeMatch = null;
-                        foreach (TrackVirtual candidate in SelectedTrack.MatchCandidates)
-                        {
-                            if (candidate.MetaData.MusicBrainzTrackId.Value == SelectedTrack.ActiveCandidateMBTrackID.Value)
-                            {
-                                activeMatch = candidate;
-                                break;
-                            }
-                        }
-
-                        object matchValue = activeMatch.MetaData.GetAllMetaTags().Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().Value;
+                        string matchValue = newTags.Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().ToString();
                         displayable.NewValue = (matchValue == null) ? oldTag.ToString() : matchValue.ToString();
 
                         tagList.Add(displayable);
