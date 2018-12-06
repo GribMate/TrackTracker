@@ -245,7 +245,36 @@ namespace TrackTracker.GUI.ViewModels
 
                     if (AutoSelect && results.Count > 0)
                     {
-                        //TODO: implement autoselect magic
+                        int maxPoints = 0;
+                        TrackVirtual selected = null;
+
+                        foreach (TrackVirtual result in results)
+                        {
+                            int currentPoints = 0;
+
+                            currentPoints += result.MetaData.GetAllMetaTagsDataNativeNonEmpty().Count;
+
+                            if (result.MetaData.MusicBrainzReleaseCountry.Value != null)
+                            {
+                                if (result.MetaData.MusicBrainzReleaseCountry.Value.Equals("XW"))
+                                    currentPoints += 10;
+                                else if (result.MetaData.MusicBrainzReleaseCountry.Value.Equals("XE"))
+                                    currentPoints += 5;
+                            }
+
+                            if (result.MetaData.MusicBrainzReleaseStatus.Value != null)
+                            {
+                                if (result.MetaData.MusicBrainzReleaseStatus.Value.Equals("Official"))
+                                    currentPoints += 3;
+                            }
+
+                            if (currentPoints > maxPoints)
+                            {
+                                maxPoints = currentPoints;
+                                selected = result;
+                            }
+                        }
+                        track.ActiveCandidateMBTrackID = new MetaTagGUID("MusicBrainzTrackId", selected.MetaData.MusicBrainzTrackId.Value);
                     }
                 }
             }

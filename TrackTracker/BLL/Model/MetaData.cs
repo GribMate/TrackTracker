@@ -169,6 +169,8 @@ namespace TrackTracker.BLL.Model
         {
             Dictionary<string, string> allTags = GetAllMetaTagsDataFormatted();
 
+            List<string> toRemoveKeys = new List<string>();
+
             // Filtering out null or empty tag values from all collection
             foreach (string key in allTags.Keys)
             {
@@ -176,8 +178,13 @@ namespace TrackTracker.BLL.Model
                 allTags.TryGetValue(key, out value); // There must exist a corresponding value since we iterate valid keys
                 if (String.IsNullOrWhiteSpace(value))
                 {
-                    allTags.Remove(key);
+                    toRemoveKeys.Add(key);
                 }
+            }
+
+            foreach (string key in toRemoveKeys)
+            {
+                allTags.Remove(key);
             }
 
             return allTags;
@@ -186,6 +193,8 @@ namespace TrackTracker.BLL.Model
         {
             Dictionary<string, object> allTags = GetAllMetaTagsDataNative();
 
+            List<string> toRemoveKeys = new List<string>();
+
             // Filtering out null or empty tag values from all collection
             foreach (string key in allTags.Keys)
             {
@@ -193,8 +202,13 @@ namespace TrackTracker.BLL.Model
                 allTags.TryGetValue(key, out value); // There must exist a corresponding value since we iterate valid keys
                 if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
                 {
-                    allTags.Remove(key);
+                    toRemoveKeys.Add(key);
                 }
+            }
+
+            foreach (string key in toRemoveKeys)
+            {
+                allTags.Remove(key);
             }
 
             return allTags;
