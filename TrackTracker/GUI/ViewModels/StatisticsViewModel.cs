@@ -200,15 +200,54 @@ namespace TrackTracker.GUI.ViewModels
 
             if (TotalCount != 0)
             {
-                string recommendedBand = "";
-                if (GenreName == "Rock") recommendedBand = "Hollywood Undead";
-                else if (GenreName == "Punk") recommendedBand = "Good Charlotte";
-
-                RecommendedGenre = "Hmm... it seems you rather like " + GenreName + "! You might want to check out " + recommendedBand + " for a change!";
+                RecommendedGenre = "Hmm... it seems you rather like " + GenreName + "! You might want to check out " + GetRecommendedBand() + " for a change!";
             }
         }
 
 
+
+        private string GetRecommendedBand() // Just a trial feature for fun
+        {
+            string recommendedBand = "Linkin Park"; // Default - R.I.P. Chester
+
+            if (GenreName == "Hip hop")
+                if (ArtistName != "Hollywood Undead")
+                    recommendedBand = "Hollywood Undead";
+                else
+                    recommendedBand = "Gorillaz";
+
+            if (GenreName == "Punk")
+                if (ArtistName != "Good Charlotte")
+                    recommendedBand = "Good Charlotte";
+                else
+                    recommendedBand = "Green Day";
+
+            if (GenreName == "Rock")
+                if (ArtistName != "Linkin Park")
+                    recommendedBand = "Linkin Park";
+                else
+                    recommendedBand = "AC/DC";
+
+            if (GenreName == "Rap")
+                if (ArtistName != "Eminem")
+                    recommendedBand = "Eminem";
+                else
+                    recommendedBand = "Macklemore";
+
+            if (GenreName == "Pop")
+                if (ArtistName != "Lady Gaga")
+                    recommendedBand = "Lady Gaga";
+                else
+                    recommendedBand = "Ke$ha";
+
+            if (GenreName == "Dubstep")
+                if (ArtistName != "Skrillex")
+                    recommendedBand = "Skrillex";
+                else
+                    recommendedBand = "Example";
+
+            return recommendedBand;
+        }
 
         private int CountProperlyTagged()
         {

@@ -18,7 +18,6 @@ namespace TrackTracker.GUI.ViewModels
 {
     public class PlayzoneViewModel : ViewModelBase
     {
-        private IEnvironmentService environmentService;
         private ISpotifyService spotifyService;
         private IFoobarService foobarService;
 
@@ -44,7 +43,6 @@ namespace TrackTracker.GUI.ViewModels
 
         public PlayzoneViewModel() : base()
         {
-            environmentService = DependencyInjector.GetService<IEnvironmentService>();
             spotifyService = DependencyInjector.GetService<ISpotifyService>();
             foobarService = DependencyInjector.GetService<IFoobarService>();
 
@@ -82,7 +80,7 @@ namespace TrackTracker.GUI.ViewModels
                 switch (value)
                 {
                     case SupportedMediaPlayers.Foobar2000:
-                        string path = environmentService.DetectFoobarPath();
+                        string path = foobarService.DetectFoobarPath();
                         if (path.Length >= 8) // "C:\x.exe" is 8 characters long
                         {
                             SettingsContext.AddMediaPlayerPath(value.Value, path); // "value" is not null
