@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-
-using TrackTracker.Services.Interfaces;
 using TrackTracker.BLL;
-using TrackTracker.BLL.Model;
 using TrackTracker.BLL.GlobalContexts;
+using TrackTracker.BLL.Model;
 using TrackTracker.GUI.ViewModels.Base;
+using TrackTracker.Services.Interfaces;
 
 
 
@@ -22,7 +21,7 @@ namespace TrackTracker.GUI.ViewModels
         private IMetadataService metadataService;
         private IFingerprintService fingerprintService;
 
-        public ObservableCollection<MetaTagBase> TagList { get; set; }
+        public ObservableCollection<MetaTagDisplayable> TagList { get; set; }
         public ObservableCollection<TrackVirtual> MatchList { get; set; }
 
         public ICommand SelectAllCommand { get; }
@@ -39,7 +38,7 @@ namespace TrackTracker.GUI.ViewModels
             metadataService = DependencyInjector.GetService<IMetadataService>();
             fingerprintService = DependencyInjector.GetService<IFingerprintService>();
 
-            TagList = new ObservableCollection<MetaTagBase>();
+            TagList = new ObservableCollection<MetaTagDisplayable>();
             MatchList = new ObservableCollection<TrackVirtual>();
 
             SelectAllCommand = new RelayCommand<object>(exe => ExecuteSelectAll(), can => CanExecuteSelectAll);
@@ -60,10 +59,10 @@ namespace TrackTracker.GUI.ViewModels
             {
                 SetProperty(ref selectedTrack, value);
 
-                TagList = new ObservableCollection<MetaTagBase>(value.MetaData.GetAllMetaTags());
                 MatchList = new ObservableCollection<TrackVirtual>(selectedTrack.MatchCandidates);
 
-                NotifyPropertyChanged(nameof(TagList));
+                RefreshTagList(false);
+
                 NotifyPropertyChanged(nameof(MatchList));
             }
         }
@@ -76,9 +75,11 @@ namespace TrackTracker.GUI.ViewModels
             {
                 SetProperty(ref selectedMatch, value);
 
-                if (SelectedTrack != null && AutoSelect == false)
+                if (SelectedMatch != null && SelectedTrack != null && AutoSelect == false)
                 {
                     SelectedTrack.ActiveCandidateMBTrackID = value.MetaData.MusicBrainzTrackId;
+
+                    RefreshTagList(true);
                 }
             }
         }
@@ -248,6 +249,82 @@ namespace TrackTracker.GUI.ViewModels
         }
 
 
+
+        private void RefreshTagList(bool isFromMatchSelect)
+        {
+            List<MetaTagDisplayable> tagList = new List<MetaTagDisplayable>();
+
+            if (isFromMatchSelect) // We know that a track and a match are both selected and AutoSelect = false
+            {
+                foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
+                {
+                    MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
+                    object matchValue = SelectedMatch.MetaData.GetAllMetaTags().Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().Value;
+                    displayable.NewValue = (matchValue == null) ? oldTag.ToString() : matchValue.ToString();
+
+                    tagList.Add(displayable);
+                }
+            }
+            else // A track is selected, but a match might not be and the state of AutoSelect is unknown
+            {
+                if (SelectedTrack.MatchCandidates.Count == 0) // The track has no matches yet, we only want to display it's own tags
+                {
+                    foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
+                    {
+                        MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
+                        displayable.NewValue = " - (no matches found yet)";
+
+                        tagList.Add(displayable);
+                    }
+                }
+                else if (SelectedTrack.ActiveCandidateMBTrackID != null) // The selected track has some matches available and AutoSelect = true
+                {
+                    foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
+                    {
+                        MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
+
+                        TrackVirtual activeMatch = null;
+                        foreach (TrackVirtual candidate in SelectedTrack.MatchCandidates)
+                        {
+                            if (candidate.MetaData.MusicBrainzTrackId.Value == SelectedTrack.ActiveCandidateMBTrackID.Value)
+                            {
+                                activeMatch = candidate;
+                                break;
+                            }
+                        }
+
+                        object matchValue = activeMatch.MetaData.GetAllMetaTags().Select(matchTag => matchTag).Where(matchTag => matchTag.Key.Equals(oldTag.Key)).First().Value;
+                        displayable.NewValue = (matchValue == null) ? oldTag.ToString() : matchValue.ToString();
+
+                        tagList.Add(displayable);
+                    }
+                }
+                else // The selected track has some matches available, but AutoSelect = false, so we need to tell the user to select a match as well
+                {
+                    foreach (MetaTagBase oldTag in SelectedTrack.MetaData.GetAllMetaTags())
+                    {
+                        MetaTagDisplayable displayable = GetDisplayableMetaTag(oldTag);
+                        displayable.NewValue = "Please select a match from the list!";
+
+                        tagList.Add(displayable);
+                    }
+                }
+            }
+
+            TagList = new ObservableCollection<MetaTagDisplayable>(tagList);
+            NotifyPropertyChanged(nameof(TagList));
+        }
+
+        private MetaTagDisplayable GetDisplayableMetaTag(MetaTagBase source)
+        {
+            MetaTagDisplayable displayable = new MetaTagDisplayable()
+            {
+                TagName = source.Key,
+                CurrentValue = source.ToString()
+            };
+
+            return displayable;
+        }
 
         private async Task<List<TrackVirtual>> GetMatchesForTrack(TrackLocal track)
         {

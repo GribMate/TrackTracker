@@ -146,6 +146,7 @@
     <Compile Include="BLL\GlobalContexts\TracklistContext.cs" />
     <Compile Include="BLL\Model\Base\ModelObjectBase.cs" />
     <Compile Include="BLL\Model\MetaData.cs" />
+    <Compile Include="BLL\Model\MetaTagDisplayable.cs" />
     <Compile Include="BLL\Model\MetaDataExtended.cs" />
     <Compile Include="BLL\Model\MetaTagBase.cs" />
     <Compile Include="BLL\Model\MetaTagCollection.cs" />

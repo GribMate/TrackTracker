@@ -16,5 +16,10 @@ namespace TrackTracker.BLL.Model
         }
 
         public new string Value { get; set; }
+
+        public override string ToString()
+        {
+            return (Value == null) ? null : Value.ToString();
+        }
     }
 }
