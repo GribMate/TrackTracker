@@ -137,7 +137,7 @@ namespace TrackTracker.BLL
                                     break;
                             }
                             //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
-                            Thread.Sleep(7000);
+                            Thread.Sleep(12000);
                         }
                         else if (currentlyPlaying.IsPlayableOnline)
                         {
@@ -148,7 +148,7 @@ namespace TrackTracker.BLL
                                     break;
                             }
                             //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
-                            Thread.Sleep(7000);
+                            Thread.Sleep(12000);
                         }
                     }
                 }

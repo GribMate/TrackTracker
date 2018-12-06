@@ -66,7 +66,19 @@
                 <Button Command="{Binding OnlineAddToMixCommand}" Grid.Column="1" Content="Add selected to mix" Width="150" Height="50" Margin="380,0,70,0" FontSize="14" />
             </Grid>
             <DataGrid ItemsSource="{Binding MixList}" Grid.Row="3" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
+                                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PlayableOffline}" Value="True">
+                                <Setter Property="Background" Value="LightPink"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding PlayableOnline}" Value="True">
+                                <Setter Property="Background" Value="SeaGreen"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
                     <DataGridTextColumn Header="Artists" Width="*" IsReadOnly="True" Binding="{Binding MetaData.AlbumArtists.JoinedValue}"/>
