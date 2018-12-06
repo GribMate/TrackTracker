@@ -12,7 +12,7 @@
              DataContext="{StaticResource StatisticsViewModel}">
 
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="GotFocus">
+        <i:EventTrigger EventName="LayoutUpdated">
             <i:InvokeCommandAction Command="{Binding RefreshCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
