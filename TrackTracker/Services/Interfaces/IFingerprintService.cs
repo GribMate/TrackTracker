@@ -12,7 +12,7 @@ namespace TrackTracker.Services.Interfaces
     public interface IFingerprintService
     {
         bool DetectDecompressToolAvailabilty(); //returns true if the external converter tool (EXE) is installed
-        bool DecompressFile(string sourceLocation, string targetLocation); //decompresses a FLAC file from sourceLocation to a WAV file at targetLocation
+        string DecompressFile(string sourceFile); //decompresses a FLAC file from sourceLocation to a WAV file at targetLocation
 
         Task RunFingerprinting(string filePath);
         Dictionary<string, object> GetDataOfLastRun();

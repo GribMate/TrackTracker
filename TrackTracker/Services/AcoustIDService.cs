@@ -21,6 +21,9 @@ namespace TrackTracker.Services
     */
     public class AcoustIDService : IFingerprintService
     {
+        private const string FLAC_TOOL_NAME = "flac.exe";
+        private const string FLAC_TOOL_DECODE = "-d";
+
         private static readonly int BUFFER_SIZE = 2 * 192000;
         private WaveStream reader;
 
@@ -129,12 +132,17 @@ namespace TrackTracker.Services
 
         public bool DetectDecompressToolAvailabilty()
         {
-            throw new NotImplementedException();
+            string supposedToolPath = AppDomain.CurrentDomain.BaseDirectory + "flac.exe";
+            return File.Exists(supposedToolPath);
         }
 
-        public bool DecompressFile(string sourceLocation, string targetLocation)
+        public string DecompressFile(string sourceFile)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + FLAC_TOOL_NAME, FLAC_TOOL_DECODE + " \"" + sourceFile + "\"");
+
+            System.Threading.Thread.Sleep(5000); // TODO: Last minute bugfix, solve later
+
+            return sourceFile.Substring(0, sourceFile.Length - 5) + ".wav";
         }
 
 

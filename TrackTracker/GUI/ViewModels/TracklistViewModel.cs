@@ -200,28 +200,62 @@ namespace TrackTracker.GUI.ViewModels
         }
         public async void ExecuteGetFingerprint()
         {
-            //SetProgressBarValue(25, "Generating fingerprints...");  //TODO
-            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            try
             {
-                if (track.IsSelected)
+                //SetProgressBarValue(25, "Generating fingerprints...");  //TODO
+                foreach (TrackLocal track in TracklistContext.TracklistTracks)
                 {
-                    await fingerprintService.RunFingerprinting(track.MusicFileProperties.Path);
+                    if (track.IsSelected)
+                    {
+                        if (track.MusicFileProperties.FileExtension == BLL.Enums.SupportedFileExtension.FLAC)
+                        {
+                            if (fingerprintService.DetectDecompressToolAvailabilty() == false)
+                            {
+                                UtilityHelper.ShowExceptionDialog(
+                                    "FLAC tool not found!",
+                                    "FLAC tool (flac.exe) was not found in the base directory of TrackTracker.",
+                                    "Please download the tool from here: https://xiph.org/flac/download.html",
+                                    System.Windows.Application.Current.MainWindow);
 
-                    Dictionary<string, object> results = fingerprintService.GetDataOfLastRun();
-                    UtilityHelper.RegisterFingerprintData(track, results);
+                                continue;
+                            }
+                            else
+                            {
+                                string decodedFLACPath = fingerprintService.DecompressFile(track.MusicFileProperties.Path);
+
+                                await fingerprintService.RunFingerprinting(decodedFLACPath);
+
+                                System.IO.File.Delete(decodedFLACPath); // TODO: in service
+                            }
+                        }
+                        else
+                            await fingerprintService.RunFingerprinting(track.MusicFileProperties.Path);
+
+
+                        Dictionary<string, object> results = fingerprintService.GetDataOfLastRun();
+                        UtilityHelper.RegisterFingerprintData(track, results);
 
 
 
-                    Dictionary<string, Guid> IDs = await fingerprintService.GetIDsByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
+                        Dictionary<string, Guid> IDs = await fingerprintService.GetIDsByFingerprint(track.MusicFileProperties.Fingerprint, track.MusicFileProperties.Duration);
 
-                    Guid musicBrainzTrackId = IDs.Select(id => id).Where(id => id.Key.Equals("MusicBrainzTrackId")).First().Value;
-                    Guid acoustID = IDs.Select(id => id).Where(id => id.Key.Equals("AcoustID")).First().Value;
+                        Guid musicBrainzTrackId = IDs.Select(id => id).Where(id => id.Key.Equals("MusicBrainzTrackId")).First().Value;
+                        Guid acoustID = IDs.Select(id => id).Where(id => id.Key.Equals("AcoustID")).First().Value;
 
-                    track.MetaData.MusicBrainzTrackId.Value = musicBrainzTrackId;
-                    track.MetaData.AcoustID.Value = acoustID;
+                        track.MetaData.MusicBrainzTrackId.Value = musicBrainzTrackId;
+                        track.MetaData.AcoustID.Value = acoustID;
 
-                    taggingService.Save(track.MusicFileProperties.Path, track.MetaData.GetAllMetaTagsDataNative()); // Persisting to local file metadata
+                        taggingService.Save(track.MusicFileProperties.Path, track.MetaData.GetAllMetaTagsDataNative()); // Persisting to local file metadata
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                UtilityHelper.ShowExceptionDialog(
+                    "Fingerprinting error",
+                    "An error happened during fingerprinting:",
+                    e.Message,
+                    System.Windows.Application.Current.MainWindow);
             }
         }
 
