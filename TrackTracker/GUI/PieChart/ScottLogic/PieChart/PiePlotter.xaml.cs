@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+
+using ScottLogic.Shapes;
+using ScottLogic.Util;
 using System.Windows.Media.Animation;
+using ScottLogic.ScottLogic.PieChart;
 
 
-
-namespace PieChart
+namespace ScottLogic.Controls.PieChart
 {
     /// <summary>
     /// Renders a bound dataset as a pie chart
@@ -24,7 +34,7 @@ namespace PieChart
         /// <summary>
         /// The property of the bound object that will be plotted
         /// </summary>
-        public string PlottedProperty
+        public String PlottedProperty
         {
             get { return PieChartLayout.GetPlottedProperty(this); }
             set { PieChartLayout.SetPlottedProperty(this, value); }
@@ -96,7 +106,7 @@ namespace PieChart
             }
 
             // handle the selection change events
-            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(TrackTracker.GUI.ViewModels.StatisticsViewModel.View);
+            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(this.DataContext);
             collectionView.CurrentChanged += new EventHandler(CollectionViewCurrentChanged);
             collectionView.CurrentChanging += new CurrentChangingEventHandler(CollectionViewCurrentChanging);
 
@@ -234,7 +244,7 @@ namespace PieChart
 
             //TODO possibel type conversion?
 
-            return (uint)itemValue;
+            return (double)itemValue;
         }
 
         /// <summary>

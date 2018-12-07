@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
-             xmlns:c="clr-namespace:PieChart"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
@@ -16,17 +15,6 @@
             <i:InvokeCommandAction Command="{Binding RefreshCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
-    <UserControl.Resources>
-        <x:ArrayExtension Type="{x:Type Brush}" x:Key="PieChartColorBrushes">
-            <SolidColorBrush Color="#9F15C3"/>
-            <SolidColorBrush Color="#FF8E01"/>
-            <SolidColorBrush Color="#339933"/>
-            <SolidColorBrush Color="#00AAFF"/>
-            <SolidColorBrush Color="#818183"/>
-            <SolidColorBrush Color="#000033"/>
-        </x:ArrayExtension>
-    </UserControl.Resources>
 
     <StackPanel Background="#FF323232">
         <Grid>
@@ -42,11 +30,7 @@
                     <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
 
-                <!--<c:PieChartLayout x:Name="piePlotter" PlottedProperty="Count" HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="500" Margin="5,40,100,10">
-                    <c:PieChartLayout.ColorSelector>
-                        <c:IndexedColourSelector Brushes="{StaticResource PieChartColorBrushes}"/>
-                    </c:PieChartLayout.ColorSelector>
-                </c:PieChartLayout>-->
+                <local:ArtistPieChart Margin="-80,16,80,-16" />
 
                 <Label Grid.Column="0" Content="Tracks by artist" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
                 <Label Grid.Column="0" Content="Most frequent artist:" HorizontalAlignment="Left" Margin="430,64,0,0" VerticalAlignment="Top" Foreground="White"/>
@@ -54,31 +38,35 @@
                 <Label Grid.Column="0" Content="By track number of:" HorizontalAlignment="Left" Margin="430,164,0,0" VerticalAlignment="Top" Foreground="White"/>
                 <Label Content="{Binding ArtistCount}" Grid.Column="0" HorizontalAlignment="Left" Margin="430,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="150"/>
 
-                <Image Grid.Column="1" Height="250" Width="250" Source="/Resources/icon_statistics.png" Margin="10,40,340,10" />
+                <local:AlbumPieChart Margin="496,10,104,-10" Grid.ColumnSpan="2" />
+
                 <Label Grid.Column="1" Content="Tracks by album" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
-                <Label Grid.Column="1" Content="Most frequent album:" HorizontalAlignment="Left" Margin="296,64,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <Label Content="{Binding AlbumName}" Grid.Column="1" HorizontalAlignment="Left" Margin="339,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
-                <Label Grid.Column="1" Content="By track number of:" HorizontalAlignment="Left" Margin="296,164,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <Label Content="{Binding AlbumCount}" Grid.Column="1" HorizontalAlignment="Left" Margin="339,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
+                <Label Grid.Column="1" Content="Most frequent album:" HorizontalAlignment="Left" Margin="406,64,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label Content="{Binding AlbumName}" Grid.Column="1" HorizontalAlignment="Left" Margin="406,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
+                <Label Grid.Column="1" Content="By track number of:" HorizontalAlignment="Left" Margin="406,164,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label Content="{Binding AlbumCount}" Grid.Column="1" HorizontalAlignment="Left" Margin="406,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="600" />
                     <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Height="250" Width="250" Source="/Resources/icon_statistics.png" Margin="10,40,340,10" />
+
+                <local:GenrePieChart Margin="-80,12,80,-12" />
+
                 <Label Grid.Column="0" Content="Tracks by genre" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
                 <Label Grid.Column="0" Content="Most frequent genre:" HorizontalAlignment="Left" Margin="430,64,0,0" VerticalAlignment="Top" Foreground="White"/>
                 <Label Content="{Binding GenreName}" Grid.Column="0" HorizontalAlignment="Left" Margin="430,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="150"/>
                 <Label Grid.Column="0" Content="By track number of:" HorizontalAlignment="Left" Margin="430,164,0,0" VerticalAlignment="Top" Foreground="White"/>
                 <Label Content="{Binding GenreCount}" Grid.Column="0" HorizontalAlignment="Left" Margin="430,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="150"/>
 
-                <Image Grid.Column="1" Height="250" Width="250" Source="/Resources/icon_statistics.png" Margin="10,40,340,10" />
+                <local:DecadePieChart Grid.ColumnSpan="2" Margin="496,10,105,-10" />
+
                 <Label Grid.Column="1" Content="Tracks by decades" HorizontalAlignment="Left" Margin="230,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
-                <Label Grid.Column="1" Content="Most frequent decade:" HorizontalAlignment="Left" Margin="296,64,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <Label Content="{Binding DecadeName}" Grid.Column="1" HorizontalAlignment="Left" Margin="339,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
-                <Label Grid.Column="1" Content="By track number of:" HorizontalAlignment="Left" Margin="296,164,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <Label Content="{Binding DecadeCount}" Grid.Column="1" HorizontalAlignment="Left" Margin="339,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
+                <Label Grid.Column="1" Content="Most frequent decade:" HorizontalAlignment="Left" Margin="406,64,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label Content="{Binding DecadeName}" Grid.Column="1" HorizontalAlignment="Left" Margin="406,100,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
+                <Label Grid.Column="1" Content="By track number of:" HorizontalAlignment="Left" Margin="406,164,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Label Content="{Binding DecadeCount}" Grid.Column="1" HorizontalAlignment="Left" Margin="406,200,0,0" VerticalAlignment="Top" Foreground="Red" Width="251"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

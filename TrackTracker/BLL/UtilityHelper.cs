@@ -214,5 +214,37 @@ namespace TrackTracker.BLL
 
             return target;
         }
+
+        public static List<PieChartableData> ConvertStatistics(Dictionary<string, uint> source)
+        {
+            List<PieChartableData> data = new List<PieChartableData>();
+
+            foreach (KeyValuePair<string, uint> pair in source)
+            {
+                PieChartableData item = new PieChartableData();
+                item.Name = pair.Key;
+                item.Count = Convert.ToDouble(pair.Value);
+
+                data.Add(item);
+            }
+
+            return data;
+        }
+
+        public static List<PieChartableData> ConvertStatistics(Dictionary<MusicEra, uint> source)
+        {
+            List<PieChartableData> data = new List<PieChartableData>();
+
+            foreach (KeyValuePair<MusicEra, uint> pair in source)
+            {
+                PieChartableData item = new PieChartableData();
+                item.Name = MusicErasConverter.GetFormattedString(pair.Key);
+                item.Count = Convert.ToDouble(pair.Value);
+
+                data.Add(item);
+            }
+
+            return data;
+        }
     }
 }

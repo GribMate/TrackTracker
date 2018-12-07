@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Controls;
+using BaseWPFHelpers;
 using System.Windows.Media;
 using System.Windows;
+using System.ComponentModel;
 
-using PieChart.Utility;
-
-
-
-namespace PieChart
+namespace ScottLogic.Controls.PieChart
 {
     /// <summary>
     /// Converter which uses the IColorSelector associated with the Legend to

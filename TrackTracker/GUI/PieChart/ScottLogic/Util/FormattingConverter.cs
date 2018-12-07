@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Globalization;
 using System.Windows.Data;
 
-
-
-namespace PieChart.Utility
+namespace ScottLogic.Util
 {
     /// <summary>
     /// A value converter that delegates to String.Format
@@ -12,7 +13,8 @@ namespace PieChart.Utility
     [ValueConversion(typeof(object), typeof(string))]
     public class FormattingConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
         {
             string formatString = parameter as string;
             if (formatString != null)
@@ -25,7 +27,8 @@ namespace PieChart.Utility
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

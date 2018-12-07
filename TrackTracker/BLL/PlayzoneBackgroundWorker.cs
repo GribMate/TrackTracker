@@ -126,7 +126,7 @@ namespace TrackTracker.BLL
                         {
                             switch (currentlyPlaying.OfflinePlayer)
                             {
-                                case SupportedMediaPlayers.Foobar2000: // TODO: not this way
+                                case SupportedMediaPlayers.Foobar2000: // TODO: maybe not this way
                                     string playlistPath = AppDomain.CurrentDomain.BaseDirectory + "_playzone_mix.m3u";
                                     System.IO.StreamWriter sw = new System.IO.StreamWriter(playlistPath);
                                     sw.WriteLine(currentlyPlaying.FilePath);
@@ -136,8 +136,7 @@ namespace TrackTracker.BLL
                                     System.Diagnostics.Process.Start(playlistPath);
                                     break;
                             }
-                            //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
-                            Thread.Sleep(12000);
+                            Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: maybe not this way
                         }
                         else if (currentlyPlaying.IsPlayableOnline)
                         {
@@ -147,8 +146,7 @@ namespace TrackTracker.BLL
                                     await spotifyService.ChangePlaybackMusic(currentlyPlaying.SpotifyURI);
                                     break;
                             }
-                            //Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: not this way
-                            Thread.Sleep(12000);
+                            Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: maybe not this way
                         }
                     }
                 }

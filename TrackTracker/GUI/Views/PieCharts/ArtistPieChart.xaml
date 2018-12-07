@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="TrackTracker.GUI.Views.ArtistPieChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrackTracker.GUI.Views"
+             xmlns:c="clr-namespace:ScottLogic.Controls.PieChart"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <x:ArrayExtension Type="{x:Type Brush}" x:Key="brushes">
+            <SolidColorBrush Color="#9F15C3"/>
+            <SolidColorBrush Color="#FF8E01"/>
+            <SolidColorBrush Color="#339933"/>
+            <SolidColorBrush Color="#00AAFF"/>
+            <SolidColorBrush Color="#818183"/>
+            <SolidColorBrush Color="#000033"/>
+        </x:ArrayExtension>
+    </UserControl.Resources>
+
+    <c:PieChartLayout HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" PlottedProperty="Count" Margin="10">
+        <c:PieChartLayout.ColorSelector>
+            <c:IndexedColourSelector Brushes="{StaticResource brushes}"/>
+        </c:PieChartLayout.ColorSelector>
+    </c:PieChartLayout>
+</UserControl>

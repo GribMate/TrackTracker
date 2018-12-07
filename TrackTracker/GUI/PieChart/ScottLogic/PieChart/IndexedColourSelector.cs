@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Media;
+using ScottLogic.ScottLogic.PieChart;
 using System.Windows;
 
-
-
-
-namespace PieChart
+namespace ScottLogic.Controls.PieChart
 {
     /// <summary>
     /// Selects a colour purely based on its location within a collection.

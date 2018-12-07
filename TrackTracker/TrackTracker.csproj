@@ -143,6 +143,7 @@
     <Compile Include="BLL\GlobalContexts\LMPContext.cs" />
     <Compile Include="BLL\GlobalContexts\PlayzoneContext.cs" />
     <Compile Include="BLL\GlobalContexts\SettingsContext.cs" />
+    <Compile Include="BLL\GlobalContexts\StatisticsContext.cs" />
     <Compile Include="BLL\GlobalContexts\TracklistContext.cs" />
     <Compile Include="BLL\Model\Base\ModelObjectBase.cs" />
     <Compile Include="BLL\Model\MetaData.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="BLL\Model\MetaTagString.cs" />
     <Compile Include="BLL\Model\MusicFileProperties.cs" />
     <Compile Include="BLL\Model\Base\SelectableObject.cs" />
+    <Compile Include="BLL\Model\PieChartableData.cs" />
     <Compile Include="BLL\Model\PlayableTrackInfo.cs" />
     <Compile Include="BLL\Model\StatisticsChartableData.cs" />
     <Compile Include="BLL\Model\TrackBase.cs" />
@@ -165,6 +167,23 @@
     <Compile Include="BLL\PlayzoneBackgroundWorker.cs" />
     <Compile Include="BLL\UtilityHelper.cs" />
     <Compile Include="GUI\Interfaces\IClosable.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\BaseWPFHelpers.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\ColourConverter.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\IColorSelector.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\IndexedColourSelector.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\Legend.xaml.cs">
+      <DependentUpon>Legend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\LegendConverter.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\PieChartLayout.xaml.cs">
+      <DependentUpon>PieChartLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PieChart\ScottLogic\PieChart\PiePlotter.xaml.cs">
+      <DependentUpon>PiePlotter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PieChart\ScottLogic\Shapes\PiePiece.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\Util\FormattingConverter.cs" />
+    <Compile Include="GUI\PieChart\ScottLogic\Util\Utils.cs" />
     <Compile Include="GUI\ViewModels\CommonControlsViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ExceptionNotificationViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ManageTracklistSourcesViewModel.cs" />
@@ -172,6 +191,18 @@
     <Compile Include="GUI\ViewModels\Base\RelayCommand.cs" />
     <Compile Include="GUI\ViewModels\StatisticsViewModel.cs" />
     <Compile Include="GUI\ViewModels\TracklistViewModel.cs" />
+    <Compile Include="GUI\Views\PieCharts\AlbumPieChart.xaml.cs">
+      <DependentUpon>AlbumPieChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Views\PieCharts\DecadePieChart.xaml.cs">
+      <DependentUpon>DecadePieChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Views\PieCharts\GenrePieChart.xaml.cs">
+      <DependentUpon>GenrePieChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Views\PieCharts\ArtistPieChart.xaml.cs">
+      <DependentUpon>ArtistPieChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Views\CommonControls.xaml.cs">
       <DependentUpon>CommonControls.xaml</DependentUpon>
     </Compile>
@@ -211,23 +242,35 @@
       <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
     </Compile>
     <Compile Include="BLL\Model\LocalMediaPack.cs" />
-    <Compile Include="GUI\PieChart\BaseWPFHelpers.cs" />
-    <Compile Include="GUI\PieChart\PieChartVisuals\ColourConverter.cs" />
-    <Compile Include="GUI\PieChart\PieChartVisuals\IColorSelector.cs" />
-    <Compile Include="GUI\PieChart\PieChartVisuals\IndexedColourSelector.cs" />
-    <Compile Include="GUI\PieChart\PieChartVisuals\Legend.xaml.cs">
-      <DependentUpon>Legend.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\PieChart\PieChartVisuals\LegendConverter.cs" />
-    <Compile Include="GUI\PieChart\PieChartVisuals\PieChartLayout.xaml.cs">
-      <DependentUpon>PieChartLayout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\PieChart\PieChartVisuals\PiePlotter.xaml.cs">
-      <DependentUpon>PiePlotter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\PieChart\PiePiece.cs" />
-    <Compile Include="GUI\PieChart\FormattingConverter.cs" />
     <Compile Include="Startup.cs" />
+    <Page Include="GUI\PieChart\ScottLogic\PieChart\Legend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PieChart\ScottLogic\PieChart\PieChartLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PieChart\ScottLogic\PieChart\PiePlotter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Views\PieCharts\AlbumPieChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Views\PieCharts\DecadePieChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Views\PieCharts\GenrePieChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Views\PieCharts\ArtistPieChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\Views\Dialogs\ExceptionNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -253,18 +296,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="GUI\PieChart\PieChartVisuals\Legend.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="GUI\PieChart\PieChartVisuals\PieChartLayout.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="GUI\PieChart\PieChartVisuals\PiePlotter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="GUI\Views\TabData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

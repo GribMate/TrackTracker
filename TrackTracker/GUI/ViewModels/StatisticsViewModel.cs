@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
+using TrackTracker.BLL;
 using TrackTracker.BLL.Enums;
 using TrackTracker.BLL.Model;
 using TrackTracker.BLL.GlobalContexts;
@@ -15,11 +16,6 @@ namespace TrackTracker.GUI.ViewModels
 {
     public class StatisticsViewModel : ViewModelBase
     {
-        public ObservableCollection<StatisticsChartableData> PieChartData { get; set; }
-
-        public static System.Windows.Controls.UserControl View { get; set; }
-
-
         public StatisticsViewModel() : base()
         {
             TotalCount = 0;
@@ -165,6 +161,42 @@ namespace TrackTracker.GUI.ViewModels
             CountsByAlbum = CalculateCountsByAlbum();
             CountsByGenre = CalculateCountsByGenre();
             CountsByDecade = CalculateCountsByDecade();
+
+            if (StatisticsContext.CountsByArtist.Count != CountsByArtist.Count)
+            {
+                StatisticsContext.CountsByArtist.Clear();
+                foreach (PieChartableData item in UtilityHelper.ConvertStatistics(CountsByArtist))
+                {
+                    StatisticsContext.CountsByArtist.Add(item);
+                }
+            }
+
+            if (StatisticsContext.CountsByAlbum.Count != CountsByAlbum.Count)
+            {
+                StatisticsContext.CountsByAlbum.Clear();
+                foreach (PieChartableData item in UtilityHelper.ConvertStatistics(CountsByAlbum))
+                {
+                    StatisticsContext.CountsByAlbum.Add(item);
+                }
+            }
+
+            if (StatisticsContext.CountsByGenre.Count != CountsByGenre.Count)
+            {
+                StatisticsContext.CountsByGenre.Clear();
+                foreach (PieChartableData item in UtilityHelper.ConvertStatistics(CountsByGenre))
+                {
+                    StatisticsContext.CountsByGenre.Add(item);
+                }
+            }
+
+            if (StatisticsContext.CountsByDecade.Count != CountsByDecade.Count)
+            {
+                StatisticsContext.CountsByDecade.Clear();
+                foreach (PieChartableData item in UtilityHelper.ConvertStatistics(CountsByDecade))
+                {
+                    StatisticsContext.CountsByDecade.Add(item);
+                }
+            }
 
             if (GetMostFrequentArtist(out string artistName, out uint artistCount))
             {
@@ -444,38 +476,39 @@ namespace TrackTracker.GUI.ViewModels
             Dictionary<string, uint> counts = new Dictionary<string, uint>();
             foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
             {
-                //TODO: rework to increment each genre count if multiple flags given
-
-                //if (!String.IsNullOrEmpty(track.MetaData.JoinedGenres)) //we can determine genre from metadata
-                //{
-                //    if (!counts.ContainsKey(track.MetaData.JoinedGenres)) //it is the first time we encounter this particular genre
-                //    {
-                //        counts.Add(track.MetaData.JoinedGenres, 1); //adding occurence of 1, since it's the first
-                //    }
-                //    else //we have a pre-existing count about this particular genre
-                //    {
-                //        uint originalCount;
-                //        counts.TryGetValue(track.MetaData.JoinedGenres, out originalCount); //getting the original counter
-                //        counts.Remove(track.MetaData.JoinedGenres); //we will increment the counter's value so we remove
-                //        uint newCount = originalCount + 1; //incrementing by 1
-                //        counts.Add(track.MetaData.JoinedGenres, newCount); //inserting genre with new value
-                //    }
-                //}
-                //else //we cannot determine genre, so we list it under "Unknown"
-                //{
-                //    if (!counts.ContainsKey("Unknown")) //it is the first undetermined genre
-                //    {
-                //        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
-                //    }
-                //    else //we already have undetermined genres
-                //    {
-                //        uint originalCount;
-                //        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
-                //        counts.Remove("Unknown"); //we will increment the counter's value so we remove
-                //        uint newCount = originalCount + 1; //incrementing by 1
-                //        counts.Add("Unknown", newCount); //inserting unkown genres with new value
-                //    }
-                //}
+                if (track.MetaData.Genres.Value != null && track.MetaData.Genres.Value.Length > 0) //we can determine genre from metadata
+                {
+                    foreach (string genre in track.MetaData.Genres.Value)
+                    {
+                        if (!counts.ContainsKey(genre)) //it is the first time we encounter this particular genre
+                        {
+                            counts.Add(genre, 1); //adding occurence of 1, since it's the first
+                        }
+                        else //we have a pre-existing count about this particular genre
+                        {
+                            uint originalCount;
+                            counts.TryGetValue(genre, out originalCount); //getting the original counter
+                            counts.Remove(genre); //we will increment the counter's value so we remove
+                            uint newCount = originalCount + 1; //incrementing by 1
+                            counts.Add(genre, newCount); //inserting genre with new value
+                        }
+                    }
+                }
+                else //we cannot determine genre, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined genre
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined genres
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown genres with new value
+                    }
+                }
             }
             return counts;
         }

@@ -9,7 +9,6 @@ namespace TrackTracker.GUI.Views
     {
         public TabStatistics()
         {
-            ViewModels.StatisticsViewModel.View = this;
             InitializeComponent();
         }
     }
