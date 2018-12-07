@@ -133,6 +133,9 @@ namespace TrackTracker.GUI.ViewModels
             Views.Dialogs.ManageTracklistSources mts = new Views.Dialogs.ManageTracklistSources();
             mts.Owner = System.Windows.Application.Current.MainWindow;
             mts.ShowDialog();
+
+            MatchList.Clear();
+            TagList.Clear();
         }
 
         public bool CanExecuteUpdateTags
