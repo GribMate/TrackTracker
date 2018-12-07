@@ -151,7 +151,7 @@ namespace TrackTracker.GUI.ViewModels
 
         private bool CanExecuteRefresh
         {
-            get => TracklistContext.TracklistTracks.Count > 0;
+            get => TracklistContext.TracklistTracks.Count > 0 || PlayzoneContext.SpotifyTracks.Count > 0;
         }
         private void ExecuteRefresh()
         {
@@ -398,7 +398,42 @@ namespace TrackTracker.GUI.ViewModels
         private Dictionary<string, uint> CalculateCountsByArtist()
         {
             Dictionary<string, uint> counts = new Dictionary<string, uint>();
+
             foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                if (!String.IsNullOrEmpty(track.MetaData.AlbumArtists.JoinedValue)) //we can determine artist from metadata
+                {
+                    if (!counts.ContainsKey(track.MetaData.AlbumArtists.JoinedValue)) //it is the first time we encounter this particular artist
+                    {
+                        counts.Add(track.MetaData.AlbumArtists.JoinedValue, 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we have a pre-existing count about this particular artist
+                    {
+                        uint originalCount;
+                        counts.TryGetValue(track.MetaData.AlbumArtists.JoinedValue, out originalCount); //getting the original counter
+                        counts.Remove(track.MetaData.AlbumArtists.JoinedValue); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add(track.MetaData.AlbumArtists.JoinedValue, newCount); //inserting artist with new value
+                    }
+                }
+                else //we cannot determine artist, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined artist
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined artists
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown artists with new value
+                    }
+                }
+            }
+
+            foreach (TrackVirtual track in PlayzoneContext.SpotifyTracks)
             {
                 if (!String.IsNullOrEmpty(track.MetaData.AlbumArtists.JoinedValue)) //we can determine artist from metadata
                 {
@@ -436,7 +471,41 @@ namespace TrackTracker.GUI.ViewModels
         private Dictionary<string, uint> CalculateCountsByAlbum()
         {
             Dictionary<string, uint> counts = new Dictionary<string, uint>();
-            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                if (!String.IsNullOrEmpty(track.MetaData.Album.ToString())) //we can determine album from metadata
+                {
+                    if (!counts.ContainsKey(track.MetaData.Album.ToString())) //it is the first time we encounter this particular album
+                    {
+                        counts.Add(track.MetaData.Album.ToString(), 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we have a pre-existing count about this particular album
+                    {
+                        uint originalCount;
+                        counts.TryGetValue(track.MetaData.Album.ToString(), out originalCount); //getting the original counter
+                        counts.Remove(track.MetaData.Album.ToString()); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add(track.MetaData.Album.ToString(), newCount); //inserting album with new value
+                    }
+                }
+                else //we cannot determine album, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined album
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined albums
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown albums with new value
+                    }
+                }
+            }
+
+            foreach (TrackVirtual track in PlayzoneContext.SpotifyTracks)
             {
                 if (!String.IsNullOrEmpty(track.MetaData.Album.ToString())) //we can determine album from metadata
                 {
@@ -474,7 +543,44 @@ namespace TrackTracker.GUI.ViewModels
         private Dictionary<string, uint> CalculateCountsByGenre()
         {
             Dictionary<string, uint> counts = new Dictionary<string, uint>();
-            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                if (track.MetaData.Genres.Value != null && track.MetaData.Genres.Value.Length > 0) //we can determine genre from metadata
+                {
+                    foreach (string genre in track.MetaData.Genres.Value)
+                    {
+                        if (!counts.ContainsKey(genre)) //it is the first time we encounter this particular genre
+                        {
+                            counts.Add(genre, 1); //adding occurence of 1, since it's the first
+                        }
+                        else //we have a pre-existing count about this particular genre
+                        {
+                            uint originalCount;
+                            counts.TryGetValue(genre, out originalCount); //getting the original counter
+                            counts.Remove(genre); //we will increment the counter's value so we remove
+                            uint newCount = originalCount + 1; //incrementing by 1
+                            counts.Add(genre, newCount); //inserting genre with new value
+                        }
+                    }
+                }
+                else //we cannot determine genre, so we list it under "Unknown"
+                {
+                    if (!counts.ContainsKey("Unknown")) //it is the first undetermined genre
+                    {
+                        counts.Add("Unknown", 1); //adding occurence of 1, since it's the first
+                    }
+                    else //we already have undetermined genres
+                    {
+                        uint originalCount;
+                        counts.TryGetValue("Unknown", out originalCount); //getting the original counter
+                        counts.Remove("Unknown"); //we will increment the counter's value so we remove
+                        uint newCount = originalCount + 1; //incrementing by 1
+                        counts.Add("Unknown", newCount); //inserting unkown genres with new value
+                    }
+                }
+            }
+
+            foreach (TrackVirtual track in PlayzoneContext.SpotifyTracks)
             {
                 if (track.MetaData.Genres.Value != null && track.MetaData.Genres.Value.Length > 0) //we can determine genre from metadata
                 {
@@ -515,7 +621,28 @@ namespace TrackTracker.GUI.ViewModels
         private Dictionary<MusicEra, uint> CalculateCountsByDecade()
         {
             Dictionary<MusicEra, uint> counts = new Dictionary<MusicEra, uint>();
-            foreach (TrackLocal track in TracklistContext.TracklistTracks.ToList<TrackLocal>())
+            foreach (TrackLocal track in TracklistContext.TracklistTracks)
+            {
+                MusicEra decade = MusicEra.Unknown;
+
+                if (track.MetaData.Year.Value.HasValue)
+                    decade = MusicErasConverter.ConvertFromYear(track.MetaData.Year.Value.Value); //we do not have to worry about value check, since it will "unknown" if not recognized
+
+                if (!counts.ContainsKey(decade)) //it is the first time we encounter this particular decade
+                {
+                    counts.Add(decade, 1); //adding occurence of 1, since it's the first
+                }
+                else //we have a pre-existing count about this particular decade
+                {
+                    uint originalCount;
+                    counts.TryGetValue(decade, out originalCount); //getting the original counter
+                    counts.Remove(decade); //we will increment the counter's value so we remove
+                    uint newCount = originalCount + 1; //incrementing by 1
+                    counts.Add(decade, newCount); //inserting decade with new value
+                }
+            }
+
+            foreach (TrackVirtual track in PlayzoneContext.SpotifyTracks)
             {
                 MusicEra decade = MusicEra.Unknown;
 
