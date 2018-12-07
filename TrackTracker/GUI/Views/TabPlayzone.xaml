@@ -23,15 +23,15 @@
                     <ColumnDefinition Width="600" />
                     <ColumnDefinition Width="600" />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Local (filtered) music files" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
-                <Label Grid.Column="1" Content="Online (filtered) music files" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
+                <Label Grid.Column="0" Content="{Binding LocalTitle}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
+                <Label Grid.Column="1" Content="{Binding OnlineTitle}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="14" />
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="600"/>
                     <ColumnDefinition Width="600"/>
                 </Grid.ColumnDefinitions>
-                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.LocalTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.FilteredLocalTracks}}" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>
@@ -40,7 +40,7 @@
                         <DataGridTextColumn Header="Album" Width="*" IsReadOnly="True" Binding="{Binding MetaData.Album.Value}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.SpotifyTracks}}" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                <DataGrid ItemsSource="{Binding Source={x:Static contexts:PlayzoneContext.FilteredSpotifyTracks}}" Grid.Column="1" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
                                       CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="True" FontSize="14" AlternatingRowBackground="#FFC8C8C8">
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn Header="Selected" Width="70" Binding="{Binding IsSelected, Mode=TwoWay}"/>

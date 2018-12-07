@@ -186,11 +186,18 @@
     <Compile Include="GUI\PieChart\ScottLogic\Util\Utils.cs" />
     <Compile Include="GUI\ViewModels\CommonControlsViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ExceptionNotificationViewModel.cs" />
+    <Compile Include="GUI\ViewModels\Dialogs\ManageFiltersViewModel.cs" />
     <Compile Include="GUI\ViewModels\Dialogs\ManageTracklistSourcesViewModel.cs" />
     <Compile Include="GUI\ViewModels\PlayzoneViewModel.cs" />
     <Compile Include="GUI\ViewModels\Base\RelayCommand.cs" />
     <Compile Include="GUI\ViewModels\StatisticsViewModel.cs" />
     <Compile Include="GUI\ViewModels\TracklistViewModel.cs" />
+    <Compile Include="GUI\Views\Dialogs\ManageFilters.xaml.cs">
+      <DependentUpon>ManageFilters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Views\Dialogs\ManageTracklistSources.xaml.cs">
+      <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Views\PieCharts\AlbumPieChart.xaml.cs">
       <DependentUpon>AlbumPieChart.xaml</DependentUpon>
     </Compile>
@@ -238,9 +245,6 @@
     <Compile Include="GUI\Views\Dialogs\ExceptionNotification.xaml.cs">
       <DependentUpon>ExceptionNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Views\Dialogs\ManageTracklistSources.xaml.cs">
-      <DependentUpon>ManageTracklistSources.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BLL\Model\LocalMediaPack.cs" />
     <Compile Include="Startup.cs" />
     <Page Include="GUI\PieChart\ScottLogic\PieChart\Legend.xaml">
@@ -252,6 +256,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="GUI\PieChart\ScottLogic\PieChart\PiePlotter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Views\Dialogs\ManageFilters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Views\Dialogs\ManageTracklistSources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -272,10 +284,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\Views\Dialogs\ExceptionNotification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GUI\Views\Dialogs\ManageTracklistSources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

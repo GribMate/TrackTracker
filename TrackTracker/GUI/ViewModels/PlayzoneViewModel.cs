@@ -23,6 +23,14 @@ namespace TrackTracker.GUI.ViewModels
 
         private PlayzoneBackgroundWorker player;
 
+        private string localSelectedArtist;
+        private string localSelectedAlbum;
+        private string localSelectedGenre;
+
+        private string onlineSelectedArtist;
+        private string onlineSelectedAlbum;
+        private string onlineSelectedGenre;
+
         public ObservableCollection<string> LocalSupportedPlayers { get; set; }
         public ObservableCollection<string> OnlineSupportedPlayers { get; set; }
         public ObservableCollection<TrackBase> MixList { get; set; }
@@ -48,7 +56,15 @@ namespace TrackTracker.GUI.ViewModels
 
             player = new PlayzoneBackgroundWorker();
 
-            LocalSupportedPlayers = GetLocalSupportedPlayers();
+            localSelectedArtist = null;
+            localSelectedAlbum = null;
+            localSelectedGenre = null;
+
+            onlineSelectedArtist = null;
+            onlineSelectedAlbum = null;
+            onlineSelectedGenre = null;
+
+        LocalSupportedPlayers = GetLocalSupportedPlayers();
             OnlineSupportedPlayers = GetOnlineSupportedPlayers();
             MixList = new ObservableCollection<TrackBase>();
 
@@ -68,6 +84,28 @@ namespace TrackTracker.GUI.ViewModels
         }
 
 
+
+        public string LocalTitle
+        {
+            get
+            {
+                if (localSelectedArtist == null && localSelectedAlbum == null && localSelectedGenre == null)
+                    return "Local music files";
+                else
+                    return "Local music files (filtered)";
+            }
+        }
+
+        public string OnlineTitle
+        {
+            get
+            {
+                if (onlineSelectedArtist == null && onlineSelectedAlbum == null && onlineSelectedGenre == null)
+                    return "Online music files";
+                else
+                    return "Online music files (filtered)";
+            }
+        }
 
         private SupportedMediaPlayers? selectedLocalPlayer;
         public SupportedMediaPlayers? SelectedLocalPlayer
@@ -162,7 +200,29 @@ namespace TrackTracker.GUI.ViewModels
         }
         public void ExecuteLocalManageFilters()
         {
-            //
+            Views.Dialogs.ManageFilters mfDialog = new Views.Dialogs.ManageFilters();
+            mfDialog.Owner = System.Windows.Application.Current.MainWindow;
+
+            Dialogs.ManageFiltersViewModel vm = new Dialogs.ManageFiltersViewModel()
+            {
+                AvailableArtists = GetLocalAvailableArtists(),
+                AvailableAlbums = GetLocalAvailableAlbums(),
+                AvailableGenres = GetLocalAvailableGenres(),
+
+                SelectedArtist = localSelectedArtist,
+                SelectedAlbum = localSelectedAlbum,
+                SelectedGenre = localSelectedGenre
+            };
+
+            mfDialog.DataContext = vm;
+
+            mfDialog.ShowDialog();
+
+            localSelectedArtist = vm.SelectedArtist;
+            localSelectedAlbum = vm.SelectedAlbum;
+            localSelectedGenre = vm.SelectedGenre;
+
+            FilterLocalList();
         }
 
         public bool CanExecuteLocalAddToMix
@@ -234,7 +294,29 @@ namespace TrackTracker.GUI.ViewModels
         }
         public void ExecuteOnlineManageFilters()
         {
-            //
+            Views.Dialogs.ManageFilters mfDialog = new Views.Dialogs.ManageFilters();
+            mfDialog.Owner = System.Windows.Application.Current.MainWindow;
+
+            Dialogs.ManageFiltersViewModel vm = new Dialogs.ManageFiltersViewModel()
+            {
+                AvailableArtists = GetOnlineAvailableArtists(),
+                AvailableAlbums = GetOnlineAvailableAlbums(),
+                AvailableGenres = GetOnlineAvailableGenres(),
+
+                SelectedArtist = onlineSelectedArtist,
+                SelectedAlbum = onlineSelectedAlbum,
+                SelectedGenre = onlineSelectedGenre
+            };
+
+            mfDialog.DataContext = vm;
+
+            mfDialog.ShowDialog();
+
+            onlineSelectedArtist = vm.SelectedArtist;
+            onlineSelectedAlbum = vm.SelectedAlbum;
+            onlineSelectedGenre = vm.SelectedGenre;
+
+            FilterOnlineList();
         }
 
         public bool CanExecuteOnlineAddToMix
@@ -343,6 +425,126 @@ namespace TrackTracker.GUI.ViewModels
             }
 
             return new ObservableCollection<string>(players);
+        }
+
+        private ObservableCollection<string> GetLocalAvailableArtists()
+        {
+            List<string> artists = new List<string>();
+
+            foreach (TrackLocal item in PlayzoneContext.LocalTracks)
+            {
+                if (artists.Contains(item.MetaData.AlbumArtists.JoinedValue) == false)
+                    artists.Add(item.MetaData.AlbumArtists.JoinedValue);
+            }
+
+            return new ObservableCollection<string>(artists);
+        }
+
+        private ObservableCollection<string> GetLocalAvailableAlbums()
+        {
+            List<string> albums = new List<string>();
+
+            foreach (TrackLocal item in PlayzoneContext.LocalTracks)
+            {
+                if (albums.Contains(item.MetaData.Album.Value) == false)
+                    albums.Add(item.MetaData.Album.Value);
+            }
+
+            return new ObservableCollection<string>(albums);
+        }
+
+        private ObservableCollection<string> GetLocalAvailableGenres()
+        {
+            List<string> genres = new List<string>();
+
+            foreach (TrackLocal item in PlayzoneContext.LocalTracks)
+            {
+                if (genres.Contains(item.MetaData.Genres.JoinedValue) == false)
+                    genres.Add(item.MetaData.Genres.JoinedValue);
+            }
+
+            return new ObservableCollection<string>(genres);
+        }
+
+        private ObservableCollection<string> GetOnlineAvailableArtists()
+        {
+            List<string> artists = new List<string>();
+
+            foreach (TrackVirtual item in PlayzoneContext.SpotifyTracks)
+            {
+                if (artists.Contains(item.MetaData.AlbumArtists.JoinedValue) == false)
+                    artists.Add(item.MetaData.AlbumArtists.JoinedValue);
+            }
+
+            return new ObservableCollection<string>(artists);
+        }
+
+        private ObservableCollection<string> GetOnlineAvailableAlbums()
+        {
+            List<string> albums = new List<string>();
+
+            foreach (TrackVirtual item in PlayzoneContext.SpotifyTracks)
+            {
+                if (albums.Contains(item.MetaData.Album.Value) == false)
+                    albums.Add(item.MetaData.Album.Value);
+            }
+
+            return new ObservableCollection<string>(albums);
+        }
+
+        private ObservableCollection<string> GetOnlineAvailableGenres()
+        {
+            List<string> genres = new List<string>();
+
+            foreach (TrackVirtual item in PlayzoneContext.SpotifyTracks)
+            {
+                if (genres.Contains(item.MetaData.Genres.JoinedValue) == false)
+                    genres.Add(item.MetaData.Genres.JoinedValue);
+            }
+
+            return new ObservableCollection<string>(genres);
+        }
+
+        private void FilterLocalList()
+        {
+            PlayzoneContext.FilteredLocalTracks.Clear();
+
+            foreach (TrackLocal track in PlayzoneContext.LocalTracks)
+            {
+                if (localSelectedArtist == null || (track.MetaData.AlbumArtists.JoinedValue != null && track.MetaData.AlbumArtists.JoinedValue.Equals(localSelectedArtist)))
+                {
+                    if (localSelectedAlbum == null || (track.MetaData.Album.Value != null && track.MetaData.Album.Value.Equals(localSelectedAlbum)))
+                    {
+                        if (localSelectedGenre == null || (track.MetaData.Genres.JoinedValue != null && track.MetaData.Genres.JoinedValue.Equals(localSelectedGenre)))
+                        {
+                            PlayzoneContext.FilteredLocalTracks.Add(track);
+                        }
+                    }
+                }
+            }
+
+            NotifyPropertyChanged(nameof(LocalTitle));
+        }
+
+        private void FilterOnlineList()
+        {
+            PlayzoneContext.FilteredSpotifyTracks.Clear();
+
+            foreach (TrackVirtual track in PlayzoneContext.SpotifyTracks)
+            {
+                if (onlineSelectedArtist == null || (track.MetaData.AlbumArtists.JoinedValue != null && track.MetaData.AlbumArtists.JoinedValue.Equals(onlineSelectedArtist)))
+                {
+                    if (onlineSelectedAlbum == null || (track.MetaData.Album.Value != null && track.MetaData.Album.Value.Equals(onlineSelectedAlbum)))
+                    {
+                        if (onlineSelectedGenre == null || (track.MetaData.Genres.JoinedValue != null && track.MetaData.Genres.JoinedValue.Equals(onlineSelectedGenre)))
+                        {
+                            PlayzoneContext.FilteredSpotifyTracks.Add(track);
+                        }
+                    }
+                }
+            }
+
+            NotifyPropertyChanged(nameof(OnlineTitle));
         }
     }
 }

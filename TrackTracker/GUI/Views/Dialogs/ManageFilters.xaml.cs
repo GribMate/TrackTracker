@@ -7,9 +7,9 @@ using TrackTracker.GUI.Interfaces;
 
 namespace TrackTracker.GUI.Views.Dialogs
 {
-    public partial class ManageTracklistSources : Window, IClosable
+    public partial class ManageFilters : Window, IClosable
     {
-        public ManageTracklistSources()
+        public ManageFilters()
         {
             InitializeComponent();
         }

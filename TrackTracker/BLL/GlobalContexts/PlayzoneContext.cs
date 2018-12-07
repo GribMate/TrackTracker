@@ -28,6 +28,14 @@ namespace TrackTracker.BLL.GlobalContexts
 
 
 
+        // Filtered tracks that are on the local PC and can be mixed
+        public static ObservableCollection<TrackLocal> FilteredLocalTracks { get; set; } = new ObservableCollection<TrackLocal>();
+
+        // Filtered tracks that are on Spotify and can be mixed
+        public static ObservableCollection<TrackVirtual> FilteredSpotifyTracks { get; set; } = new ObservableCollection<TrackVirtual>();
+
+
+
         public static void AddMusicFileLocal(SupportedFileExtension ext, string path)
         {
             if (path == null)
@@ -43,6 +51,7 @@ namespace TrackTracker.BLL.GlobalContexts
 
                 TrackLocal track = new TrackLocal(new MusicFileProperties(path), trackData);
                 LocalTracks.Add(track);
+                FilteredLocalTracks.Add(track);
             }
             catch (Exception) // TODO: more polished exception handling
             {
@@ -67,6 +76,7 @@ namespace TrackTracker.BLL.GlobalContexts
                 track.SpotifyID = trackID;
                 track.SpotifyURI = trackURI;
                 SpotifyTracks.Add(track);
+                FilteredSpotifyTracks.Add(track);
             }
             catch (Exception) // TODO: more polished exception handling
             {
@@ -82,6 +92,7 @@ namespace TrackTracker.BLL.GlobalContexts
             if (itemToRemove != null)
             {
                 LocalTracks.Remove(itemToRemove);
+                FilteredLocalTracks.Remove(itemToRemove);
             }
         }
         public static void RemoveMusicFileSpotify(string trackID)
@@ -90,12 +101,15 @@ namespace TrackTracker.BLL.GlobalContexts
             if (itemToRemove != null)
             {
                 SpotifyTracks.Remove(itemToRemove);
+                FilteredSpotifyTracks.Remove(itemToRemove);
             }
         }
         public static void ClearMusicFilesAll()
         {
             LocalTracks.Clear();
+            FilteredLocalTracks.Clear();
             SpotifyTracks.Clear();
+            FilteredSpotifyTracks.Clear();
         }
     }
 }
