@@ -73,13 +73,12 @@ namespace TrackTracker.BLL
         {
             if (isPaused != false)
                 isPaused = false;
-
-            playerWorker.RunWorkerAsync();
+            else
+                playerWorker.RunWorkerAsync();
         }
         public void Pause()
         {
             isPaused = true;
-            playerWorker.CancelAsync();
         }
         public void Stop()
         {
@@ -92,20 +91,27 @@ namespace TrackTracker.BLL
 
         private async void ConsumePlaylist(object sender, DoWorkEventArgs e)
         {
+            bool didCommitPause = false;
+
             while (true)
             {
                 if (playerWorker.CancellationPending)
                 {
                     e.Cancel = true;
-                    if (isPaused)
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
                     break;
+                }
+                else if (isPaused)
+                {
+                    if (didCommitPause == false)
+                    {
+                        if (currentlyPlaying.IsPlayableOffline)
+                            await foobarService.Pause();
+                        else if (currentlyPlaying.IsPlayableOnline)
+                            await spotifyService.PausePlayback();
+                        didCommitPause = true;
+                    }
+                    Thread.Sleep(500);
+                    continue;
                 }
                 else
                 {
@@ -118,6 +124,8 @@ namespace TrackTracker.BLL
                             else if (currentlyPlaying.IsPlayableOnline)
                                 await spotifyService.PausePlayback();
                         }
+
+                        didCommitPause = false;
 
                         currentlyPlaying = tracks.First();
                         tracks.Remove(currentlyPlaying);
@@ -136,7 +144,12 @@ namespace TrackTracker.BLL
                                     System.Diagnostics.Process.Start(playlistPath);
                                     break;
                             }
-                            Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: maybe not this way
+
+                            int sleepTime = currentlyPlaying.PlaytimeInSeconds * 1000 + 2000;
+                            if (sleepTime < 12000)
+                                sleepTime = 12000;
+
+                            Thread.Sleep(sleepTime); // + 2 sec for API delay // TODO: maybe not this way
                         }
                         else if (currentlyPlaying.IsPlayableOnline)
                         {
@@ -146,7 +159,12 @@ namespace TrackTracker.BLL
                                     await spotifyService.ChangePlaybackMusic(currentlyPlaying.SpotifyURI);
                                     break;
                             }
-                            Thread.Sleep(currentlyPlaying.PlaytimeInSeconds * 1000 + 2000); // + 2 sec for API delay // TODO: maybe not this way
+
+                            int sleepTime = currentlyPlaying.PlaytimeInSeconds * 1000 + 2000;
+                            if (sleepTime < 12000)
+                                sleepTime = 12000;
+
+                            Thread.Sleep(sleepTime); // + 2 sec for API delay // TODO: maybe not this way
                         }
                     }
                 }
