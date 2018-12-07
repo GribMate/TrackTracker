@@ -109,6 +109,9 @@ namespace TrackTracker.Services
 
             foreach (KeyValuePair<string, object> tag in metaTags)
             {
+                if (tag.Value == null)
+                    continue;
+
                 PropertyInfo property = tagType.GetProperty(tag.Key); // Getting the property by its name from reflection
                 property.SetValue(audioFile.Tag, Convert.ChangeType(tag.Value, property.PropertyType)); // Setting given property with matching value
             }
