@@ -12,8 +12,6 @@ namespace TrackTracker.GUI.Views
         public GenrePieChart()
         {
             InitializeComponent();
-
-            DataContext = StatisticsContext.CountsByGenre;
         }
     }
 }

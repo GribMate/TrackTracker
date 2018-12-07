@@ -158,7 +158,6 @@
     <Compile Include="BLL\Model\Base\SelectableObject.cs" />
     <Compile Include="BLL\Model\PieChartableData.cs" />
     <Compile Include="BLL\Model\PlayableTrackInfo.cs" />
-    <Compile Include="BLL\Model\StatisticsChartableData.cs" />
     <Compile Include="BLL\Model\TrackBase.cs" />
     <Compile Include="BLL\Model\TrackLocal.cs" />
     <Compile Include="BLL\Model\TrackVirtual.cs" />

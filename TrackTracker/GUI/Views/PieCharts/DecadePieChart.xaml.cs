@@ -12,8 +12,6 @@ namespace TrackTracker.GUI.Views
         public DecadePieChart()
         {
             InitializeComponent();
-
-            DataContext = StatisticsContext.CountsByDecade;
         }
     }
 }

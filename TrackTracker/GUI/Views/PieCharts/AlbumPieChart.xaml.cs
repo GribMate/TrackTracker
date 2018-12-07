@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
 
-using TrackTracker.BLL.GlobalContexts;
-
 
 
 namespace TrackTracker.GUI.Views
@@ -12,8 +10,6 @@ namespace TrackTracker.GUI.Views
         public AlbumPieChart()
         {
             InitializeComponent();
-
-            DataContext = StatisticsContext.CountsByAlbum;
         }
     }
 }

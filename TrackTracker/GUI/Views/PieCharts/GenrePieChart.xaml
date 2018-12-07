@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TrackTracker.GUI.Views"
+             xmlns:contexts="clr-namespace:TrackTracker.BLL.GlobalContexts"
              xmlns:c="clr-namespace:ScottLogic.Controls.PieChart"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Source={x:Static contexts:StatisticsContext.CountsByGenre}}">
 
     <UserControl.Resources>
         <x:ArrayExtension Type="{x:Type Brush}" x:Key="brushes">

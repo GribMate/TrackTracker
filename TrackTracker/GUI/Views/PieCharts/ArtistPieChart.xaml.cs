@@ -12,8 +12,6 @@ namespace TrackTracker.GUI.Views
         public ArtistPieChart()
         {
             InitializeComponent();
-
-            DataContext = StatisticsContext.CountsByArtist;
         }
     }
 }
